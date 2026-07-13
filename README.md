@@ -16,9 +16,10 @@ Yozi Systems is the specification owner and change controller. Permanent
 specification, schema, registry, conformance, and algorithm identifiers are
 rooted at `https://tbom.yozi.systems/`.
 
-The Phase 0 Edge Profile 4 material in this repository is a local draft
-integration. It has not been externally published and makes no claim of
-runtime implementation or Profile 4 conformance.
+The remediated Phase 0 Edge Profile 4 material is the locked engineering
+baseline. It has not been externally published and makes no claim of runtime
+implementation or Profile 4 conformance. The independent RFC 8785 oracle is
+[pinned here](docs/conformance/rfc8785-independent-oracle.md).
 
 ## Current profiles
 
@@ -26,7 +27,7 @@ runtime implementation or Profile 4 conformance.
 | --- | ---: | --- | --- |
 | Agentic Topology | 3.0.0 | Existing public draft with schema, example, and validator support | [SPECIFICATION.md](SPECIFICATION.md), [`schemas/agentic/`](schemas/agentic/) |
 | Edge Network Topology | 3.0.0 | Frozen legacy compatibility profile; current implementation and fingerprints remain unchanged | [Legacy specification](docs/specifications/edge-network-topology-3.0.0-legacy.md), [legacy algorithm](docs/algorithms/edge-network-profile3-legacy-fingerprint.md), [`schemas/edge-network/`](schemas/edge-network/) |
-| Edge Network Topology | 4.0.0 | Normative Phase 0 pre-implementation draft; not implemented or conformant | [Profile 4 draft](docs/specifications/edge-network-topology-4.0.0.md), [`schemas/edge-network-topology/4.0.0/`](schemas/edge-network-topology/4.0.0/), [synthetic vectors](conformance/edge-network-topology/4.0.0/) |
+| Edge Network Topology | 4.0.0 | Locked Phase 0 engineering baseline; runtime not implemented or conformant | [Profile 4 specification](docs/specifications/edge-network-topology-4.0.0.md), [`schemas/edge-network-topology/4.0.0/`](schemas/edge-network-topology/4.0.0/), [synthetic vectors](conformance/edge-network-topology/4.0.0/) |
 
 Profile 3 and Profile 4 share the Edge profile family identifier but use
 different `profile_version` and algorithm identifiers. Consumers must

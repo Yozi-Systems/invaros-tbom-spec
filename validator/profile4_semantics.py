@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import base64
 import binascii
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -181,8 +182,82 @@ def validate_structural_order(projection: dict) -> None:
             raise ValidationError("federation endpoints are not in canonical order")
 
 
+def _source_content_projection(manifest: dict, source_id: str) -> dict:
+    def without_source_key(item: dict) -> dict:
+        return {key: value for key, value in item.items() if key != "source_key"}
+
+    namespaces = [
+        without_source_key(item)
+        for item in manifest["namespaces"]
+        if item["source_key"] == source_id
+    ]
+    nodes = [
+        without_source_key(item)
+        for item in manifest["nodes"]
+        if item["source_key"] == source_id
+    ]
+    relations = [
+        without_source_key(item)
+        for item in manifest["relations"]
+        if item["source_key"] == source_id
+    ]
+    namespaces.sort(key=lambda item: item["namespace_key"].encode("utf-8"))
+    nodes.sort(key=lambda item: item["declaration_key"].encode("utf-8"))
+    relations.sort(
+        key=lambda item: (
+            item["relation_type"].encode("ascii"),
+            item["source_declaration_key"].encode("utf-8"),
+            item["target_declaration_key"].encode("utf-8"),
+            json.dumps(
+                item["parameters"],
+                ensure_ascii=False,
+                separators=(",", ":"),
+                sort_keys=True,
+            ).encode("utf-8"),
+        )
+    )
+    return {
+        "manifest_version": manifest["manifest_version"],
+        "namespaces": namespaces,
+        "nodes": nodes,
+        "relations": relations,
+    }
+
+
+def validate_source_content_fingerprints(manifest: dict) -> None:
+    sources = manifest["sources"]
+    source_ids = [source["source_id"] for source in sources]
+    if len(source_ids) != len(set(source_ids)):
+        raise ValidationError("duplicate declared-intent source_id")
+    known = set(source_ids)
+    for collection in ("namespaces", "nodes", "relations"):
+        for index, declaration in enumerate(manifest[collection]):
+            if declaration["source_key"] not in known:
+                raise ValidationError(
+                    "declared content refers to an unknown source_id",
+                    path=(collection, index, "source_key"),
+                )
+    for index, source in enumerate(sources):
+        projection = _source_content_projection(manifest, source["source_id"])
+        canonical = json.dumps(
+            projection,
+            ensure_ascii=False,
+            separators=(",", ":"),
+            sort_keys=True,
+        ).encode("utf-8")
+        expected = "sha256:" + hashlib.sha256(canonical).hexdigest()
+        if source["content_fingerprint"] != expected:
+            raise ValidationError(
+                "declared-intent content_fingerprint does not match declared content",
+                path=("sources", index, "content_fingerprint"),
+            )
+
+
 def validate_profile4_semantics(payload: dict) -> None:
     validate_encoded_values(payload)
+    manifest = payload.get("declared_intent")
+    if manifest is not None:
+        validate_source_content_fingerprints(manifest)
     structural = payload.get("structural_topology")
     if structural is not None:
         validate_structural_order(structural)

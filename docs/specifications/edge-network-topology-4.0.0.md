@@ -1,6 +1,6 @@
-# InvarOS Edge Network Topology Profile 4.0.0 — Normative Pre-Implementation Draft
+# InvarOS Edge Network Topology Profile 4.0.0 — Locked Normative Specification
 
-Status: Phase 0 normative draft; design only, not implemented or conformant  
+Status: Phase 0 locked engineering baseline; production runtime not implemented or conformant
 Specification URI: `https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0`  
 Profile family identifier: `invaros.tbom.profile.edge_network_topology`  
 Normative revision: `4.0.0`  
@@ -52,7 +52,15 @@ The topology fingerprint binds exactly the structural projection. The observatio
 
 A structural projection MUST be sourced from one or more explicit declared-intent manifests conforming to the intent-manifest schema. Registered source types include local manifest, OpenWrt UCI, systemd-networkd, NetworkManager keyfile, declarative orchestration, and operator API. A platform adapter MUST preserve provenance and map source semantics; it MUST NOT infer structural intent from observed kernel behavior.
 
-Each source record includes its source type URI, source identifier, revision, collection time, and SHA-256 content fingerprint. Multiple sources require deterministic precedence declared in the manifest. Equal-precedence conflicting declarations invalidate the affected structural projection. Absence of declared intent yields no structural fingerprint.
+Each source record includes its source type URI, source identifier, revision,
+collection time, and SHA-256 content fingerprint. The content fingerprint MUST
+be computed with the registered source-content fingerprint algorithm. It binds
+only the declared content attributed to that source, excludes the source record
+itself and every provenance/transport wrapper field, and therefore cannot refer
+to itself. A validator MUST recompute it before accepting the source. Multiple
+sources require deterministic precedence declared in the manifest.
+Equal-precedence conflicting declarations invalidate the affected structural
+projection. Absence of declared intent yields no structural fingerprint.
 
 Names, namespace keys, link kinds, parentage, bridge membership, VLAN configuration, tunnel configuration, logical relationships, and federation peers are structural only when declared. A runtime object with no declaration may be reported as an unbound observation; it MUST NOT be promoted into structure.
 
@@ -133,6 +141,11 @@ The projection MUST include the structural topology fingerprint or null, collect
 
 All fingerprinted JSON MUST satisfy I-JSON and RFC 8785. Objects are closed by schema. Duplicate JSON member names are invalid. Arrays are pre-sorted according to this specification; RFC 8785 does not sort arrays. Floating-point values are prohibited. Integers are restricted to 0..9007199254740991 unless a narrower schema bound applies.
 
+The Profile 4 RFC 8785 input domain is normatively restricted to JSON null,
+Boolean, string, array, object, and integer values in the exact interoperable
+range. Fractional and exponent lexical forms, non-finite values, values outside
+the exact range, and lexical negative zero are invalid Profile 4 inputs.
+
 Canonical value rules are:
 
 - identifier strings compare by unsigned lexicographic comparison of their exact ASCII octets;
@@ -151,6 +164,9 @@ Canonical value rules are:
 - exact normalized records coalesce only when every canonical byte matches; conflicting logical duplicates invalidate the affected projection.
 
 Semantic IDs use `https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/semantic-id-yozi-tid-v1-sha256`. Topology and observation fingerprints use their respective YOZI-FP-v1 algorithm URIs. Algorithm documents define exact bytes.
+
+Declared-intent source content fingerprints use
+`https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/source-content-fingerprint-rfc8785-sha256`.
 
 ## 10. Completeness, availability, and failure
 

@@ -7,6 +7,8 @@ These files are deliberately synthetic, language-neutral inputs. They are not ru
 
 - `semantic-identity-vectors.json` locks YOZI-TID-v1 bytes and SHA-256 output.
 - `fingerprint-vectors.json` locks RFC 8785 payload bytes, YOZI-FP-v1 envelope bytes, and topology/observation digests.
+- `source-content-fingerprint-vectors.json` locks the self-reference-free
+  declared-content projection, RFC 8785 bytes, and direct SHA-256 digest.
 - `validation-vectors.json` locks fail-closed semantic outcomes, duplicate/conflict behavior, byte wrappers, federation separation, and sequential-observation behavior.
 - `representative-examples.json` supplies physical, bridge, VLAN, runtime-neighbor, federation-peer, and complete-artifact examples.
 

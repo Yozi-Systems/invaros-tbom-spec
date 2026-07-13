@@ -10,6 +10,15 @@ specification repository itself; see
 
 Draft integration of the Edge Network Topology Phase 0 specification lock:
 
+- Records operator approval of the remediated Phase 0 package as the locked
+  engineering baseline.
+- Pins the independent RFC 8785 truth source to Cyberphone
+  `json-canonicalization` commit
+  `19d51d7fe467d4706a3ff08adf8a748f29fc21e0` and its Apache-2.0 corpus.
+- Defines `sources[].content_fingerprint` over the RFC 8785 source-declared
+  content projection, excluding the fingerprint and provenance wrappers, and
+  adds independent positive and negative vectors.
+
 - Adds the exact frozen Profile 3 legacy compatibility specification and
   algorithm without changing its schema, examples, bytes, or fingerprints.
 - Adds the Edge Network Topology Profile 4.0.0 normative pre-implementation

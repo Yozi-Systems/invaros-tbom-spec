@@ -1,0 +1,31 @@
+{
+  "algorithm": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/source-content-fingerprint-rfc8785-sha256",
+  "vectors": [
+    {
+      "case_id": "single-physical-source",
+      "source_id": "source-1",
+      "content_projection": {"manifest_version":"4.0.0","namespaces":[{"namespace_key":"root"}],"nodes":[{"declaration_key":"eth0","interface_kind":"https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/ethernet","interface_name":{"encoding":"utf-8","value":"eth0"},"media_type":"ethernet","namespace_key":"root","node_type":"https://tbom.yozi.systems/registries/edge-network/node-types/1/physical","operator_role":null}],"relations":[]},
+      "canonical_utf8": "{\"manifest_version\":\"4.0.0\",\"namespaces\":[{\"namespace_key\":\"root\"}],\"nodes\":[{\"declaration_key\":\"eth0\",\"interface_kind\":\"https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/ethernet\",\"interface_name\":{\"encoding\":\"utf-8\",\"value\":\"eth0\"},\"media_type\":\"ethernet\",\"namespace_key\":\"root\",\"node_type\":\"https://tbom.yozi.systems/registries/edge-network/node-types/1/physical\",\"operator_role\":null}],\"relations\":[]}",
+      "expected_fingerprint": "sha256:6bcf6d8647a9cc9090e80ea376ba42b70f5df0cfb2871f4e65adefe7b94d86ef"
+    },
+    {
+      "case_id": "empty-source-content",
+      "source_id": "empty-source",
+      "content_projection": {"manifest_version":"4.0.0","namespaces":[],"nodes":[],"relations":[]},
+      "canonical_utf8": "{\"manifest_version\":\"4.0.0\",\"namespaces\":[],\"nodes\":[],\"relations\":[]}",
+      "expected_fingerprint": "sha256:d0eec00d1f5e2e4f88034c18a7f89893725bce35218d8ed30c16be5bed7aef97"
+    },
+    {
+      "case_id": "non-empty-relations-total-order",
+      "source_id": "source-1",
+      "content_projection": {"manifest_version":"4.0.0","namespaces":[{"namespace_key":"root"}],"nodes":[{"declaration_key":"eth0","interface_kind":"https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/ethernet","interface_name":{"encoding":"utf-8","value":"eth0"},"media_type":"ethernet","namespace_key":"root","node_type":"https://tbom.yozi.systems/registries/edge-network/node-types/1/physical","operator_role":null}],"relations":[{"parameters":[],"relation_type":"https://tbom.yozi.systems/registries/edge-network/relation-types/1/bridge-member","source_declaration_key":"eth0","target_declaration_key":"eth0"},{"parameters":[],"relation_type":"https://tbom.yozi.systems/registries/edge-network/relation-types/1/logical-parent","source_declaration_key":"eth0","target_declaration_key":"eth0"}]},
+      "canonical_utf8": "{\"manifest_version\":\"4.0.0\",\"namespaces\":[{\"namespace_key\":\"root\"}],\"nodes\":[{\"declaration_key\":\"eth0\",\"interface_kind\":\"https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/ethernet\",\"interface_name\":{\"encoding\":\"utf-8\",\"value\":\"eth0\"},\"media_type\":\"ethernet\",\"namespace_key\":\"root\",\"node_type\":\"https://tbom.yozi.systems/registries/edge-network/node-types/1/physical\",\"operator_role\":null}],\"relations\":[{\"parameters\":[],\"relation_type\":\"https://tbom.yozi.systems/registries/edge-network/relation-types/1/bridge-member\",\"source_declaration_key\":\"eth0\",\"target_declaration_key\":\"eth0\"},{\"parameters\":[],\"relation_type\":\"https://tbom.yozi.systems/registries/edge-network/relation-types/1/logical-parent\",\"source_declaration_key\":\"eth0\",\"target_declaration_key\":\"eth0\"}]}",
+      "expected_fingerprint": "sha256:a61529180bb0a2e75476efd2951cab412c0412769618e1ee745929259bc714fe"
+    }
+  ],
+  "negative_cases": [
+    {"case_id":"fingerprint-field-excluded","mutation":"include content_fingerprint or another source-record field in content_projection","valid":false},
+    {"case_id":"mismatched-source-key","mutation":"include a declaration whose source_key does not equal source_id","valid":false},
+    {"case_id":"wrong-digest","mutation":"change one content byte without updating content_fingerprint","valid":false}
+  ]
+}

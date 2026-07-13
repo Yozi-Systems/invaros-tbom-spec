@@ -8,7 +8,7 @@
       "namespaces": [{"namespace_key": "root", "source_key": "source-1"}],
       "nodes": [{"declaration_key": "eth0", "interface_kind": "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/ethernet", "interface_name": {"encoding": "utf-8", "value": "eth0"}, "media_type": "ethernet", "namespace_key": "root", "node_type": "https://tbom.yozi.systems/registries/edge-network/node-types/1/physical", "operator_role": null, "source_key": "source-1"}],
       "relations": [],
-      "sources": [{"authority": "operator", "collected_at": "2026-07-13T12:00:00Z", "content_fingerprint": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "precedence": 0, "revision": "1", "source_id": "source-1", "source_type": "https://tbom.yozi.systems/registries/edge-network/intent-source-types/1/profile4-manifest"}]
+      "sources": [{"authority": "operator", "collected_at": "2026-07-13T12:00:00Z", "content_fingerprint": "sha256:6bcf6d8647a9cc9090e80ea376ba42b70f5df0cfb2871f4e65adefe7b94d86ef", "precedence": 0, "revision": "1", "source_id": "source-1", "source_type": "https://tbom.yozi.systems/registries/edge-network/intent-source-types/1/profile4-manifest"}]
     },
     "fingerprints": {
       "observation": {"algorithm": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/observation-fingerprint-yozi-fp-v1-jcs-sha256", "availability": "available", "error_code": null, "reason_codes": [], "value": "sha256:9b30853017d0f994491e45a735db24936cca414c2c0f2160a95f7d182ae41c8d"},

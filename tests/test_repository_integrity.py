@@ -70,3 +70,10 @@ def test_d01_through_d30_and_modified_text_are_preserved() -> None:
     assert "If required structural data is incomplete, conflicting, or unavailable, the producer MUST NOT emit a structural fingerprint." in plan
     assert "It MUST NOT suppress or invalidate a structural fingerprint derived from complete, valid declared intent." in plan
     assert "Structure is defined by declared intent, not by observed behavior." in plan
+
+
+def test_locked_external_jcs_oracle_provenance_is_immutable() -> None:
+    provenance = (ROOT / "docs/algorithms/edge-network-source-content-fingerprint.md").read_text(encoding="utf-8")
+    changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+    assert "19d51d7fe467d4706a3ff08adf8a748f29fc21e0" in changelog
+    assert "RFC 8785" in provenance

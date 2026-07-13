@@ -12,7 +12,12 @@ import pytest
 from jsonschema import ValidationError
 
 from validator.validate_examples import ROOT, load_json
-from validator.profile4_semantics import validate_disclosure_projection, validate_encoded_values, validate_structural_order
+from validator.profile4_semantics import (
+    validate_disclosure_projection,
+    validate_encoded_values,
+    validate_source_content_fingerprints,
+    validate_structural_order,
+)
 
 VECTOR_ROOT = ROOT / "conformance/edge-network-topology/4.0.0"
 TYPE_CODES = {"null": 0, "utf-8": 1, "bytes": 2, "uint64": 3, "boolean": 4, "digest": 5, "array": 6, "record": 7}
@@ -106,6 +111,21 @@ def test_fingerprint_vectors_reproduce_bytes_envelopes_and_digests() -> None:
             if "expected_envelope_hex" in vector:
                 assert envelope.hex() == vector["expected_envelope_hex"]
             assert "sha256:" + hashlib.sha256(envelope).hexdigest() == vector["expected_fingerprint"]
+
+
+def test_source_content_fingerprint_vectors_reproduce_exact_bytes() -> None:
+    vectors = load_json(VECTOR_ROOT / "source-content-fingerprint-vectors.json")
+    for vector in vectors["vectors"]:
+        payload = _restricted_jcs(vector["content_projection"])
+        assert payload.decode("utf-8") == vector["canonical_utf8"]
+        assert "sha256:" + hashlib.sha256(payload).hexdigest() == vector["expected_fingerprint"]
+
+    artifact = load_json(VECTOR_ROOT / "representative-examples.json")["complete_host_artifact"]
+    validate_source_content_fingerprints(artifact["declared_intent"])
+    bad = json.loads(json.dumps(artifact["declared_intent"]))
+    bad["nodes"][0]["operator_role"] = "changed"
+    with pytest.raises(ValidationError, match="does not match declared content"):
+        validate_source_content_fingerprints(bad)
 
 
 def test_validation_vector_inventory_and_modified_decisions() -> None:
