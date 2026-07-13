@@ -90,6 +90,15 @@
         "value": {"type": ["string", "integer", "boolean", "null"], "minimum": 0, "maximum": 9007199254740991}
       }
     },
+    "tunnelParameter": {
+      "oneOf": [
+        {"type": "object", "additionalProperties": false, "required": ["parameter_id", "value"], "properties": {"parameter_id": {"const": "https://tbom.yozi.systems/registries/edge-network/tunnel-parameters/1/vxlan-vni"}, "value": {"type": "integer", "minimum": 0, "maximum": 16777215}}},
+        {"type": "object", "additionalProperties": false, "required": ["parameter_id", "value"], "properties": {"parameter_id": {"const": "https://tbom.yozi.systems/registries/edge-network/tunnel-parameters/1/gre-key-id"}, "value": {"type": "integer", "minimum": 0, "maximum": 4294967295}}},
+        {"type": "object", "additionalProperties": false, "required": ["parameter_id", "value"], "properties": {"parameter_id": {"const": "https://tbom.yozi.systems/registries/edge-network/tunnel-parameters/1/wireguard-public-key-id"}, "value": {"$ref": "#/$defs/digest"}}},
+        {"type": "object", "additionalProperties": false, "required": ["parameter_id", "value"], "properties": {"parameter_id": {"const": "https://tbom.yozi.systems/registries/edge-network/tunnel-parameters/1/udp-destination-port"}, "value": {"type": "integer", "minimum": 0, "maximum": 65535}}},
+        {"type": "object", "additionalProperties": false, "required": ["parameter_id", "value"], "properties": {"parameter_id": {"const": "https://tbom.yozi.systems/registries/edge-network/tunnel-parameters/1/hop-limit"}, "value": {"type": "integer", "minimum": 0, "maximum": 255}}}
+      ]
+    },
     "bridgeParameter": {"type": "object", "additionalProperties": false, "required": ["parameter_id", "value"], "properties": {"parameter_id": {"const": "https://tbom.yozi.systems/registries/edge-network/bridge-parameters/1/stp-enabled"}, "value": {"type": "boolean"}}},
     "logicalParameter": {"type": "object", "additionalProperties": false, "required": ["parameter_id", "value"], "properties": {"parameter_id": {"const": "https://tbom.yozi.systems/registries/edge-network/logical-parameters/1/vrf-table"}, "value": {"type": "integer", "minimum": 0, "maximum": 4294967295}}},
     "federationParameter": {"type": "object", "additionalProperties": false, "required": ["parameter_id", "value"], "properties": {"parameter_id": {"const": "https://tbom.yozi.systems/registries/edge-network/federation-governance-parameters/1/require-mutual-authentication"}, "value": {"type": "boolean"}}},
@@ -154,7 +163,7 @@
         "declaration_key": {"$ref": "#/$defs/key"}, "interface_kind": {"type": "string", "pattern": "^https://tbom\\.yozi\\.systems/registries/edge-network/interface-kinds/1/"},
         "interface_name": {"$ref": "#/$defs/encodedValue"}, "local_endpoint": {"anyOf": [{"$ref": "#/$defs/endpoint"}, {"type": "null"}]},
         "namespace_key": {"$ref": "#/$defs/key"}, "node_type": {"const": "https://tbom.yozi.systems/registries/edge-network/node-types/1/tunnel"},
-        "parameters": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/parameter"}}, "parent_declaration_keys": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/key"}},
+        "parameters": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/tunnelParameter"}}, "parent_declaration_keys": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/key"}},
         "remote_endpoint": {"anyOf": [{"$ref": "#/$defs/endpoint"}, {"type": "null"}]}, "source_key": {"$ref": "#/$defs/key"}
       }
     },

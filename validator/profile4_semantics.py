@@ -6,6 +6,7 @@ import base64
 import binascii
 import hashlib
 import json
+import struct
 import sys
 from pathlib import Path
 
@@ -115,6 +116,64 @@ def validate_disclosure_projection(observation: dict) -> None:
         _validate_object_fields(
             interface, profile["interface_fields"], ("interfaces", index)
         )
+        _validate_interface_observation(interface, ("interfaces", index))
+
+
+_OBSERVATION_SUBJECT_DOMAIN = (
+    "https://tbom.yozi.systems/domain/edge-network-topology/4.0.0/observation/subject"
+)
+
+
+def _tid_field(tag: int, value_type: int, value: bytes) -> bytes:
+    return struct.pack(">HBBI", tag, value_type, 0, len(value)) + value
+
+
+def _encoded_value_bytes(value: dict) -> bytes:
+    if value["encoding"] == "utf-8":
+        return value["value"].encode("utf-8")
+    return _decode_unpadded_base64url(value["value"])
+
+
+def interface_observation_subject_id(interface: dict) -> str:
+    """Reproduce the normative Profile 4 interface observation locator."""
+    kind = interface["interface_kind_observed"]
+    fields = [
+        _tid_field(1, 1, b"4.0.0"),
+        _tid_field(2, 1, b"interface"),
+        _tid_field(3, 1, interface["namespace_key"].encode("utf-8")),
+        _tid_field(
+            4,
+            1 if interface["interface_name_observed"]["encoding"] == "utf-8" else 2,
+            _encoded_value_bytes(interface["interface_name_observed"]),
+        ),
+        _tid_field(5, 0 if kind is None else 1, b"" if kind is None else kind.encode("utf-8")),
+    ]
+    body = struct.pack(">H", len(fields)) + b"".join(fields)
+    domain = _OBSERVATION_SUBJECT_DOMAIN.encode("ascii")
+    record = b"YOZI-TID" + struct.pack(">HH", 1, len(domain)) + domain + struct.pack(">I", len(body)) + body
+    return "sha256:" + hashlib.sha256(record).hexdigest()
+
+
+def _validate_interface_observation(interface: dict, path: tuple[object, ...]) -> None:
+    kind = interface.get("interface_kind_observed")
+    if kind is not None and kind != kind.lower():
+        raise ValidationError("interface_kind_observed is not lowercase", path=path + ("interface_kind_observed",))
+    # The public-minimal disclosure removes the observed name after this identifier
+    # is constructed. All other profiles permit independent reproduction.
+    if "interface_name_observed" in interface and "interface_kind_observed" in interface:
+        expected = interface_observation_subject_id(interface)
+        if interface["observation_subject_id"] != expected:
+            raise ValidationError("interface observation_subject_id does not match its normative descriptor", path=path + ("observation_subject_id",))
+    state = interface.get("kind_state")
+    expected_state_kind = {
+        "bridge": "bridge", "vlan": "vlan", "vxlan": "tunnel",
+        "gre": "tunnel", "gre6": "tunnel", "wireguard": "tunnel",
+        "vrf": "logical", "dummy": "logical", "loopback": "logical",
+    }.get(kind)
+    if state is not None and state["kind"] != expected_state_kind:
+        raise ValidationError("kind_state does not match interface_kind_observed", path=path + ("kind_state",))
+    if expected_state_kind is not None and state is None:
+        raise ValidationError("modeled interface kind requires non-null kind_state", path=path + ("kind_state",))
 
 
 def _parameter_key(item: dict) -> tuple[bytes, bytes]:
@@ -174,12 +233,31 @@ def validate_structural_order(projection: dict) -> None:
                 raise ValidationError("duplicate parameter_id in set-valued parameters")
             if parameters != sorted(parameters, key=_parameter_key):
                 raise ValidationError("parameters are not in canonical order")
+        if item.get("node_type", "").endswith("/tunnel"):
+            _validate_tunnel_parameters(item)
         parents = item.get("parent_semantic_ids")
         if parents is not None and parents != sorted(parents, key=lambda value: bytes.fromhex(value[7:])):
             raise ValidationError("parent_semantic_ids are not in canonical digest order")
         endpoints = item.get("endpoints")
         if endpoints is not None and endpoints != sorted(endpoints, key=_endpoint_key):
             raise ValidationError("federation endpoints are not in canonical order")
+
+
+def _validate_tunnel_parameters(item: dict) -> None:
+    base = "https://tbom.yozi.systems/registries/edge-network/tunnel-parameters/1/"
+    identity_by_kind = {
+        "vxlan": base + "vxlan-vni",
+        "gre": base + "gre-key-id",
+        "gre6": base + "gre-key-id",
+        "wireguard": base + "wireguard-public-key-id",
+    }
+    kind = item["interface_kind"].rsplit("/", 1)[-1]
+    parameters = item["parameters"]
+    identity = [p for p in parameters if p["parameter_id"] in set(identity_by_kind.values())]
+    if len(identity) > 1:
+        raise ValidationError("tunnel has more than one identity parameter")
+    if identity and identity[0]["parameter_id"] != identity_by_kind.get(kind):
+        raise ValidationError("tunnel identity parameter does not match interface kind")
 
 
 def _source_content_projection(manifest: dict, source_id: str) -> dict:
@@ -258,6 +336,9 @@ def validate_profile4_semantics(payload: dict) -> None:
     manifest = payload.get("declared_intent")
     if manifest is not None:
         validate_source_content_fingerprints(manifest)
+        for node in manifest["nodes"]:
+            if node["node_type"].endswith("/tunnel"):
+                _validate_tunnel_parameters(node)
     structural = payload.get("structural_topology")
     if structural is not None:
         validate_structural_order(structural)

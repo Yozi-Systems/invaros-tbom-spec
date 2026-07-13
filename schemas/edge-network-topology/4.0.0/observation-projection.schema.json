@@ -54,6 +54,52 @@
       "type": "object", "additionalProperties": false, "required": ["address", "address_type"],
       "properties": {"address": {"$ref": "#/$defs/encodedValue"}, "address_type": {"type": "string", "minLength": 1}}
     },
+    "endpoint": {"type": "object", "additionalProperties": false, "required": ["address", "family", "port", "transport"], "properties": {"address": {"$ref": "#/$defs/encodedValue"}, "family": {"enum": [4, 6]}, "port": {"type": ["integer", "null"], "minimum": 0, "maximum": 65535}, "transport": {"type": ["string", "null"], "enum": ["tcp", "udp", null]}}},
+    "bridgeState": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "stp_state", "vlan_filtering"],
+      "properties": {
+        "kind": {"const": "bridge"},
+        "stp_state": {"type": ["integer", "null"], "minimum": 0, "maximum": 2},
+        "vlan_filtering": {"type": ["boolean", "null"]}
+      }
+    },
+    "vlanState": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "vlan_id", "vlan_protocol"],
+      "properties": {
+        "kind": {"const": "vlan"},
+        "vlan_id": {"type": "integer", "minimum": 0, "maximum": 4094},
+        "vlan_protocol": {"enum": [33024, 34984]}
+      }
+    },
+    "tunnelState": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "local_endpoint", "remote_endpoint"],
+      "properties": {
+        "kind": {"const": "tunnel"},
+        "local_endpoint": {"anyOf": [{"$ref": "#/$defs/endpoint"}, {"type": "null"}]},
+        "remote_endpoint": {"anyOf": [{"$ref": "#/$defs/endpoint"}, {"type": "null"}]}
+      }
+    },
+    "logicalState": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "logical_kind", "vrf_table"],
+      "properties": {
+        "kind": {"const": "logical"},
+        "logical_kind": {"type": "string", "pattern": "^https://tbom\\.yozi\\.systems/registries/edge-network/interface-kinds/1/"},
+        "vrf_table": {"type": ["integer", "null"], "minimum": 0, "maximum": 4294967295}
+      }
+    },
+    "kindState": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/bridgeState"},
+        {"$ref": "#/$defs/vlanState"},
+        {"$ref": "#/$defs/tunnelState"},
+        {"$ref": "#/$defs/logicalState"}
+      ]
+    },
     "interface": {
       "type": "object", "additionalProperties": false,
       "required": ["namespace_key", "observation_subject_id"],
@@ -62,6 +108,7 @@
         "carrier": {"type": ["boolean", "null"]}, "current_link_address": {"anyOf": [{"$ref": "#/$defs/linkAddress"}, {"type": "null"}]},
         "declared_semantic_id": {"anyOf": [{"$ref": "#/$defs/digest"}, {"type": "null"}]},
         "interface_kind_observed": {"type": ["string", "null"]}, "interface_name_observed": {"$ref": "#/$defs/encodedValue"},
+        "kind_state": {"$ref": "#/$defs/kindState"},
         "link_status": {"enum": ["up", "down", "dormant", "testing", "unknown"]},
         "master_observed": {"anyOf": [{"$ref": "#/$defs/digest"}, {"type": "null"}]},
         "mtu": {"type": ["integer", "null"], "minimum": 0, "maximum": 9007199254740991}, "namespace_key": {"type": "string", "minLength": 1},

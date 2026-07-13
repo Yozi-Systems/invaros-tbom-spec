@@ -13,6 +13,7 @@ from jsonschema import ValidationError
 
 from validator.validate_examples import ROOT, load_json
 from validator.profile4_semantics import (
+    interface_observation_subject_id,
     validate_disclosure_projection,
     validate_encoded_values,
     validate_source_content_fingerprints,
@@ -97,8 +98,16 @@ def test_semantic_vectors_cover_every_type_and_node_domain() -> None:
         collect(vector["fields"])
     assert seen_types == set(TYPE_CODES)
     assert {vector["domain"].rsplit("/", 1)[-1] for vector in vectors} == {
-        "physical", "bridge", "vlan", "tunnel", "logical", "declared-federation-peer"
+        "physical", "bridge", "vlan", "tunnel", "logical",
+        "declared-federation-peer", "subject"
     }
+    interface = next(vector for vector in vectors if vector["vector_id"] == "tid-observation-interface")
+    assert [(field["tag"], field["type"]) for field in interface["fields"]] == [
+        (1, "utf-8"), (2, "utf-8"), (3, "utf-8"),
+        (4, "utf-8"), (5, "utf-8")
+    ]
+    tunnel = next(vector for vector in vectors if vector["vector_id"].startswith("tid-tunnel"))
+    assert [field["tag"] for field in tunnel["fields"]][-3:] == [134, 135, 136]
 
 
 def test_fingerprint_vectors_reproduce_bytes_envelopes_and_digests() -> None:
@@ -111,6 +120,19 @@ def test_fingerprint_vectors_reproduce_bytes_envelopes_and_digests() -> None:
             if "expected_envelope_hex" in vector:
                 assert envelope.hex() == vector["expected_envelope_hex"]
             assert "sha256:" + hashlib.sha256(envelope).hexdigest() == vector["expected_fingerprint"]
+
+
+def test_interface_observation_subject_id_matches_independent_vector() -> None:
+    vector = next(
+        item for item in load_json(VECTOR_ROOT / "semantic-identity-vectors.json")["vectors"]
+        if item["vector_id"] == "tid-observation-interface"
+    )
+    interface = {
+        "namespace_key": "root",
+        "interface_name_observed": {"encoding": "utf-8", "value": "br-lan"},
+        "interface_kind_observed": "bridge",
+    }
+    assert interface_observation_subject_id(interface) == vector["expected_semantic_id"]
 
 
 def test_source_content_fingerprint_vectors_reproduce_exact_bytes() -> None:
@@ -219,3 +241,14 @@ def test_duplicate_parameter_identifier_is_rejected_semantically() -> None:
     parameters.append({"parameter_id": parameters[0]["parameter_id"], "value": False})
     with pytest.raises(ValidationError, match="duplicate parameter_id"):
         validate_structural_order(duplicate)
+
+
+def test_tunnel_identity_parameter_kind_mismatch_is_rejected() -> None:
+    fragments = load_json(VECTOR_ROOT / "representative-examples.json")["representative_fragments"]
+    projection = {"nodes": [json.loads(json.dumps(fragments["tunnel"]))], "relations": []}
+    projection["nodes"][0]["parameters"] = [{
+        "parameter_id": "https://tbom.yozi.systems/registries/edge-network/tunnel-parameters/1/vxlan-vni",
+        "value": 10,
+    }]
+    with pytest.raises(ValidationError, match="does not match interface kind"):
+        validate_structural_order(projection)

@@ -140,12 +140,36 @@ Type-specific tags:
 | Physical | 100 media type UTF-8; 101 operator role UTF-8 or null |
 | Bridge | 110 technology UTF-8; 111 registered parameter array |
 | VLAN | 120 VLAN ID uint64; 121 protocol uint64; 122 parent SHA-256 digest |
-| Tunnel | 130 tunnel-kind URI; 131 set of parent digests; 132 local endpoint record/null; 133 remote endpoint record/null; 134 non-secret key/public identifier digest or uint64/null; 135 UDP port uint64/null; 136 registered parameter array |
+| Tunnel | 130 tunnel-kind URI; 131 set of parent digests; 132 local endpoint record/null; 133 remote endpoint record/null; 134 kind-specific identity-parameter record/null; 135 UDP destination port uint64/null; 136 remaining registered parameter array |
 | Logical | 140 logical-kind URI; 141 set of parent digests; 142 registered parameter array |
 | Federation peer | 160 federation-mechanism registry URI; 161 operator peer key UTF-8; 162 trust-domain URI UTF-8; 163 set of endpoint records; 164 public-key/certificate digest or null; 165 governance parameter array |
 | Observation neighbor subject | 150 attachment record; 151 address family uint64 (`4` or `6`); 152 raw address bytes; 153 link-layer bytes or null |
 
 Endpoint nested record tags are: 1 address family uint64; 2 raw address bytes; 3 transport UTF-8 (`udp` or `tcp`) or null; 4 port uint64 or null. Parameter arrays contain nested records with tag 1 parameter registry URI UTF-8 and tag 2 a descriptor-defined typed value. Attachment records contain tag 1 reference class UTF-8 (`declared-semantic-id` or `observation-subject-id`) and tag 2 digest.
+
+### 5.1 Interface observation-subject descriptor
+
+Every observed interface has an `observation_subject_id` in the observation-subject domain. Its descriptor contains exactly these five fields:
+
+| Tag | Type | Value |
+|---:|---|---|
+| 1 | UTF-8 | descriptor version, exactly `4.0.0` |
+| 2 | UTF-8 | subject class, exactly `interface` |
+| 3 | UTF-8 | operator-assigned namespace key |
+| 4 | UTF-8 or bytes | exact observed interface-name bytes |
+| 5 | UTF-8 or null | observed interface-kind value; null when the kernel supplies no kind |
+
+The name uses the encoded-value rule in Section 3 without trimming, case folding, or normalization. A present kind is the exact lowercase kernel kind mapped by the Version 1 adapter; an absent kind is typed null. `ifindex`, namespace inode, MAC addresses, MTU, status, addresses, parents, masters, and timestamps are excluded. The record uses the observation-subject domain, standard YOZI-TID framing, and SHA-256 formatting from Sections 1 and 2. All producers given the same namespace key, exact name bytes, and observed kind MUST emit identical record bytes and `observation_subject_id`.
+
+### 5.2 Normative tunnel parameter mapping
+
+Tunnel parameters have exactly one mapping to tags 134–136:
+
+- Tag 134 is typed null when the kind-specific identity parameter is absent. Otherwise it is a nested record with tag 1 equal to the parameter URI and tag 2 equal to its typed value. The only permitted pairs are `vxlan` with `vxlan-vni`/uint64, `gre` or `gre6` with `gre-key-id`/uint64, and `wireguard` with `wireguard-public-key-id`/digest. More than one tag-134 candidate or a candidate on another tunnel kind is invalid.
+- Tag 135 is the uint64 value of the single `udp-destination-port` parameter, or typed null when absent.
+- Tag 136 is a set-sorted array of parameter records containing only `hop-limit`. Each record uses tag 1 for the parameter URI and tag 2 for its uint64 value. The array is encoded even when empty.
+
+`local-endpoint` and `remote-endpoint` are represented only by the dedicated manifest members and tags 132 and 133. They MUST NOT occur in `parameters`. Every tunnel descriptor encodes tags 134, 135, and 136 exactly once. Duplicate parameter identifiers are invalid.
 
 ## 6. Validation sequence
 

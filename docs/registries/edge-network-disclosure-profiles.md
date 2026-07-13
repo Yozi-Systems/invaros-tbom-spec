@@ -23,3 +23,5 @@ NOT add forbidden fields. `public-minimal` permits a non-empty `interfaces`
 array using only its machine-readable field set, so it is not restricted to an
 empty observation. Scope-specific instance aliases are disclosed outside the
 observation fingerprint.
+
+`kind_state` is forbidden by public-minimal and required by structural-conformance, network-operations, and internal-full. Physical or otherwise unmodeled interfaces use null. Non-null bridge, VLAN, tunnel, and logical forms are closed by the observation schema.

@@ -27,6 +27,54 @@
         "structural_topology_fingerprint": "sha256:af9fefe8cfdf15d1e0d5c0ae4ab746fa846b8f158ddab8ae3e5f2242a7dcb99f"
       },
       "vector_id": "observation-stable-empty-links-001"
+    },
+    {
+      "algorithm": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/observation-fingerprint-yozi-fp-v1-jcs-sha256",
+      "canonical_utf8": "{\"collection_consistency\":\"generation_validated_sequential\",\"conformance\":[],\"datasets\":[{\"attempts\":1,\"dataset\":\"links\",\"namespace_key\":\"root\",\"reason_codes\":[],\"records_emitted\":1,\"records_seen\":1,\"status\":\"complete\"}],\"disclosure_profile_id\":\"https://tbom.yozi.systems/registries/edge-network/disclosure-profiles/1/structural-conformance\",\"interfaces\":[{\"declared_semantic_id\":null,\"interface_kind_observed\":\"bridge\",\"interface_name_observed\":{\"encoding\":\"utf-8\",\"value\":\"br-lan\"},\"kind_state\":{\"kind\":\"bridge\",\"stp_state\":1,\"vlan_filtering\":true},\"link_status\":\"up\",\"master_observed\":null,\"namespace_key\":\"root\",\"observation_subject_id\":\"sha256:c0d12711141e1fa61a4fcbe19a5025c7b467af1d8f056750a232fd9161a26e84\",\"parent_observed\":null}],\"neighbors\":[],\"projection_id\":\"https://tbom.yozi.systems/projections/edge-network-topology/4.0.0/observation\",\"routes\":[],\"structural_topology_fingerprint\":null}",
+      "domain": "https://tbom.yozi.systems/domain/edge-network-topology/4.0.0/fingerprint/observation",
+      "expected_envelope_hex": "594f5a492d4650000001005468747470733a2f2f74626f6d2e796f7a692e73797374656d732f646f6d61696e2f656467652d6e6574776f726b2d746f706f6c6f67792f342e302e302f66696e6765727072696e742f6f62736572766174696f6e0100000000000003867b22636f6c6c656374696f6e5f636f6e73697374656e6379223a2267656e65726174696f6e5f76616c6964617465645f73657175656e7469616c222c22636f6e666f726d616e6365223a5b5d2c226461746173657473223a5b7b22617474656d707473223a312c2264617461736574223a226c696e6b73222c226e616d6573706163655f6b6579223a22726f6f74222c22726561736f6e5f636f646573223a5b5d2c227265636f7264735f656d6974746564223a312c227265636f7264735f7365656e223a312c22737461747573223a22636f6d706c657465227d5d2c22646973636c6f737572655f70726f66696c655f6964223a2268747470733a2f2f74626f6d2e796f7a692e73797374656d732f726567697374726965732f656467652d6e6574776f726b2f646973636c6f737572652d70726f66696c65732f312f7374727563747572616c2d636f6e666f726d616e6365222c22696e7465726661636573223a5b7b226465636c617265645f73656d616e7469635f6964223a6e756c6c2c22696e746572666163655f6b696e645f6f62736572766564223a22627269646765222c22696e746572666163655f6e616d655f6f62736572766564223a7b22656e636f64696e67223a227574662d38222c2276616c7565223a2262722d6c616e227d2c226b696e645f7374617465223a7b226b696e64223a22627269646765222c227374705f7374617465223a312c22766c616e5f66696c746572696e67223a747275657d2c226c696e6b5f737461747573223a227570222c226d61737465725f6f62736572766564223a6e756c6c2c226e616d6573706163655f6b6579223a22726f6f74222c226f62736572766174696f6e5f7375626a6563745f6964223a227368613235363a63306431323731313134316531666136316134666362653139613530323563376234363761663164386630353637353061323332666439313631613236653834222c22706172656e745f6f62736572766564223a6e756c6c7d5d2c226e65696768626f7273223a5b5d2c2270726f6a656374696f6e5f6964223a2268747470733a2f2f74626f6d2e796f7a692e73797374656d732f70726f6a656374696f6e732f656467652d6e6574776f726b2d746f706f6c6f67792f342e302e302f6f62736572766174696f6e222c22726f75746573223a5b5d2c227374727563747572616c5f746f706f6c6f67795f66696e6765727072696e74223a6e756c6c7d",
+      "expected_fingerprint": "sha256:5ff25dd405939dacdacaa3832422a6d5584b7ca129c5e9f7b4d7b492cebec8a3",
+      "projection": {
+        "collection_consistency": "generation_validated_sequential",
+        "conformance": [],
+        "datasets": [
+          {
+            "attempts": 1,
+            "dataset": "links",
+            "namespace_key": "root",
+            "reason_codes": [],
+            "records_emitted": 1,
+            "records_seen": 1,
+            "status": "complete"
+          }
+        ],
+        "disclosure_profile_id": "https://tbom.yozi.systems/registries/edge-network/disclosure-profiles/1/structural-conformance",
+        "interfaces": [
+          {
+            "declared_semantic_id": null,
+            "interface_kind_observed": "bridge",
+            "interface_name_observed": {
+              "encoding": "utf-8",
+              "value": "br-lan"
+            },
+            "kind_state": {
+              "kind": "bridge",
+              "stp_state": 1,
+              "vlan_filtering": true
+            },
+            "link_status": "up",
+            "master_observed": null,
+            "namespace_key": "root",
+            "observation_subject_id": "sha256:c0d12711141e1fa61a4fcbe19a5025c7b467af1d8f056750a232fd9161a26e84",
+            "parent_observed": null
+          }
+        ],
+        "neighbors": [],
+        "projection_id": "https://tbom.yozi.systems/projections/edge-network-topology/4.0.0/observation",
+        "routes": [],
+        "structural_topology_fingerprint": null
+      },
+      "vector_id": "observation-bridge-kind-state-002"
     }
   ],
   "status": "normative-synthetic",

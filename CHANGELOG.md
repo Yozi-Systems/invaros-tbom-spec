@@ -10,6 +10,16 @@ specification repository itself; see
 
 Draft integration of the Edge Network Topology Phase 0 specification lock:
 
+- Closes three deterministic implementation gaps without changing the Profile
+  4.0.0 profile identifier: defines closed bridge, VLAN, tunnel, and logical
+  interface observation state; defines the exact interface observation-subject
+  YOZI-TID descriptor; and assigns tunnel parameters to tags 134 through 136
+  by one mandatory mapping. These corrections unblock interoperable runtime
+  observation, subject correlation, and tunnel semantic-ID reproduction.
+- Updates the normative schemas, registries, algorithms, examples, conformance
+  vectors, semantic validator, and independent tests together. Profile 3
+  schemas, bytes, fingerprints, and validation behavior are unchanged.
+
 - Records operator approval of the remediated Phase 0 package as the locked
   engineering baseline.
 - Pins the independent RFC 8785 truth source to Cyberphone

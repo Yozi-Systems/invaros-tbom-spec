@@ -95,6 +95,8 @@ Inputs: common fields, VLAN ID 0..4094 as permitted by the declared adapter poli
 
 Inputs: common fields; registered tunnel kind; a set of declared parent semantic IDs; normalized configured local and remote endpoints; and registered identity-affecting non-secret tunnel parameters. Secrets, private keys, preshared keys, session keys, credentials, and secret-derived reversible values are prohibited. Handshakes, learned endpoints, counters, reachability, and session state are observations. Privacy class: restricted because endpoints and public identifiers can expose connectivity.
 
+The tunnel parameter mapping is singular. Tag 134 is a URI/value record for the one kind-specific identity parameter (`vxlan-vni`, `gre-key-id`, or `wireguard-public-key-id`) or null. Tag 135 is `udp-destination-port` or null. Tag 136 is the set-sorted array containing only remaining `hop-limit` parameter records. Endpoints occur only in tags 132 and 133. All three tags are always encoded, including null and empty forms.
+
 ### 5.6 Logical node
 
 Inputs: common fields, registered logical kind, a set of parent semantic IDs, and registered identity-affecting non-secret parameters. Unknown identity-affecting kinds invalidate certification; `unknown` is not a generic structural type. Privacy class: organization-sensitive.
@@ -136,6 +138,17 @@ An observation projection binds only values disclosed under its `disclosure_prof
 - tunnel runtime evidence;
 - intent-versus-runtime conformance results;
 - dataset completeness and collection consistency.
+
+Each interface observation carries `kind_state` when required by its disclosure profile. It is null for physical or otherwise unmodeled interfaces. Version 1 has exactly four non-null forms:
+
+- bridge: `kind:"bridge"`, observed STP mode `0..2` or null, and VLAN-filtering boolean or null;
+- VLAN: `kind:"vlan"`, VLAN ID `0..4094`, and protocol EtherType `33024` or `34984`;
+- tunnel: `kind:"tunnel"` and observed local and remote endpoint records or null;
+- logical: `kind:"logical"`, registered logical-kind URI, and VRF table `0..4294967295` or null.
+
+Unknown or incomplete identity-affecting kind state makes a required observation dataset partial; it never changes declared structure.
+
+Every interface `observation_subject_id` is YOZI-TID over the observation-subject domain with exactly: tag 1 `4.0.0`, tag 2 `interface`, tag 3 namespace key, tag 4 exact observed name bytes, and tag 5 exact observed kind or typed null. The ID is computed from the producer's full normalized observation before disclosure filtering. No runtime index or mutable link property enters this ID.
 
 The projection MUST include the structural topology fingerprint or null, collection consistency, and disclosure profile URI. Arrays use the ordering in the observation algorithm document. A disclosure profile determines allowed and required fields. Undisclosed state MUST NOT influence the fingerprint.
 

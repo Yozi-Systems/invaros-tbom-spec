@@ -4,6 +4,14 @@
 > normative pre-implementation drafts are under `docs/specifications/`,
 > `docs/algorithms/`, `docs/registries/`, and `schemas/`.
 
+> **2026-07-13 deterministic-draft correction.** The locked Profile 4.0.0
+> draft now normatively defines the four Version 1 interface observation-state
+> forms, the interface observation-subject YOZI-TID descriptor, and the single
+> tunnel-parameter mapping for tags 134 through 136. These minimal corrections
+> remove the observation serialization, subject-correlation, and tunnel-ID
+> interoperability blockers; they add no Version 1 capability and do not alter
+> Profile 3.
+
 Status: final implementation architecture with Phase 0 normative draft package; production implementation not started  
 Review date: 2026-07-13  
 Repository: `/home/yozi/invarosd`  

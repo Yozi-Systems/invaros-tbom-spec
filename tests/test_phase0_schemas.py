@@ -48,7 +48,7 @@ def test_disclosure_registry_schema_and_instance_validate() -> None:
 
     interface_fields = {
         "addresses", "carrier", "current_link_address", "declared_semantic_id",
-        "interface_kind_observed", "interface_name_observed", "link_status",
+        "interface_kind_observed", "interface_name_observed", "kind_state", "link_status",
         "master_observed", "mtu", "namespace_key", "observation_subject_id",
         "parent_observed", "permanent_link_address",
     }
@@ -104,6 +104,15 @@ def test_runtime_neighbor_and_conformance_validate() -> None:
         "neighbor",
         examples["representative_fragments"]["runtime_neighbor_observation"],
     )
+    for fragment in (
+        "bridge_observation_kind_state", "vlan_observation_kind_state",
+        "tunnel_observation_kind_state", "logical_observation_kind_state",
+    ):
+        _validate_definition(
+            "https://tbom.yozi.systems/schemas/edge-network-topology/4.0.0/observation-projection.schema.json",
+            "kindState",
+            examples["representative_fragments"][fragment],
+        )
     schema = schema_store()[
         "https://tbom.yozi.systems/schemas/edge-network-topology/4.0.0/conformance.schema.json"
     ]

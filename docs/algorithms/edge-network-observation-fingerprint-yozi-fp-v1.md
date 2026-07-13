@@ -21,6 +21,8 @@ Required ordering:
 
 Exact normalized duplicates coalesce. Conflicting keyed records or missing required disclosed data make the observation fingerprint unavailable.
 
+Interface `kind_state` is part of the projection whenever the disclosure profile includes it and is covered byte-for-byte by JCS and this fingerprint. Interface observation-subject IDs use only the normative interface descriptor in YOZI-TID; `ifindex`, MAC addresses, and producer-local locators MUST NOT replace it.
+
 ## 2. Envelope
 
 The byte layout is identical to YOZI-FP-v1 structural layout except for this domain:
