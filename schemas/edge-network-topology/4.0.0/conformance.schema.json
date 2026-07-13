@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tbom.yozi.systems/schemas/edge-network-topology/4.0.0/conformance.schema.json",
+  "title": "Edge Network Profile 4 Intent-versus-Runtime Conformance Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["declared_semantic_id", "observation_subject_id", "reason_codes", "status"],
+  "properties": {
+    "declared_semantic_id": {"anyOf": [{"$ref": "#/$defs/digest"}, {"type": "null"}]},
+    "observation_subject_id": {"anyOf": [{"$ref": "#/$defs/digest"}, {"type": "null"}]},
+    "reason_codes": {"type": "array", "items": {"$ref": "#/$defs/reason"}, "uniqueItems": true},
+    "status": {"enum": ["conformant", "nonconformant", "not-observed", "unknown"]}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "reason": {"type": "string", "pattern": "^https://tbom\\.yozi\\.systems/registries/edge-network/reason-codes/1/"}
+  }
+}

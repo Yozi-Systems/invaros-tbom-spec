@@ -1,0 +1,62 @@
+{
+  "$schema": "https://tbom.yozi.systems/registries/edge-network/disclosure-profiles/1/schema.json",
+  "registry_version": "1",
+  "profiles": [
+    {
+      "profile_uri": "https://tbom.yozi.systems/registries/edge-network/disclosure-profiles/1/public-minimal",
+      "collections": {
+        "interfaces": { "non_empty_allowed": true },
+        "neighbors": { "non_empty_allowed": false },
+        "routes": { "non_empty_allowed": false },
+        "conformance": { "non_empty_allowed": false }
+      },
+      "interface_fields": {
+        "required": ["namespace_key", "observation_subject_id"],
+        "optional": ["interface_kind_observed"],
+        "forbidden": ["addresses", "carrier", "current_link_address", "declared_semantic_id", "interface_name_observed", "link_status", "master_observed", "mtu", "parent_observed", "permanent_link_address"]
+      }
+    },
+    {
+      "profile_uri": "https://tbom.yozi.systems/registries/edge-network/disclosure-profiles/1/structural-conformance",
+      "collections": {
+        "interfaces": { "non_empty_allowed": true },
+        "neighbors": { "non_empty_allowed": false },
+        "routes": { "non_empty_allowed": false },
+        "conformance": { "non_empty_allowed": true }
+      },
+      "interface_fields": {
+        "required": ["declared_semantic_id", "interface_kind_observed", "interface_name_observed", "link_status", "master_observed", "namespace_key", "observation_subject_id", "parent_observed"],
+        "optional": [],
+        "forbidden": ["addresses", "carrier", "current_link_address", "mtu", "permanent_link_address"]
+      }
+    },
+    {
+      "profile_uri": "https://tbom.yozi.systems/registries/edge-network/disclosure-profiles/1/network-operations",
+      "collections": {
+        "interfaces": { "non_empty_allowed": true },
+        "neighbors": { "non_empty_allowed": true },
+        "routes": { "non_empty_allowed": true },
+        "conformance": { "non_empty_allowed": true }
+      },
+      "interface_fields": {
+        "required": ["addresses", "carrier", "current_link_address", "interface_kind_observed", "interface_name_observed", "link_status", "master_observed", "mtu", "namespace_key", "observation_subject_id", "parent_observed"],
+        "optional": ["declared_semantic_id"],
+        "forbidden": ["permanent_link_address"]
+      }
+    },
+    {
+      "profile_uri": "https://tbom.yozi.systems/registries/edge-network/disclosure-profiles/1/internal-full",
+      "collections": {
+        "interfaces": { "non_empty_allowed": true },
+        "neighbors": { "non_empty_allowed": true },
+        "routes": { "non_empty_allowed": true },
+        "conformance": { "non_empty_allowed": true }
+      },
+      "interface_fields": {
+        "required": ["addresses", "carrier", "current_link_address", "declared_semantic_id", "interface_kind_observed", "interface_name_observed", "link_status", "master_observed", "mtu", "namespace_key", "observation_subject_id", "parent_observed", "permanent_link_address"],
+        "optional": [],
+        "forbidden": []
+      }
+    }
+  ]
+}

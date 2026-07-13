@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tbom.yozi.systems/registries/edge-network/disclosure-profiles/1/schema.json",
+  "title": "InvarOS Profile 4 disclosure-profile registry",
+  "type": "object",
+  "required": ["$schema", "registry_version", "profiles"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "const": "https://tbom.yozi.systems/registries/edge-network/disclosure-profiles/1/schema.json" },
+    "registry_version": { "const": "1" },
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/profile" }
+    }
+  },
+  "$defs": {
+    "fieldNames": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "collectionRule": {
+      "type": "object",
+      "required": ["non_empty_allowed"],
+      "additionalProperties": false,
+      "properties": { "non_empty_allowed": { "type": "boolean" } }
+    },
+    "profile": {
+      "type": "object",
+      "required": ["profile_uri", "collections", "interface_fields"],
+      "additionalProperties": false,
+      "properties": {
+        "profile_uri": {
+          "type": "string",
+          "pattern": "^https://tbom\\.yozi\\.systems/registries/edge-network/disclosure-profiles/1/[a-z][a-z0-9-]*$"
+        },
+        "collections": {
+          "type": "object",
+          "required": ["interfaces", "neighbors", "routes", "conformance"],
+          "additionalProperties": false,
+          "properties": {
+            "interfaces": { "$ref": "#/$defs/collectionRule" },
+            "neighbors": { "$ref": "#/$defs/collectionRule" },
+            "routes": { "$ref": "#/$defs/collectionRule" },
+            "conformance": { "$ref": "#/$defs/collectionRule" }
+          }
+        },
+        "interface_fields": {
+          "type": "object",
+          "required": ["required", "optional", "forbidden"],
+          "additionalProperties": false,
+          "properties": {
+            "required": { "$ref": "#/$defs/fieldNames" },
+            "optional": { "$ref": "#/$defs/fieldNames" },
+            "forbidden": { "$ref": "#/$defs/fieldNames" }
+          }
+        }
+      }
+    }
+  }
+}

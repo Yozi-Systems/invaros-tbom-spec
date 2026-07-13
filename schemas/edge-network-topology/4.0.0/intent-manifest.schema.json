@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tbom.yozi.systems/schemas/edge-network-topology/4.0.0/intent-manifest.schema.json",
+  "title": "Edge Network Topology Profile 4 Declared Intent Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["manifest_version", "namespaces", "nodes", "relations", "sources"],
+  "properties": {
+    "manifest_version": {"const": "4.0.0"},
+    "namespaces": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/namespace"}
+    },
+    "nodes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/nodeDeclaration"}
+    },
+    "relations": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/relationDeclaration"}
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/source"}
+    }
+  },
+  "$defs": {
+    "uri": {"type": "string", "format": "uri", "pattern": "^https://tbom\\.yozi\\.systems/"},
+    "foreignHttpsUri": {"type": "string", "format": "uri", "pattern": "^https://"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "key": {"type": "string", "minLength": 1, "maxLength": 255},
+    "encodedValue": {
+      "description": "The encoding is utf-8 if and only if the original bytes are valid UTF-8; otherwise it is canonical unpadded base64url.",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["encoding", "value"],
+          "properties": {"encoding": {"const": "utf-8"}, "value": {"type": "string"}}
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["encoding", "value"],
+          "properties": {"encoding": {"const": "base64url"}, "value": {"type": "string", "minLength": 2, "pattern": "^(?:[A-Za-z0-9_-]{4})*(?:[A-Za-z0-9_-]{2}|[A-Za-z0-9_-]{3})?$"}}
+        }
+      ]
+    },
+    "namespace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["namespace_key", "source_key"],
+      "properties": {"namespace_key": {"$ref": "#/$defs/key"}, "source_key": {"$ref": "#/$defs/key"}}
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authority", "collected_at", "content_fingerprint", "precedence", "revision", "source_id", "source_type"],
+      "properties": {
+        "authority": {"type": "string", "minLength": 1},
+        "collected_at": {"type": "string", "format": "date-time"},
+        "content_fingerprint": {"$ref": "#/$defs/digest"},
+        "precedence": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+        "revision": {"type": "string", "minLength": 1},
+        "source_id": {"$ref": "#/$defs/key"},
+        "source_type": {"type": "string", "pattern": "^https://tbom\\.yozi\\.systems/registries/edge-network/intent-source-types/1/"}
+      }
+    },
+    "endpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["address", "family", "port", "transport"],
+      "properties": {
+        "address": {"$ref": "#/$defs/encodedValue"},
+        "family": {"enum": [4, 6]},
+        "port": {"type": ["integer", "null"], "minimum": 0, "maximum": 65535},
+        "transport": {"type": ["string", "null"], "enum": ["tcp", "udp", null]}
+      }
+    },
+    "parameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["parameter_id", "value"],
+      "properties": {
+        "parameter_id": {"$ref": "#/$defs/uri"},
+        "value": {"type": ["string", "integer", "boolean", "null"], "minimum": 0, "maximum": 9007199254740991}
+      }
+    },
+    "bridgeParameter": {"type": "object", "additionalProperties": false, "required": ["parameter_id", "value"], "properties": {"parameter_id": {"const": "https://tbom.yozi.systems/registries/edge-network/bridge-parameters/1/stp-enabled"}, "value": {"type": "boolean"}}},
+    "logicalParameter": {"type": "object", "additionalProperties": false, "required": ["parameter_id", "value"], "properties": {"parameter_id": {"const": "https://tbom.yozi.systems/registries/edge-network/logical-parameters/1/vrf-table"}, "value": {"type": "integer", "minimum": 0, "maximum": 4294967295}}},
+    "federationParameter": {"type": "object", "additionalProperties": false, "required": ["parameter_id", "value"], "properties": {"parameter_id": {"const": "https://tbom.yozi.systems/registries/edge-network/federation-governance-parameters/1/require-mutual-authentication"}, "value": {"type": "boolean"}}},
+    "relationParameter": {"type": "object", "additionalProperties": false, "required": ["parameter_id", "value"], "properties": {"parameter_id": {"const": "https://tbom.yozi.systems/registries/edge-network/relation-parameters/1/required"}, "value": {"type": "boolean"}}},
+    "commonInterface": {
+      "type": "object",
+      "required": ["declaration_key", "interface_kind", "interface_name", "namespace_key", "node_type", "source_key"],
+      "properties": {
+        "declaration_key": {"$ref": "#/$defs/key"},
+        "interface_kind": {"type": "string", "pattern": "^https://tbom\\.yozi\\.systems/registries/edge-network/interface-kinds/1/"},
+        "interface_name": {"$ref": "#/$defs/encodedValue"},
+        "namespace_key": {"$ref": "#/$defs/key"},
+        "node_type": {"type": "string", "pattern": "^https://tbom\\.yozi\\.systems/registries/edge-network/node-types/1/"},
+        "source_key": {"$ref": "#/$defs/key"}
+      }
+    },
+    "physical": {
+      "allOf": [
+        {"$ref": "#/$defs/commonInterface"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["declaration_key", "interface_kind", "interface_name", "media_type", "namespace_key", "node_type", "operator_role", "source_key"],
+          "properties": {
+            "declaration_key": {"$ref": "#/$defs/key"}, "interface_kind": {"enum": ["https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/cellular", "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/ethernet", "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/ieee80211", "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/infiniband"]},
+            "interface_name": {"$ref": "#/$defs/encodedValue"}, "media_type": {"enum": ["ethernet", "ieee80211", "cellular", "infiniband"]},
+            "namespace_key": {"$ref": "#/$defs/key"}, "node_type": {"const": "https://tbom.yozi.systems/registries/edge-network/node-types/1/physical"},
+            "operator_role": {"type": ["string", "null"]}, "source_key": {"$ref": "#/$defs/key"}
+          }
+        }
+      ]
+    },
+    "bridge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bridge_technology", "declaration_key", "interface_kind", "interface_name", "namespace_key", "node_type", "parameters", "source_key"],
+      "properties": {
+        "bridge_technology": {"const": "ieee8021-bridge"}, "declaration_key": {"$ref": "#/$defs/key"},
+        "interface_kind": {"const": "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/linux-bridge"},
+        "interface_name": {"$ref": "#/$defs/encodedValue"}, "namespace_key": {"$ref": "#/$defs/key"},
+        "node_type": {"const": "https://tbom.yozi.systems/registries/edge-network/node-types/1/bridge"},
+        "parameters": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/bridgeParameter"}}, "source_key": {"$ref": "#/$defs/key"}
+      }
+    },
+    "vlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["declaration_key", "interface_kind", "interface_name", "namespace_key", "node_type", "parent_declaration_key", "source_key", "vlan_id", "vlan_protocol"],
+      "properties": {
+        "declaration_key": {"$ref": "#/$defs/key"}, "interface_kind": {"const": "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/ieee8021q-vlan"},
+        "interface_name": {"$ref": "#/$defs/encodedValue"}, "namespace_key": {"$ref": "#/$defs/key"},
+        "node_type": {"const": "https://tbom.yozi.systems/registries/edge-network/node-types/1/vlan"}, "parent_declaration_key": {"$ref": "#/$defs/key"},
+        "source_key": {"$ref": "#/$defs/key"}, "vlan_id": {"type": "integer", "minimum": 0, "maximum": 4094},
+        "vlan_protocol": {"enum": [33024, 34984]}
+      }
+    },
+    "tunnel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["declaration_key", "interface_kind", "interface_name", "local_endpoint", "namespace_key", "node_type", "parameters", "parent_declaration_keys", "remote_endpoint", "source_key"],
+      "properties": {
+        "declaration_key": {"$ref": "#/$defs/key"}, "interface_kind": {"type": "string", "pattern": "^https://tbom\\.yozi\\.systems/registries/edge-network/interface-kinds/1/"},
+        "interface_name": {"$ref": "#/$defs/encodedValue"}, "local_endpoint": {"anyOf": [{"$ref": "#/$defs/endpoint"}, {"type": "null"}]},
+        "namespace_key": {"$ref": "#/$defs/key"}, "node_type": {"const": "https://tbom.yozi.systems/registries/edge-network/node-types/1/tunnel"},
+        "parameters": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/parameter"}}, "parent_declaration_keys": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/key"}},
+        "remote_endpoint": {"anyOf": [{"$ref": "#/$defs/endpoint"}, {"type": "null"}]}, "source_key": {"$ref": "#/$defs/key"}
+      }
+    },
+    "logical": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["declaration_key", "interface_kind", "interface_name", "namespace_key", "node_type", "parameters", "parent_declaration_keys", "source_key"],
+      "properties": {
+        "declaration_key": {"$ref": "#/$defs/key"}, "interface_kind": {"type": "string", "pattern": "^https://tbom\\.yozi\\.systems/registries/edge-network/interface-kinds/1/"},
+        "interface_name": {"$ref": "#/$defs/encodedValue"}, "namespace_key": {"$ref": "#/$defs/key"},
+        "node_type": {"const": "https://tbom.yozi.systems/registries/edge-network/node-types/1/logical"}, "parameters": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/logicalParameter"}},
+        "parent_declaration_keys": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/key"}}, "source_key": {"$ref": "#/$defs/key"}
+      }
+    },
+    "federationPeer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["declaration_key", "endpoints", "federation_mechanism", "namespace_key", "node_type", "operator_peer_key", "parameters", "public_key_identifier", "source_key", "trust_domain"],
+      "properties": {
+        "declaration_key": {"$ref": "#/$defs/key"}, "endpoints": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/endpoint"}},
+        "federation_mechanism": {"type": "string", "pattern": "^https://tbom\\.yozi\\.systems/registries/edge-network/federation-mechanisms/1/"}, "namespace_key": {"$ref": "#/$defs/key"},
+        "node_type": {"const": "https://tbom.yozi.systems/registries/edge-network/node-types/1/declared-federation-peer"},
+        "operator_peer_key": {"$ref": "#/$defs/key"}, "parameters": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/federationParameter"}},
+        "public_key_identifier": {"anyOf": [{"$ref": "#/$defs/digest"}, {"type": "null"}]}, "source_key": {"$ref": "#/$defs/key"},
+        "trust_domain": {"$ref": "#/$defs/foreignHttpsUri"}
+      }
+    },
+    "registeredTunnel": {"allOf": [{"$ref": "#/$defs/tunnel"}, {"properties": {"interface_kind": {"enum": ["https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/tun", "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/tap", "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/wireguard", "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/gre", "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/gre6", "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/sit", "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/ip6tnl", "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/vxlan", "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/geneve", "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/l2tp"]}}}]},
+    "registeredLogical": {"allOf": [{"$ref": "#/$defs/logical"}, {"properties": {"interface_kind": {"enum": ["https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/loopback", "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/veth", "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/bond", "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/team", "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/macvlan", "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/ipvlan", "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/vrf", "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/dsa-port", "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/dummy"]}}}]},
+    "nodeDeclaration": {"oneOf": [{"$ref": "#/$defs/physical"}, {"$ref": "#/$defs/bridge"}, {"$ref": "#/$defs/vlan"}, {"$ref": "#/$defs/registeredTunnel"}, {"$ref": "#/$defs/registeredLogical"}, {"$ref": "#/$defs/federationPeer"}]},
+    "relationDeclaration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["parameters", "relation_type", "source_declaration_key", "source_key", "target_declaration_key"],
+      "properties": {
+        "parameters": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/relationParameter"}},
+        "relation_type": {"type": "string", "pattern": "^https://tbom\\.yozi\\.systems/registries/edge-network/relation-types/1/"},
+        "source_declaration_key": {"$ref": "#/$defs/key"}, "source_key": {"$ref": "#/$defs/key"}, "target_declaration_key": {"$ref": "#/$defs/key"}
+      }
+    }
+  }
+}

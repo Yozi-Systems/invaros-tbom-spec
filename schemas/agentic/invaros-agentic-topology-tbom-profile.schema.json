@@ -1,0 +1,345 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tbom_v3.schema.json",
+  "title": "InvarOS Agentic Topology TBoM Profile",
+  "description": "Schema for deterministic metadata-only InvarOS Topology Bill of Materials (TBoM) objects emitted by invaros.topology.agentic.serialization.to_dict. This profile describes pre-execution agentic topology structure. It is distinct from the edge/network topology TBoM profile emitted by invarosd. Legacy schema_version remains tbom-v3.0; profile_version uses semantic versioning.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "tbom_id",
+    "topology_type",
+    "spec",
+    "structural_fingerprint",
+    "created_at_utc",
+    "source_framework",
+    "source_system",
+    "non_claims",
+    "metadata"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "tbom-v3.0"
+    },
+    "profile_id": {
+      "type": "string",
+      "const": "invaros.tbom.profile.agentic_topology"
+    },
+    "profile_name": {
+      "type": "string",
+      "const": "InvarOS Agentic Topology TBoM Profile"
+    },
+    "profile_version": {
+      "type": "string",
+      "const": "3.0.0"
+    },
+    "tbom_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "topology_type": {
+      "type": "string",
+      "enum": ["AcyclicWorkflow", "DelegationTree", "MarkovNetwork", "CyclicCollaboration"]
+    },
+    "spec": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/acyclicWorkflowSpec"},
+        {"$ref": "#/$defs/delegationTreeSpec"},
+        {"$ref": "#/$defs/markovNetworkSpec"},
+        {"$ref": "#/$defs/cyclicCollaborationSpec"}
+      ]
+    },
+    "structural_fingerprint": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "created_at_utc": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_framework": {
+      "type": "string"
+    },
+    "source_system": {
+      "type": "string"
+    },
+    "non_claims": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "metadata": {
+      "$ref": "#/$defs/metadataObject"
+    }
+  },
+  "$defs": {
+    "forbiddenMetadataKey": {
+      "enum": [
+        "Q",
+        "q",
+        "matrix",
+        "matrix_values",
+        "initial_distribution",
+        "distribution",
+        "solver_output",
+        "solver_output_vector",
+        "edge_list",
+        "raw_payload",
+        "private_key",
+        "private_key_pem",
+        "secret",
+        "token",
+        "credential",
+        "raw_signature",
+        "signature"
+      ]
+    },
+    "metadataObject": {
+      "type": "object",
+      "propertyNames": {
+        "not": {"$ref": "#/$defs/forbiddenMetadataKey"}
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/metadataValue"
+      }
+    },
+    "metadataValue": {
+      "anyOf": [
+        {"type": "null"},
+        {"type": "boolean"},
+        {"type": "number"},
+        {"type": "string"},
+        {
+          "type": "array",
+          "items": {"$ref": "#/$defs/metadataValue"}
+        },
+        {"$ref": "#/$defs/metadataObject"}
+      ]
+    },
+    "acyclicWorkflowSpec": {
+      "type": "object",
+      "required": [
+        "topology_spec_type",
+        "nodes",
+        "edges",
+        "terminal_node_ids",
+        "metadata"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "topology_spec_type": {"const": "AcyclicWorkflowSpec"},
+        "nodes": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/agenticNode"}
+        },
+        "edges": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/agenticEdge"}
+        },
+        "terminal_node_ids": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "metadata": {"$ref": "#/$defs/metadataObject"}
+      }
+    },
+    "delegationTreeSpec": {
+      "type": "object",
+      "required": [
+        "topology_spec_type",
+        "nodes",
+        "edges",
+        "root_node_id",
+        "max_depth",
+        "metadata"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "topology_spec_type": {"const": "DelegationTreeSpec"},
+        "nodes": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/agenticNode"}
+        },
+        "edges": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/agenticEdge"}
+        },
+        "root_node_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "max_depth": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "metadata": {"$ref": "#/$defs/metadataObject"}
+      }
+    },
+    "markovNetworkSpec": {
+      "type": "object",
+      "required": [
+        "topology_spec_type",
+        "nodes",
+        "edges",
+        "terminal_node_ids",
+        "max_transitions",
+        "metadata"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "topology_spec_type": {"const": "MarkovNetworkSpec"},
+        "nodes": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/agenticNode"}
+        },
+        "edges": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/agenticEdge"}
+        },
+        "terminal_node_ids": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "max_transitions": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "metadata": {"$ref": "#/$defs/metadataObject"}
+      }
+    },
+    "cyclicCollaborationSpec": {
+      "type": "object",
+      "required": [
+        "topology_spec_type",
+        "nodes",
+        "edges",
+        "collaboration_mode",
+        "max_iterations",
+        "termination_policy",
+        "declared_cycles",
+        "metadata"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "topology_spec_type": {"const": "CyclicCollaborationSpec"},
+        "nodes": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/agenticNode"}
+        },
+        "edges": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/agenticEdge"}
+        },
+        "collaboration_mode": {
+          "type": "string",
+          "minLength": 1
+        },
+        "max_iterations": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "termination_policy": {
+          "type": "string",
+          "minLength": 1
+        },
+        "declared_cycles": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {"type": "string"}
+          }
+        },
+        "metadata": {"$ref": "#/$defs/metadataObject"}
+      }
+    },
+    "agenticNode": {
+      "type": "object",
+      "required": [
+        "node_id",
+        "display_name",
+        "node_type",
+        "role",
+        "capabilities",
+        "trust_boundary",
+        "endpoint_uri",
+        "metadata"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "node_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "node_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "trust_boundary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "endpoint_uri": {
+          "oneOf": [
+            {"type": "null"},
+            {"type": "string", "minLength": 1}
+          ]
+        },
+        "metadata": {"$ref": "#/$defs/metadataObject"}
+      }
+    },
+    "agenticEdge": {
+      "type": "object",
+      "required": [
+        "edge_id",
+        "source_node_id",
+        "target_node_id",
+        "edge_type",
+        "condition",
+        "context_policy",
+        "metadata"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "edge_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_node_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target_node_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "edge_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "condition": {
+          "type": "string"
+        },
+        "context_policy": {
+          "type": "string"
+        },
+        "metadata": {"$ref": "#/$defs/metadataObject"}
+      }
+    }
+  }
+}

@@ -1,0 +1,404 @@
+{
+  "algorithm": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/semantic-id-yozi-tid-v1-sha256",
+  "status": "normative-synthetic",
+  "vector_set": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0/phase0/semantic-identity",
+  "vectors": [
+    {
+      "description": "Physical node covers UTF-8 and typed null.",
+      "domain": "https://tbom.yozi.systems/domain/edge-network-topology/4.0.0/node/physical",
+      "expected_record_hex": "594f5a492d5449440001004a68747470733a2f2f74626f6d2e796f7a692e73797374656d732f646f6d61696e2f656467652d6e6574776f726b2d746f706f6c6f67792f342e302e302f6e6f64652f706879736963616c000000e200070001010000000005342e302e30000201000000004768747470733a2f2f74626f6d2e796f7a692e73797374656d732f726567697374726965732f656467652d6e6574776f726b2f6e6f64652d74797065732f312f706879736963616c0003010000000004726f6f74000401000000000465746830000501000000004c68747470733a2f2f74626f6d2e796f7a692e73797374656d732f726567697374726965732f656467652d6e6574776f726b2f696e746572666163652d6b696e64732f312f65746865726e6574006401000000000865746865726e65740065000000000000",
+      "expected_record_length_octets": 316,
+      "expected_semantic_id": "sha256:e23b81c1de8f4245afaee143ed4c0194382bf78149e0fbac6294ba21f3f0a3f2",
+      "fields": [
+        {
+          "tag": 1,
+          "type": "utf-8",
+          "value": "4.0.0"
+        },
+        {
+          "tag": 2,
+          "type": "utf-8",
+          "value": "https://tbom.yozi.systems/registries/edge-network/node-types/1/physical"
+        },
+        {
+          "tag": 3,
+          "type": "utf-8",
+          "value": "root"
+        },
+        {
+          "tag": 4,
+          "type": "utf-8",
+          "value": "eth0"
+        },
+        {
+          "tag": 5,
+          "type": "utf-8",
+          "value": "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/ethernet"
+        },
+        {
+          "tag": 100,
+          "type": "utf-8",
+          "value": "ethernet"
+        },
+        {
+          "tag": 101,
+          "type": "null",
+          "value": null
+        }
+      ],
+      "vector_id": "tid-physical-all-primitives"
+    },
+    {
+      "description": "Bridge node covers array, nested record, and boolean.",
+      "domain": "https://tbom.yozi.systems/domain/edge-network-topology/4.0.0/node/bridge",
+      "expected_record_hex": "594f5a492d5449440001004868747470733a2f2f74626f6d2e796f7a692e73797374656d732f646f6d61696e2f656467652d6e6574776f726b2d746f706f6c6f67792f342e302e302f6e6f64652f6272696467650000015800070001010000000005342e302e30000201000000004568747470733a2f2f74626f6d2e796f7a692e73797374656d732f726567697374726965732f656467652d6e6574776f726b2f6e6f64652d74797065732f312f6272696467650003010000000004726f6f740004010000000003627230000501000000005068747470733a2f2f74626f6d2e796f7a692e73797374656d732f726567697374726965732f656467652d6e6574776f726b2f696e746572666163652d6b696e64732f312f6c696e75782d627269646765006e01000000000f69656565383032312d627269646765006f06000000006e000000010700000000640002000101000000005168747470733a2f2f74626f6d2e796f7a692e73797374656d732f726567697374726965732f656467652d6e6574776f726b2f6272696467652d706172616d65746572732f312f7374702d656e61626c6564000204000000000101",
+      "expected_record_length_octets": 432,
+      "expected_semantic_id": "sha256:6457d025516941cc73d7083227c01d0854dfcad53c4d80d412b9803d856baf13",
+      "fields": [
+        {
+          "tag": 1,
+          "type": "utf-8",
+          "value": "4.0.0"
+        },
+        {
+          "tag": 2,
+          "type": "utf-8",
+          "value": "https://tbom.yozi.systems/registries/edge-network/node-types/1/bridge"
+        },
+        {
+          "tag": 3,
+          "type": "utf-8",
+          "value": "root"
+        },
+        {
+          "tag": 4,
+          "type": "utf-8",
+          "value": "br0"
+        },
+        {
+          "tag": 5,
+          "type": "utf-8",
+          "value": "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/linux-bridge"
+        },
+        {
+          "tag": 110,
+          "type": "utf-8",
+          "value": "ieee8021-bridge"
+        },
+        {
+          "set_semantics": true,
+          "tag": 111,
+          "type": "array",
+          "value": [
+            {
+              "type": "record",
+              "value": [
+                {
+                  "tag": 1,
+                  "type": "utf-8",
+                  "value": "https://tbom.yozi.systems/registries/edge-network/bridge-parameters/1/stp-enabled"
+                },
+                {
+                  "tag": 2,
+                  "type": "boolean",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "vector_id": "tid-bridge-parameter-record"
+    },
+    {
+      "description": "VLAN node covers uint64 and digest.",
+      "domain": "https://tbom.yozi.systems/domain/edge-network-topology/4.0.0/node/vlan",
+      "expected_record_hex": "594f5a492d5449440001004668747470733a2f2f74626f6d2e796f7a692e73797374656d732f646f6d61696e2f656467652d6e6574776f726b2d746f706f6c6f67792f342e302e302f6e6f64652f766c616e0000011700080001010000000005342e302e30000201000000004368747470733a2f2f74626f6d2e796f7a692e73797374656d732f726567697374726965732f656467652d6e6574776f726b2f6e6f64652d74797065732f312f766c616e0003010000000004726f6f740004010000000007657468302e3130000501000000005268747470733a2f2f74626f6d2e796f7a692e73797374656d732f726567697374726965732f656467652d6e6574776f726b2f696e746572666163652d6b696e64732f312f6965656538303231712d766c616e0078030000000008000000000000000a00790300000000080000000000008100007a0500000000201111111111111111111111111111111111111111111111111111111111111111",
+      "expected_record_length_octets": 365,
+      "expected_semantic_id": "sha256:75fab434e0004eb393b2c5c71ce89e158f122bd16ba847d17acbdd32aa3d98cb",
+      "fields": [
+        {
+          "tag": 1,
+          "type": "utf-8",
+          "value": "4.0.0"
+        },
+        {
+          "tag": 2,
+          "type": "utf-8",
+          "value": "https://tbom.yozi.systems/registries/edge-network/node-types/1/vlan"
+        },
+        {
+          "tag": 3,
+          "type": "utf-8",
+          "value": "root"
+        },
+        {
+          "tag": 4,
+          "type": "utf-8",
+          "value": "eth0.10"
+        },
+        {
+          "tag": 5,
+          "type": "utf-8",
+          "value": "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/ieee8021q-vlan"
+        },
+        {
+          "tag": 120,
+          "type": "uint64",
+          "value": 10
+        },
+        {
+          "tag": 121,
+          "type": "uint64",
+          "value": 33024
+        },
+        {
+          "tag": 122,
+          "type": "digest",
+          "value": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+        }
+      ],
+      "vector_id": "tid-vlan-uint64-digest"
+    },
+    {
+      "description": "Tunnel node covers invalid-UTF-8 bytes, sorted set, and endpoint record.",
+      "domain": "https://tbom.yozi.systems/domain/edge-network-topology/4.0.0/node/tunnel",
+      "expected_record_hex": "594f5a492d5449440001004868747470733a2f2f74626f6d2e796f7a692e73797374656d732f646f6d61696e2f656467652d6e6574776f726b2d746f706f6c6f67792f342e302e302f6e6f64652f74756e6e656c000001be00090001010000000005342e302e30000201000000004568747470733a2f2f74626f6d2e796f7a692e73797374656d732f726567697374726965732f656467652d6e6574776f726b2f6e6f64652d74797065732f312f74756e6e656c0003010000000004726f6f740004020000000003ff8041000501000000004d68747470733a2f2f74626f6d2e796f7a692e73797374656d732f726567697374726965732f656467652d6e6574776f726b2f696e746572666163652d6b696e64732f312f776972656775617264008201000000004d68747470733a2f2f74626f6d2e796f7a692e73797374656d732f726567697374726965732f656467652d6e6574776f726b2f696e746572666163652d6b696e64732f312f7769726567756172640083060000000050000000020500000000201111111111111111111111111111111111111111111111111111111111111111050000000020222222222222222222222222222222222222222222222222222222222222222200840700000000390004000103000000000800000000000000040002020000000004c000020800030100000000037564700004030000000008000000000000ca6c0085000000000000",
+      "expected_record_length_octets": 534,
+      "expected_semantic_id": "sha256:170b77ccd143df018bbbe386e818085445d21fc86b56ffb1484530b9185ba481",
+      "fields": [
+        {
+          "tag": 1,
+          "type": "utf-8",
+          "value": "4.0.0"
+        },
+        {
+          "tag": 2,
+          "type": "utf-8",
+          "value": "https://tbom.yozi.systems/registries/edge-network/node-types/1/tunnel"
+        },
+        {
+          "tag": 3,
+          "type": "utf-8",
+          "value": "root"
+        },
+        {
+          "tag": 4,
+          "type": "bytes",
+          "value_hex": "ff8041"
+        },
+        {
+          "tag": 5,
+          "type": "utf-8",
+          "value": "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/wireguard"
+        },
+        {
+          "tag": 130,
+          "type": "utf-8",
+          "value": "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/wireguard"
+        },
+        {
+          "set_semantics": true,
+          "tag": 131,
+          "type": "array",
+          "value": [
+            {
+              "type": "digest",
+              "value": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+            },
+            {
+              "type": "digest",
+              "value": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+            }
+          ]
+        },
+        {
+          "tag": 132,
+          "type": "record",
+          "value": [
+            {
+              "tag": 1,
+              "type": "uint64",
+              "value": 4
+            },
+            {
+              "tag": 2,
+              "type": "bytes",
+              "value_hex": "c0000208"
+            },
+            {
+              "tag": 3,
+              "type": "utf-8",
+              "value": "udp"
+            },
+            {
+              "tag": 4,
+              "type": "uint64",
+              "value": 51820
+            }
+          ]
+        },
+        {
+          "tag": 133,
+          "type": "null",
+          "value": null
+        }
+      ],
+      "vector_id": "tid-tunnel-invalid-utf8-bytes-set"
+    },
+    {
+      "description": "Logical node proves parent set normalization.",
+      "domain": "https://tbom.yozi.systems/domain/edge-network-topology/4.0.0/node/logical",
+      "expected_record_hex": "594f5a492d5449440001004968747470733a2f2f74626f6d2e796f7a692e73797374656d732f646f6d61696e2f656467652d6e6574776f726b2d746f706f6c6f67792f342e302e302f6e6f64652f6c6f676963616c0000017b00080001010000000005342e302e30000201000000004668747470733a2f2f74626f6d2e796f7a692e73797374656d732f726567697374726965732f656467652d6e6574776f726b2f6e6f64652d74797065732f312f6c6f676963616c0003010000000004726f6f7400040100000000087672662d626c7565000501000000004768747470733a2f2f74626f6d2e796f7a692e73797374656d732f726567697374726965732f656467652d6e6574776f726b2f696e746572666163652d6b696e64732f312f767266008c01000000004768747470733a2f2f74626f6d2e796f7a692e73797374656d732f726567697374726965732f656467652d6e6574776f726b2f696e746572666163652d6b696e64732f312f767266008d0600000000500000000205000000002011111111111111111111111111111111111111111111111111111111111111110500000000202222222222222222222222222222222222222222222222222222222222222222008e06000000000400000000",
+      "expected_record_length_octets": 468,
+      "expected_semantic_id": "sha256:ca1e786e0438ec01008bca48c5c4ec199bc7fe73f7b76793035a12e534b756e7",
+      "fields": [
+        {
+          "tag": 1,
+          "type": "utf-8",
+          "value": "4.0.0"
+        },
+        {
+          "tag": 2,
+          "type": "utf-8",
+          "value": "https://tbom.yozi.systems/registries/edge-network/node-types/1/logical"
+        },
+        {
+          "tag": 3,
+          "type": "utf-8",
+          "value": "root"
+        },
+        {
+          "tag": 4,
+          "type": "utf-8",
+          "value": "vrf-blue"
+        },
+        {
+          "tag": 5,
+          "type": "utf-8",
+          "value": "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/vrf"
+        },
+        {
+          "tag": 140,
+          "type": "utf-8",
+          "value": "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/vrf"
+        },
+        {
+          "set_semantics": true,
+          "tag": 141,
+          "type": "array",
+          "value": [
+            {
+              "type": "digest",
+              "value": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+            },
+            {
+              "type": "digest",
+              "value": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+            }
+          ]
+        },
+        {
+          "set_semantics": true,
+          "tag": 142,
+          "type": "array",
+          "value": []
+        }
+      ],
+      "vector_id": "tid-logical-parent-set"
+    },
+    {
+      "description": "Federation node covers a set of nested endpoint records.",
+      "domain": "https://tbom.yozi.systems/domain/edge-network-topology/4.0.0/node/declared-federation-peer",
+      "expected_record_hex": "594f5a492d5449440001005a68747470733a2f2f74626f6d2e796f7a692e73797374656d732f646f6d61696e2f656467652d6e6574776f726b2d746f706f6c6f67792f342e302e302f6e6f64652f6465636c617265642d66656465726174696f6e2d70656572000001f2000b0001010000000005342e302e30000201000000005768747470733a2f2f74626f6d2e796f7a692e73797374656d732f726567697374726965732f656467652d6e6574776f726b2f6e6f64652d74797065732f312f6465636c617265642d66656465726174696f6e2d706565720003010000000004726f6f740004000000000000000501000000005768747470733a2f2f74626f6d2e796f7a692e73797374656d732f726567697374726965732f656467652d6e6574776f726b2f6e6f64652d74797065732f312f6465636c617265642d66656465726174696f6e2d7065657200a001000000005368747470733a2f2f74626f6d2e796f7a692e73797374656d732f726567697374726965732f656467652d6e6574776f726b2f66656465726174696f6e2d6d656368616e69736d732f312f77697265677561726400a1010000000006736974652d6200a201000000002168747470733a2f2f6578616d706c652e746573742f74727573742f736974652d6200a3060000000043000000010700000000390004000103000000000800000000000000040002020000000004c000020800030100000000037564700004030000000008000000000000ca6c00a4050000000020222222222222222222222222222222222222222222222222222222222222222200a506000000000400000000",
+      "expected_record_length_octets": 604,
+      "expected_semantic_id": "sha256:81dbb239a4a1cabbc6c216f112906eb12855f515ed000977f8548bbe51125ab8",
+      "fields": [
+        {
+          "tag": 1,
+          "type": "utf-8",
+          "value": "4.0.0"
+        },
+        {
+          "tag": 2,
+          "type": "utf-8",
+          "value": "https://tbom.yozi.systems/registries/edge-network/node-types/1/declared-federation-peer"
+        },
+        {
+          "tag": 3,
+          "type": "utf-8",
+          "value": "root"
+        },
+        {
+          "tag": 4,
+          "type": "null",
+          "value": null
+        },
+        {
+          "tag": 5,
+          "type": "utf-8",
+          "value": "https://tbom.yozi.systems/registries/edge-network/node-types/1/declared-federation-peer"
+        },
+        {
+          "tag": 160,
+          "type": "utf-8",
+          "value": "https://tbom.yozi.systems/registries/edge-network/federation-mechanisms/1/wireguard"
+        },
+        {
+          "tag": 161,
+          "type": "utf-8",
+          "value": "site-b"
+        },
+        {
+          "tag": 162,
+          "type": "utf-8",
+          "value": "https://example.test/trust/site-b"
+        },
+        {
+          "set_semantics": true,
+          "tag": 163,
+          "type": "array",
+          "value": [
+            {
+              "type": "record",
+              "value": [
+                {
+                  "tag": 1,
+                  "type": "uint64",
+                  "value": 4
+                },
+                {
+                  "tag": 2,
+                  "type": "bytes",
+                  "value_hex": "c0000208"
+                },
+                {
+                  "tag": 3,
+                  "type": "utf-8",
+                  "value": "udp"
+                },
+                {
+                  "tag": 4,
+                  "type": "uint64",
+                  "value": 51820
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "tag": 164,
+          "type": "digest",
+          "value": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        },
+        {
+          "set_semantics": true,
+          "tag": 165,
+          "type": "array",
+          "value": []
+        }
+      ],
+      "vector_id": "tid-federation-endpoint-set"
+    }
+  ]
+}

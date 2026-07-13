@@ -1,0 +1,37 @@
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install package and test dependencies
+        run: pip install .[test]
+
+      - name: Run pytest
+        run: python -m pytest -q
+
+      - name: Run example validator script
+        run: python validator/validate_examples.py
+
+      - name: Validate all JSON examples via tbom-validate
+        run: tbom-validate examples/agentic/*.json examples/edge-network/*.json
+
+      - name: Validate Profile 4 complete synthetic artifact via installed CLI
+        run: |
+          python -c 'import json; p=json.load(open("conformance/edge-network-topology/4.0.0/representative-examples.json")); json.dump(p["complete_host_artifact"], open("/tmp/edge4-complete.json", "w"))'
+          tbom-validate /tmp/edge4-complete.json

@@ -1,0 +1,74 @@
+{
+  "created_at_utc": "2026-06-19T00:00:00+00:00",
+  "metadata": {},
+  "non_claims": [
+    "local_static_artifact",
+    "metadata_only",
+    "no_agent_execution",
+    "no_anthropic_client_dependency",
+    "no_autogen_dependency",
+    "no_crewai_dependency",
+    "no_langgraph_dependency",
+    "no_mcp_runtime_integration",
+    "no_network_calls",
+    "no_openai_client_dependency",
+    "no_private_key_handling",
+    "no_runtime_enforcement",
+    "no_runtime_orchestration",
+    "no_semantic_kernel_dependency"
+  ],
+  "profile_id": "invaros.tbom.profile.agentic_topology",
+  "profile_name": "InvarOS Agentic Topology TBoM Profile",
+  "profile_version": "3.0.0",
+  "schema_version": "tbom-v3.0",
+  "source_framework": "invaros-test",
+  "source_system": "test-suite",
+  "spec": {
+    "edges": [
+      {
+        "condition": "",
+        "context_policy": "",
+        "edge_id": "e-1",
+        "edge_type": "tool_call",
+        "metadata": {},
+        "source_node_id": "agent-1",
+        "target_node_id": "mcp-1"
+      }
+    ],
+    "metadata": {},
+    "nodes": [
+      {
+        "capabilities": [
+          "delegate",
+          "plan"
+        ],
+        "display_name": "Agent agent-1",
+        "endpoint_uri": null,
+        "metadata": {},
+        "node_id": "agent-1",
+        "node_type": "agent",
+        "role": "orchestrator",
+        "trust_boundary": "enterprise"
+      },
+      {
+        "capabilities": [
+          "execute"
+        ],
+        "display_name": "Node mcp-1",
+        "endpoint_uri": "https://mcp.example.com/tools",
+        "metadata": {},
+        "node_id": "mcp-1",
+        "node_type": "mcp_server",
+        "role": "tool_provider",
+        "trust_boundary": "enterprise"
+      }
+    ],
+    "terminal_node_ids": [
+      "mcp-1"
+    ],
+    "topology_spec_type": "AcyclicWorkflowSpec"
+  },
+  "structural_fingerprint": "sha256:cd3c47ada4db00c4a0d73f6d00ee4efe21a9de83e3723464caf3d380f03dc55c",
+  "tbom_id": "tbom-test-001",
+  "topology_type": "AcyclicWorkflow"
+}

@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "schemas/topology_tbom.v1.schema.json",
+  "title": "InvarOS Edge Network Topology TBoM Profile",
+  "description": "Schema for invarosd edge/network InvarOS Topology Bill of Materials (TBoM) discovery output. This profile describes observed local network topology and is distinct from the agentic topology TBoM profile in atgs-enterprise-core. Legacy tbom_version remains 3.0.0; profile_version uses semantic versioning.",
+  "type": "object",
+  "required": ["graph", "subsystem_identity", "tbom_version", "topology_fingerprint"],
+  "additionalProperties": false,
+  "properties": {
+    "graph": {
+      "type": "object",
+      "required": ["edges", "nodes"],
+      "additionalProperties": false,
+      "properties": {
+        "edges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["relation_type", "source", "target"],
+            "additionalProperties": false,
+            "properties": {
+              "relation_type": {
+                "type": "string",
+                "enum": ["bridge_member", "logical_parent", "tunnel_parent", "vlan_parent"]
+              },
+              "source": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+              "target": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+            }
+          }
+        },
+        "nodes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["id", "properties", "type"],
+            "additionalProperties": false,
+            "properties": {
+              "id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+              "properties": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "ipv4_addresses": { "type": "array", "items": { "type": "string" } },
+                  "ipv6_addresses": { "type": "array", "items": { "type": "string" } },
+                  "mac_address":    { "type": "string" },
+                  "mtu":            { "type": "integer", "minimum": 0 },
+                  "name":           { "type": "string" },
+                  "status": {
+                    "type": "string",
+                    "enum": ["DORMANT", "DOWN", "TESTING", "UNKNOWN", "UP"]
+                  },
+                  "vlan_tag": { "type": "integer", "minimum": 1, "maximum": 4094 }
+                }
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "node_bridge", "node_logical", "node_neighbor",
+                  "node_physical", "node_tunnel", "node_vlan"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "profile_id": {
+      "type": "string",
+      "const": "invaros.tbom.profile.edge_network_topology"
+    },
+    "profile_name": {
+      "type": "string",
+      "const": "InvarOS Edge Network Topology TBoM Profile"
+    },
+    "profile_version": {
+      "type": "string",
+      "const": "3.0.0"
+    },
+    "subsystem_identity": {
+      "type": "object",
+      "required": ["host_fingerprint", "observed_at_epoch"],
+      "additionalProperties": false,
+      "properties": {
+        "host_fingerprint":  { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "observed_at_epoch": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "tbom_version":         { "type": "string", "const": "3.0.0" },
+    "topology_fingerprint": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

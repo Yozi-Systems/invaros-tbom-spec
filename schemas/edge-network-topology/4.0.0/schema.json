@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tbom.yozi.systems/schemas/edge-network-topology/4.0.0/schema.json",
+  "title": "InvarOS Edge Network Topology Profile 4 Complete Artifact",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_id", "collection", "compatibility", "declared_intent", "fingerprints", "generated_at", "host_identity", "identity_plane", "observation", "profile_id", "profile_version", "schema_uri", "specification_uri", "structural_topology"],
+  "properties": {
+    "artifact_id": {"type": "string", "format": "uuid"},
+    "collection": {"$ref": "#/$defs/collection"},
+    "compatibility": {"$ref": "#/$defs/compatibility"},
+    "declared_intent": {"anyOf": [{"$ref": "https://tbom.yozi.systems/schemas/edge-network-topology/4.0.0/intent-manifest.schema.json"}, {"type": "null"}]},
+    "fingerprints": {
+      "type": "object", "additionalProperties": false, "required": ["observation", "topology"],
+      "properties": {
+        "observation": {"$ref": "#/$defs/observationFingerprint"},
+        "topology": {"$ref": "#/$defs/topologyFingerprint"}
+      }
+    },
+    "generated_at": {"type": "string", "format": "date-time"},
+    "host_identity": {"$ref": "#/$defs/hostIdentity"},
+    "identity_plane": {"$ref": "#/$defs/identityPlane"},
+    "observation": {"anyOf": [{"$ref": "https://tbom.yozi.systems/schemas/edge-network-topology/4.0.0/observation-projection.schema.json"}, {"type": "null"}]},
+    "profile_id": {"const": "invaros.tbom.profile.edge_network_topology"},
+    "profile_version": {"const": "4.0.0"},
+    "schema_uri": {"const": "https://tbom.yozi.systems/schemas/edge-network-topology/4.0.0/schema.json"},
+    "specification_uri": {"const": "https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0"},
+    "structural_topology": {"anyOf": [{"$ref": "https://tbom.yozi.systems/schemas/edge-network-topology/4.0.0/structural-projection.schema.json"}, {"type": "null"}]}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"declared_intent": {"type": "null"}}, "required": ["declared_intent"]},
+      "then": {"properties": {"structural_topology": {"type": "null"}, "fingerprints": {"properties": {"topology": {"properties": {"availability": {"const": "unavailable"}}}}}}}
+    },
+    {
+      "if": {"properties": {"structural_topology": {"type": "null"}}, "required": ["structural_topology"]},
+      "then": {"properties": {"fingerprints": {"properties": {"topology": {"properties": {"availability": {"const": "unavailable"}}}}}}}
+    },
+    {
+      "if": {"properties": {"fingerprints": {"properties": {"topology": {"properties": {"availability": {"const": "available"}}, "required": ["availability"]}}, "required": ["topology"]}}, "required": ["fingerprints"]},
+      "then": {"properties": {"declared_intent": {"type": "object"}, "structural_topology": {"type": "object"}}}
+    },
+    {
+      "if": {"properties": {"observation": {"type": "null"}}, "required": ["observation"]},
+      "then": {"properties": {"fingerprints": {"properties": {"observation": {"properties": {"availability": {"const": "unavailable"}}}}}}}
+    },
+    {
+      "if": {"properties": {"fingerprints": {"properties": {"observation": {"properties": {"availability": {"const": "available"}}, "required": ["availability"]}}, "required": ["observation"]}}, "required": ["fingerprints"]},
+      "then": {"properties": {"observation": {"type": "object"}}}
+    }
+  ],
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "reason": {"type": "string", "pattern": "^https://tbom\\.yozi\\.systems/registries/edge-network/reason-codes/1/"},
+    "error": {"type": "string", "pattern": "^https://tbom\\.yozi\\.systems/registries/edge-network/error-codes/1/"},
+    "availableFingerprint": {
+      "type": "object", "additionalProperties": false,
+      "required": ["algorithm", "availability", "error_code", "reason_codes", "value"],
+      "properties": {"algorithm": {"type": "string", "format": "uri"}, "availability": {"const": "available"}, "error_code": {"type": "null"}, "reason_codes": {"type": "array", "maxItems": 0}, "value": {"$ref": "#/$defs/digest"}}
+    },
+    "unavailableFingerprint": {
+      "type": "object", "additionalProperties": false,
+      "required": ["algorithm", "availability", "error_code", "reason_codes", "value"],
+      "properties": {"algorithm": {"type": "string", "format": "uri"}, "availability": {"const": "unavailable"}, "error_code": {"$ref": "#/$defs/error"}, "reason_codes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/reason"}, "uniqueItems": true}, "value": {"type": "null"}}
+    },
+    "topologyFingerprint": {
+      "oneOf": [
+        {"allOf": [{"$ref": "#/$defs/availableFingerprint"}, {"properties": {"algorithm": {"const": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/topology-fingerprint-yozi-fp-v1-jcs-sha256"}}}]},
+        {"allOf": [{"$ref": "#/$defs/unavailableFingerprint"}, {"properties": {"algorithm": {"const": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/topology-fingerprint-yozi-fp-v1-jcs-sha256"}}}]}
+      ]
+    },
+    "observationFingerprint": {
+      "oneOf": [
+        {"allOf": [{"$ref": "#/$defs/availableFingerprint"}, {"properties": {"algorithm": {"const": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/observation-fingerprint-yozi-fp-v1-jcs-sha256"}}}]},
+        {"allOf": [{"$ref": "#/$defs/unavailableFingerprint"}, {"properties": {"algorithm": {"const": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/observation-fingerprint-yozi-fp-v1-jcs-sha256"}}}]}
+      ]
+    },
+    "collection": {
+      "type": "object", "additionalProperties": false, "required": ["consistency", "finished_at", "overall_status", "started_at"],
+      "properties": {"consistency": {"enum": ["generation_validated_sequential", "sequential_non_atomic", "single_dataset_atomic", "unknown"]}, "finished_at": {"type": "string", "format": "date-time"}, "overall_status": {"enum": ["complete", "partial", "failed"]}, "started_at": {"type": "string", "format": "date-time"}}
+    },
+    "hostIdentity": {
+      "type": "object", "additionalProperties": false, "required": ["disclosure_scope", "evidence", "identity_source_class", "instance_id", "persistence", "privacy_classification", "reproducibility"],
+      "properties": {
+        "disclosure_scope": {"type": "string", "minLength": 1}, "evidence": {"type": "array", "items": {"$ref": "#/$defs/hostEvidence"}},
+        "identity_source_class": {"const": "generated-persistent"}, "instance_id": {"type": "string", "format": "uuid", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+        "persistence": {"const": "persistent"}, "privacy_classification": {"const": "scope-correlatable"}, "reproducibility": {"const": "producer-local-not-independently-reproducible"}
+      }
+    },
+    "hostEvidence": {
+      "type": "object", "additionalProperties": false, "required": ["assertion", "collection_status", "evidence_type", "privacy_class", "verification_status"],
+      "properties": {"assertion": {"anyOf": [{"$ref": "#/$defs/digest"}, {"type": "string"}, {"type": "null"}]}, "collection_status": {"enum": ["collected", "unavailable", "not-requested"]}, "evidence_type": {"type": "string", "format": "uri"}, "privacy_class": {"enum": ["public", "organization-sensitive", "restricted"]}, "verification_status": {"enum": ["verified", "unverified", "failed", "not-applicable"]}}
+    },
+    "identityPlane": {
+      "type": "object", "additionalProperties": false, "required": ["nodes"],
+      "properties": {"nodes": {"type": "array", "items": {"$ref": "#/$defs/instanceBinding"}}}
+    },
+    "instanceBinding": {
+      "type": "object", "additionalProperties": false, "required": ["continuity", "disclosure_scope", "instance_id", "semantic_id"],
+      "properties": {"continuity": {"enum": ["confirmed", "probable", "ambiguous", "new", "ephemeral"]}, "disclosure_scope": {"type": "string", "minLength": 1}, "instance_id": {"type": "string", "format": "uuid", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"}, "semantic_id": {"anyOf": [{"$ref": "#/$defs/digest"}, {"type": "null"}]}}
+    },
+    "compatibility": {
+      "type": "object", "additionalProperties": false, "required": ["dual_emission", "profile3_artifact_reference"],
+      "properties": {"dual_emission": {"type": "boolean"}, "profile3_artifact_reference": {"type": ["string", "null"]}}
+    }
+  }
+}

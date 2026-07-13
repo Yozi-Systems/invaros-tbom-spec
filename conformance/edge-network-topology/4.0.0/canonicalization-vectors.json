@@ -1,0 +1,10 @@
+{
+  "cases": [
+    {"case_id": "parent-set-sort", "input": ["sha256:2222222222222222222222222222222222222222222222222222222222222222", "sha256:1111111111111111111111111111111111111111111111111111111111111111"], "expected": ["sha256:1111111111111111111111111111111111111111111111111111111111111111", "sha256:2222222222222222222222222222222222222222222222222222222222222222"]},
+    {"case_id": "parent-set-duplicate-rejected", "input": ["sha256:1111111111111111111111111111111111111111111111111111111111111111", "sha256:1111111111111111111111111111111111111111111111111111111111111111"], "expected_error": "duplicate-set-element"},
+    {"case_id": "parameter-sort-non-empty", "input": [{"parameter_id": "https://tbom.yozi.systems/registries/edge-network/relation-parameters/1/required", "value": true}], "expected": [{"parameter_id": "https://tbom.yozi.systems/registries/edge-network/relation-parameters/1/required", "value": true}]},
+    {"case_id": "parameter-duplicate-rejected", "input": [{"parameter_id": "https://tbom.yozi.systems/registries/edge-network/relation-parameters/1/required", "value": true}, {"parameter_id": "https://tbom.yozi.systems/registries/edge-network/relation-parameters/1/required", "value": true}], "expected_error": "duplicate-set-element"},
+    {"case_id": "multi-node-and-relation-order", "input_node_ids": ["sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"], "input_relations": [{"relation_type": "https://tbom.yozi.systems/registries/edge-network/relation-types/1/logical-parent", "source": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "target": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "parameters": [{"parameter_id": "https://tbom.yozi.systems/registries/edge-network/relation-parameters/1/required", "value": true}]}], "expected_node_ids": ["sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"]}
+  ],
+  "status": "normative-synthetic"
+}

@@ -1,0 +1,47 @@
+{
+  "complete_host_artifact": {
+    "artifact_id": "018f6f2a-7c4d-4a1b-8e21-1c9b57c84a10",
+    "collection": {"consistency": "generation_validated_sequential", "finished_at": "2026-07-13T12:00:01Z", "overall_status": "complete", "started_at": "2026-07-13T12:00:00Z"},
+    "compatibility": {"dual_emission": false, "profile3_artifact_reference": null},
+    "declared_intent": {
+      "manifest_version": "4.0.0",
+      "namespaces": [{"namespace_key": "root", "source_key": "source-1"}],
+      "nodes": [{"declaration_key": "eth0", "interface_kind": "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/ethernet", "interface_name": {"encoding": "utf-8", "value": "eth0"}, "media_type": "ethernet", "namespace_key": "root", "node_type": "https://tbom.yozi.systems/registries/edge-network/node-types/1/physical", "operator_role": null, "source_key": "source-1"}],
+      "relations": [],
+      "sources": [{"authority": "operator", "collected_at": "2026-07-13T12:00:00Z", "content_fingerprint": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "precedence": 0, "revision": "1", "source_id": "source-1", "source_type": "https://tbom.yozi.systems/registries/edge-network/intent-source-types/1/profile4-manifest"}]
+    },
+    "fingerprints": {
+      "observation": {"algorithm": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/observation-fingerprint-yozi-fp-v1-jcs-sha256", "availability": "available", "error_code": null, "reason_codes": [], "value": "sha256:9b30853017d0f994491e45a735db24936cca414c2c0f2160a95f7d182ae41c8d"},
+      "topology": {"algorithm": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/topology-fingerprint-yozi-fp-v1-jcs-sha256", "availability": "available", "error_code": null, "reason_codes": [], "value": "sha256:af9fefe8cfdf15d1e0d5c0ae4ab746fa846b8f158ddab8ae3e5f2242a7dcb99f"}
+    },
+    "generated_at": "2026-07-13T12:00:01Z",
+    "host_identity": {"disclosure_scope": "local", "evidence": [], "identity_source_class": "generated-persistent", "instance_id": "b17d7437-2e3e-4c88-9bea-325fa075331e", "persistence": "persistent", "privacy_classification": "scope-correlatable", "reproducibility": "producer-local-not-independently-reproducible"},
+    "identity_plane": {"nodes": [{"continuity": "confirmed", "disclosure_scope": "local", "instance_id": "76dc2c62-8f3f-4fa8-bbc0-ec5ce202ceef", "semantic_id": "sha256:e23b81c1de8f4245afaee143ed4c0194382bf78149e0fbac6294ba21f3f0a3f2"}]},
+    "observation": {
+      "collection_consistency": "generation_validated_sequential", "conformance": [],
+      "datasets": [{"attempts": 1, "dataset": "links", "namespace_key": "root", "reason_codes": [], "records_emitted": 0, "records_seen": 0, "status": "complete"}],
+      "disclosure_profile_id": "https://tbom.yozi.systems/registries/edge-network/disclosure-profiles/1/structural-conformance",
+      "interfaces": [], "neighbors": [], "projection_id": "https://tbom.yozi.systems/projections/edge-network-topology/4.0.0/observation", "routes": [],
+      "structural_topology_fingerprint": "sha256:af9fefe8cfdf15d1e0d5c0ae4ab746fa846b8f158ddab8ae3e5f2242a7dcb99f"
+    },
+    "profile_id": "invaros.tbom.profile.edge_network_topology",
+    "profile_version": "4.0.0",
+    "schema_uri": "https://tbom.yozi.systems/schemas/edge-network-topology/4.0.0/schema.json",
+    "specification_uri": "https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0",
+    "structural_topology": {
+      "nodes": [{"interface_kind": "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/ethernet", "interface_name": {"encoding": "utf-8", "value": "eth0"}, "media_type": "ethernet", "namespace_key": "root", "node_type": "https://tbom.yozi.systems/registries/edge-network/node-types/1/physical", "operator_role": null, "semantic_id": "sha256:e23b81c1de8f4245afaee143ed4c0194382bf78149e0fbac6294ba21f3f0a3f2", "semantic_id_algorithm": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/semantic-id-yozi-tid-v1-sha256"}],
+      "projection_id": "https://tbom.yozi.systems/projections/edge-network-topology/4.0.0/structural", "relations": []
+    }
+  },
+  "representative_fragments": {
+    "bridge": {"bridge_technology": "ieee8021-bridge", "interface_kind": "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/linux-bridge", "interface_name": {"encoding": "utf-8", "value": "br-lan"}, "namespace_key": "root", "node_type": "https://tbom.yozi.systems/registries/edge-network/node-types/1/bridge", "parameters": [], "semantic_id": "sha256:1111111111111111111111111111111111111111111111111111111111111111", "semantic_id_algorithm": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/semantic-id-yozi-tid-v1-sha256"},
+    "declared_federation_peer": {"endpoints": [{"address": {"encoding": "base64url", "value": "wAACCA"}, "family": 4, "port": 51820, "transport": "udp"}], "federation_mechanism": "https://tbom.yozi.systems/registries/edge-network/federation-mechanisms/1/wireguard", "interface_name": null, "namespace_key": "root", "node_type": "https://tbom.yozi.systems/registries/edge-network/node-types/1/declared-federation-peer", "operator_peer_key": "site-b", "parameters": [], "public_key_identifier": "sha256:4444444444444444444444444444444444444444444444444444444444444444", "semantic_id": "sha256:3333333333333333333333333333333333333333333333333333333333333333", "semantic_id_algorithm": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/semantic-id-yozi-tid-v1-sha256", "trust_domain": "https://tbom.yozi.systems/examples/trust-domains/example"},
+    "physical_interface": {"interface_kind": "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/ethernet", "interface_name": {"encoding": "utf-8", "value": "eth0"}, "media_type": "ethernet", "namespace_key": "root", "node_type": "https://tbom.yozi.systems/registries/edge-network/node-types/1/physical", "operator_role": null, "semantic_id": "sha256:e23b81c1de8f4245afaee143ed4c0194382bf78149e0fbac6294ba21f3f0a3f2", "semantic_id_algorithm": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/semantic-id-yozi-tid-v1-sha256"},
+    "tunnel": {"interface_kind": "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/wireguard", "interface_name": {"encoding": "utf-8", "value": "wg0"}, "local_endpoint": null, "namespace_key": "root", "node_type": "https://tbom.yozi.systems/registries/edge-network/node-types/1/tunnel", "parameters": [], "parent_semantic_ids": ["sha256:e23b81c1de8f4245afaee143ed4c0194382bf78149e0fbac6294ba21f3f0a3f2"], "remote_endpoint": {"address": {"encoding": "base64url", "value": "wAACCA"}, "family": 4, "port": 51820, "transport": "udp"}, "semantic_id": "sha256:6666666666666666666666666666666666666666666666666666666666666666", "semantic_id_algorithm": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/semantic-id-yozi-tid-v1-sha256"},
+    "logical": {"interface_kind": "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/vrf", "interface_name": {"encoding": "utf-8", "value": "vrf-blue"}, "namespace_key": "root", "node_type": "https://tbom.yozi.systems/registries/edge-network/node-types/1/logical", "parameters": [{"parameter_id": "https://tbom.yozi.systems/registries/edge-network/logical-parameters/1/vrf-table", "value": 100}], "parent_semantic_ids": ["sha256:e23b81c1de8f4245afaee143ed4c0194382bf78149e0fbac6294ba21f3f0a3f2"], "semantic_id": "sha256:7777777777777777777777777777777777777777777777777777777777777777", "semantic_id_algorithm": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/semantic-id-yozi-tid-v1-sha256"},
+    "relation": {"parameters": [{"parameter_id": "https://tbom.yozi.systems/registries/edge-network/relation-parameters/1/required", "value": true}], "relation_type": "https://tbom.yozi.systems/registries/edge-network/relation-types/1/logical-parent", "source": "sha256:7777777777777777777777777777777777777777777777777777777777777777", "target": "sha256:e23b81c1de8f4245afaee143ed4c0194382bf78149e0fbac6294ba21f3f0a3f2"},
+    "runtime_neighbor_observation": {"address": {"encoding": "base64url", "value": "wAACCA"}, "family": 4, "interface_semantic_id": "sha256:e23b81c1de8f4245afaee143ed4c0194382bf78149e0fbac6294ba21f3f0a3f2", "interface_subject_id": null, "link_address": {"address": {"encoding": "base64url", "value": "AgBeEAAI"}, "address_type": "ethernet"}, "namespace_key": "root", "observation_subject_id": "sha256:5555555555555555555555555555555555555555555555555555555555555555", "state": "reachable"},
+    "vlan": {"interface_kind": "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/ieee8021q-vlan", "interface_name": {"encoding": "utf-8", "value": "eth0.10"}, "namespace_key": "root", "node_type": "https://tbom.yozi.systems/registries/edge-network/node-types/1/vlan", "parent_semantic_id": "sha256:e23b81c1de8f4245afaee143ed4c0194382bf78149e0fbac6294ba21f3f0a3f2", "semantic_id": "sha256:2222222222222222222222222222222222222222222222222222222222222222", "semantic_id_algorithm": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/semantic-id-yozi-tid-v1-sha256", "vlan_id": 10, "vlan_protocol": 33024}
+  },
+  "status": "normative-synthetic-not-runtime-capture"
+}

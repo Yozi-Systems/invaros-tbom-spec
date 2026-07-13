@@ -1,0 +1,57 @@
+{
+  "cases": [
+    {
+      "case_id": "null-structural-fingerprint-incomplete-intent",
+      "input_condition": "Declared intent is missing.",
+      "expected": {
+        "structural_topology": null,
+        "topology_fingerprint": {"algorithm": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/topology-fingerprint-yozi-fp-v1-jcs-sha256", "availability": "unavailable", "error_code": "https://tbom.yozi.systems/registries/edge-network/error-codes/1/structural-projection-unavailable", "reason_codes": ["https://tbom.yozi.systems/registries/edge-network/reason-codes/1/declared-intent-missing"], "value": null}
+      }
+    },
+    {
+      "case_id": "exact-duplicates-coalesce",
+      "input_records": [{"declaration_key": "eth0", "normalized_record": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}, {"declaration_key": "eth0", "normalized_record": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}],
+      "expected": {"emitted_record_count": 1, "status": "valid"}
+    },
+    {
+      "case_id": "conflicting-records-fail-closed",
+      "input_records": [{"declaration_key": "eth0", "normalized_record": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}, {"declaration_key": "eth0", "normalized_record": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}],
+      "expected": {"error_code": "https://tbom.yozi.systems/registries/edge-network/error-codes/1/structural-projection-unavailable", "reason_codes": ["https://tbom.yozi.systems/registries/edge-network/reason-codes/1/conflicting-records"], "topology_fingerprint": null}
+    },
+    {
+      "case_id": "invalid-utf8-preserved-wrapper",
+      "input_bytes_hex": "ff8041",
+      "normalized": {"encoding": "base64url", "value": "_4BB"},
+      "expected": {"decoded_bytes_hex": "ff8041", "status": "valid"}
+    },
+    {
+      "case_id": "unknown-declared-kind-fail-closed",
+      "input_interface_kind": "https://tbom.yozi.systems/registries/edge-network/interface-kinds/1/future-kind-not-registered",
+      "expected": {"error_code": "https://tbom.yozi.systems/registries/edge-network/error-codes/1/structural-projection-unavailable", "reason_codes": ["https://tbom.yozi.systems/registries/edge-network/reason-codes/1/unsupported-declared-kind"], "topology_fingerprint": null}
+    },
+    {
+      "case_id": "declared-federation-peer-is-structural-neighbor-is-not",
+      "input": {
+        "declared_peer": {"endpoints": [{"address": {"encoding": "base64url", "value": "wAACCA"}, "family": 4, "port": 51820, "transport": "udp"}], "federation_mechanism": "https://tbom.yozi.systems/registries/edge-network/federation-mechanisms/1/wireguard", "interface_name": null, "namespace_key": "root", "node_type": "https://tbom.yozi.systems/registries/edge-network/node-types/1/declared-federation-peer", "operator_peer_key": "site-b", "parameters": [], "public_key_identifier": "sha256:4444444444444444444444444444444444444444444444444444444444444444", "semantic_id": "sha256:3333333333333333333333333333333333333333333333333333333333333333", "semantic_id_algorithm": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/semantic-id-yozi-tid-v1-sha256", "trust_domain": "https://tbom.yozi.systems/examples/trust-domains/example"},
+        "runtime_neighbor_observation_subject_id": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+      },
+      "expected": {"observation_neighbor_count": 1, "structural_node_ids": ["sha256:3333333333333333333333333333333333333333333333333333333333333333"], "runtime_neighbor_in_structural_projection": false}
+    },
+    {
+      "case_id": "stable-sequential-observation",
+      "input": {"first_normalized_link_dump": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "second_normalized_link_dump": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+      "expected": {"collection_consistency": "generation_validated_sequential", "observation_fingerprint": "sha256:9b30853017d0f994491e45a735db24936cca414c2c0f2160a95f7d182ae41c8d", "topology_fingerprint": "sha256:af9fefe8cfdf15d1e0d5c0ae4ab746fa846b8f158ddab8ae3e5f2242a7dcb99f"}
+    },
+    {
+      "case_id": "unstable-sequential-observation",
+      "input": {"first_normalized_link_dump": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "second_normalized_link_dump": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+      "expected": {
+        "collection_consistency": "sequential_non_atomic",
+        "observation_fingerprint": {"algorithm": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/observation-fingerprint-yozi-fp-v1-jcs-sha256", "availability": "unavailable", "error_code": "https://tbom.yozi.systems/registries/edge-network/error-codes/1/observation-projection-unavailable", "reason_codes": ["https://tbom.yozi.systems/registries/edge-network/reason-codes/1/link-dump-mismatch", "https://tbom.yozi.systems/registries/edge-network/reason-codes/1/observation-unstable"], "value": null},
+        "topology_fingerprint": {"algorithm": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/topology-fingerprint-yozi-fp-v1-jcs-sha256", "availability": "available", "error_code": null, "reason_codes": [], "value": "sha256:af9fefe8cfdf15d1e0d5c0ae4ab746fa846b8f158ddab8ae3e5f2242a7dcb99f"}
+      }
+    }
+  ],
+  "status": "normative-synthetic-not-runtime-capture",
+  "vector_set": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0/phase0/validation"
+}

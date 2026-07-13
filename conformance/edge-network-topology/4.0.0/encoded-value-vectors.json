@@ -1,0 +1,12 @@
+{
+  "cases": [
+    {"case_id": "utf8-valid-ascii", "input_bytes_hex": "65746830", "encoded": {"encoding": "utf-8", "value": "eth0"}, "valid": true},
+    {"case_id": "utf8-valid-non-ascii", "input_bytes_hex": "c3a9", "encoded": {"encoding": "utf-8", "value": "é"}, "valid": true},
+    {"case_id": "base64url-valid-invalid-utf8", "input_bytes_hex": "ff8041", "encoded": {"encoding": "base64url", "value": "_4BB"}, "valid": true},
+    {"case_id": "base64url-rejected-for-valid-utf8", "input_bytes_hex": "65746830", "encoded": {"encoding": "base64url", "value": "ZXRoMA"}, "valid": false},
+    {"case_id": "base64url-reject-padding", "input_bytes_hex": "ff", "encoded": {"encoding": "base64url", "value": "_w=="}, "valid": false},
+    {"case_id": "base64url-reject-nonalphabet", "input_bytes_hex": "ff", "encoded": {"encoding": "base64url", "value": "/w"}, "valid": false},
+    {"case_id": "utf8-cannot-represent-invalid-sequence", "input_bytes_hex": "ff", "encoded": null, "attempted_encoding": "utf-8", "valid": false}
+  ],
+  "status": "normative-synthetic"
+}
