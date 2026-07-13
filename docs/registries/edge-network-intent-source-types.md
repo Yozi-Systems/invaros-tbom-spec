@@ -12,4 +12,8 @@ Owner: Yozi Systems
 | Declarative orchestration | `https://tbom.yozi.systems/registries/edge-network/intent-source-types/1/declarative-orchestration` | controller namespace/object revision and content fingerprint |
 | Operator API | `https://tbom.yozi.systems/registries/edge-network/intent-source-types/1/operator-api` | authority, revision/token identifier, content fingerprint |
 
-Source adapters MUST define deterministic precedence and mapping semantics. Shell commands, kernel inventory, Netlink dumps, and neighbor caches are observation sources and are not registered intent sources.
+Source adapters MUST define deterministic precedence and mapping semantics.
+Lower numeric precedence has higher authority. Equal-precedence conflicts
+affecting the same structural fact fail closed and MUST NOT be resolved by
+arrival order. Shell commands, kernel inventory, Netlink dumps, and neighbor
+caches are observation sources and are not registered intent sources.

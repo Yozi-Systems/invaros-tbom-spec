@@ -58,9 +58,11 @@ be computed with the registered source-content fingerprint algorithm. It binds
 only the declared content attributed to that source, excludes the source record
 itself and every provenance/transport wrapper field, and therefore cannot refer
 to itself. A validator MUST recompute it before accepting the source. Multiple
-sources require deterministic precedence declared in the manifest.
-Equal-precedence conflicting declarations invalidate the affected structural
-projection. Absence of declared intent yields no structural fingerprint.
+sources require deterministic precedence declared in the manifest. Lower
+numeric precedence has higher authority. Equal-precedence conflicting
+declarations affecting the same structural fact invalidate the affected
+structural projection. Arrival order MUST NOT resolve a conflict. Absence of
+declared intent yields no structural fingerprint.
 
 Names, namespace keys, link kinds, parentage, bridge membership, VLAN configuration, tunnel configuration, logical relationships, and federation peers are structural only when declared. A runtime object with no declaration may be reported as an unbound observation; it MUST NOT be promoted into structure.
 
