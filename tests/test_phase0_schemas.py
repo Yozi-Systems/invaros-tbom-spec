@@ -129,6 +129,28 @@ def test_profile4_projections_and_manifest_validate() -> None:
         _validate(store[schema_id], value)
 
 
+def test_public_minimal_schema_suppresses_kind_and_kind_state() -> None:
+    observation = copy.deepcopy(
+        load_json(PHASE0 / "representative-examples.json")["complete_host_artifact"]["observation"]
+    )
+    observation["disclosure_profile_id"] = (
+        "https://tbom.yozi.systems/registries/edge-network/"
+        "disclosure-profiles/1/public-minimal"
+    )
+    observation["interfaces"] = [{
+        "namespace_key": "root",
+        "observation_subject_id": "sha256:" + "1" * 64,
+    }]
+    schema = schema_store()[
+        "https://tbom.yozi.systems/schemas/edge-network-topology/4.0.0/"
+        "observation-projection.schema.json"
+    ]
+    _validate(schema, observation)
+    observation["interfaces"][0]["interface_kind_observed"] = "bridge"
+    with pytest.raises(jsonschema.ValidationError):
+        _validate(schema, observation)
+
+
 @pytest.mark.parametrize(
     ("definition", "fragment"),
     [

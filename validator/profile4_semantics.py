@@ -125,6 +125,13 @@ def validate_disclosure_projection(observation: dict) -> None:
                 path=(collection,),
             )
     for index, interface in enumerate(observation["interfaces"]):
+        if profile_uri.endswith("/public-minimal") and (
+            "interface_kind_observed" in interface or "kind_state" in interface
+        ):
+            raise ValidationError(
+                "public-minimal forbids interface kind and kind state",
+                path=("interfaces", index),
+            )
         _validate_object_fields(
             interface, profile["interface_fields"], ("interfaces", index)
         )

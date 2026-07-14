@@ -12,8 +12,8 @@
       },
       "interface_fields": {
         "required": ["namespace_key", "observation_subject_id"],
-        "optional": ["interface_kind_observed"],
-        "forbidden": ["addresses", "carrier", "current_link_address", "declared_semantic_id", "interface_name_observed", "kind_state", "link_status", "master_observed", "mtu", "parent_observed", "permanent_link_address"]
+        "optional": [],
+        "forbidden": ["addresses", "carrier", "current_link_address", "declared_semantic_id", "interface_kind_observed", "interface_name_observed", "kind_state", "link_status", "master_observed", "mtu", "parent_observed", "permanent_link_address"]
       }
     },
     {

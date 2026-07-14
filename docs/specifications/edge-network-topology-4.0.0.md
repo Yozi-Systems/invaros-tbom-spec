@@ -218,6 +218,8 @@ The second link dump MUST NOT suppress or invalidate a structural fingerprint de
 
 Observation fingerprints are disclosure-profile-specific. The profile URI is part of the fingerprinted projection. Producers MUST NOT hash undisclosed state. Initial registered profiles are public-minimal, structural-conformance, network-operations, and internal-full. Their machine-readable required, optional, forbidden, and collection rules are normative. Schema validation plus semantic profile validation is required. A consumer compares observation fingerprints only when algorithm URI and disclosure profile URI are identical.
 
+`public-minimal` discloses each interface only as `namespace_key` plus `observation_subject_id`. It forbids both `interface_kind_observed` and `kind_state`: a modeled kind without its state is semantically incomplete, while disclosing the state would exceed the profile's minimal public boundary. Other profiles disclose the two fields together according to their registry rules.
+
 Instance aliases are also disclosure-scoped, but excluded from fingerprints. Disclosure of a stable alias is a correlatability decision.
 
 ## 13. Linux/OpenWrt reference adapter

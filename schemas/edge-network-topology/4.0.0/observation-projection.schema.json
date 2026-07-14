@@ -16,6 +16,15 @@
     "routes": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/route"}},
     "structural_topology_fingerprint": {"anyOf": [{"$ref": "#/$defs/digest"}, {"type": "null"}]}
   },
+  "allOf": [
+    {
+      "if": {"properties": {"disclosure_profile_id": {"const": "https://tbom.yozi.systems/registries/edge-network/disclosure-profiles/1/public-minimal"}}},
+      "then": {"properties": {"interfaces": {"items": {"allOf": [
+        {"not": {"required": ["interface_kind_observed"]}},
+        {"not": {"required": ["kind_state"]}}
+      ]}}}}
+    }
+  ],
   "$defs": {
     "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
     "reason": {"type": "string", "pattern": "^https://tbom\\.yozi\\.systems/registries/edge-network/reason-codes/1/"},

@@ -10,6 +10,7 @@ specification repository itself; see
 
 - Defines the required Profile 4 bootstrap intent-state model: absent intent yields a valid observation-only artifact and deterministic inactive candidate, valid intent retains the existing structural/conformance workflow, and invalid activated intent remains fail closed.
 - Separates semantically binary network protocol values from textual `encodedValue` fields. IP, route, neighbor, tunnel-endpoint, and link-layer address octets now have one normative canonical-unpadded-base64url representation even when the bytes are valid UTF-8; textual fields retain mandatory UTF-8 preference.
+- Corrects the public-minimal disclosure contract to suppress both observed interface kind and kind state. This prevents incomplete modeled-kind disclosure while retaining the profile's minimal public boundary.
 
 Draft integration of the Edge Network Topology Phase 0 specification lock:
 
