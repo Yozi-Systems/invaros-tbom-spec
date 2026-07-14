@@ -8,6 +8,18 @@ specification repository itself; see
 
 ## [Unreleased] - target 0.2.0
 
+- Repairs the independently reviewed first-live observation ordering defect:
+  producer and validator now enforce normative order before fingerprinting,
+  with multi-element positive, negative, and shuffle-invariance coverage.
+- Retains `declared_intent_absent` as the sole canonical bootstrap reason code
+  because schemas, runtime output, bootstrap vectors, and live evidence already
+  depend on it; removes the draft-only `declared-intent-missing` near-synonym.
+- Bounds observation collections to existing reference-router capacities and
+  documents linear adjacent uniqueness validation over canonical arrays.
+- Reconciles runtime status, distinguishes Profile 3 umbrella fields from
+  Profile 4, documents public-minimal cardinality, and tightens integrity
+  non-claims.
+
 - Defines the required Profile 4 bootstrap intent-state model: absent intent yields a valid observation-only artifact and deterministic inactive candidate, valid intent retains the existing structural/conformance workflow, and invalid activated intent remains fail closed.
 - Separates semantically binary network protocol values from textual `encodedValue` fields. IP, route, neighbor, tunnel-endpoint, and link-layer address octets now have one normative canonical-unpadded-base64url representation even when the bytes are valid UTF-8; textual fields retain mandatory UTF-8 preference.
 - Corrects the public-minimal disclosure contract to suppress both observed interface kind and kind state. This prevents incomplete modeled-kind disclosure while retaining the profile's minimal public boundary.
@@ -52,8 +64,9 @@ Draft integration of the Edge Network Topology Phase 0 specification lock:
   references, permits foreign federation trust-domain HTTPS URIs, and adds an
   informative RFC 8342 relationship section.
 
-This entry does not claim publication, Profile 4 producer implementation,
-or Profile 4 runtime conformance.
+This entry does not claim publication or retroactive conformance of preserved
+first-live artifacts. Conformance applies only to corrected builds that pass
+the expanded qualification suite and independent reproduction.
 
 ## [0.1.0] - 2026-07-12
 

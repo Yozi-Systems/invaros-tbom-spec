@@ -27,7 +27,7 @@ implementation or Profile 4 conformance. The independent RFC 8785 oracle is
 | --- | ---: | --- | --- |
 | Agentic Topology | 3.0.0 | Existing public draft with schema, example, and validator support | [SPECIFICATION.md](SPECIFICATION.md), [`schemas/agentic/`](schemas/agentic/) |
 | Edge Network Topology | 3.0.0 | Frozen legacy compatibility profile; current implementation and fingerprints remain unchanged | [Legacy specification](docs/specifications/edge-network-topology-3.0.0-legacy.md), [legacy algorithm](docs/algorithms/edge-network-profile3-legacy-fingerprint.md), [`schemas/edge-network/`](schemas/edge-network/) |
-| Edge Network Topology | 4.0.0 | Locked Phase 0 engineering baseline; runtime not implemented or conformant | [Profile 4 specification](docs/specifications/edge-network-topology-4.0.0.md), [`schemas/edge-network-topology/4.0.0/`](schemas/edge-network-topology/4.0.0/), [synthetic vectors](conformance/edge-network-topology/4.0.0/) |
+| Edge Network Topology | 4.0.0 | Reference producer and bootstrap discovery implemented in `invarosd`; corrected qualification completed locally after independent review found the first-live ordering defect | [Profile 4 specification](docs/specifications/edge-network-topology-4.0.0.md), [`schemas/edge-network-topology/4.0.0/`](schemas/edge-network-topology/4.0.0/), [synthetic vectors](conformance/edge-network-topology/4.0.0/) |
 
 Profile 3 and Profile 4 share the Edge profile family identifier but use
 different `profile_version` and algorithm identifiers. Consumers must
@@ -104,10 +104,13 @@ See the [compatibility policy](docs/compatibility.md),
 
 - TBoM artifacts describe topology; they do not enforce it by themselves.
 - Profile 4 observation is evidence, not structure.
-- Fingerprints provide deterministic comparison, not authenticity.
+- Fingerprints provide deterministic integrity naming, not authenticity,
+  replay protection, trusted freshness, or absolute downgrade resistance.
 - Receipts, commitments, recognition, and transparency are separate artifact
   families.
-- The invarosd reference runtime implements Profile 4, including bootstrap discovery; deployment evidence and publication remain separate qualification steps.
+- The `invarosd` reference runtime implements Profile 4 and bootstrap discovery.
+  Its first live artifacts are preserved as non-conformant historical evidence
+  after independent review found non-canonical observation array order.
 
 ## License
 

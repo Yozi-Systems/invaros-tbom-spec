@@ -1,0 +1,13 @@
+{
+  "vector_set": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0/observation-ordering",
+  "status": "normative-synthetic",
+  "cases": [
+    {"case_id": "multiple-datasets-shuffled", "collection": "datasets", "input_keys": [["routes", "root"], ["addresses", "root"], ["links", "root"], ["neighbors", "root"]], "expected_keys": [["addresses", "root"], ["links", "root"], ["neighbors", "root"], ["routes", "root"]]},
+    {"case_id": "multiple-interfaces-null-last", "collection": "interfaces", "input_keys": [[null, "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"], ["sha256:1111111111111111111111111111111111111111111111111111111111111111", "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]], "expected_keys": [["sha256:1111111111111111111111111111111111111111111111111111111111111111", "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"], [null, "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"]]},
+    {"case_id": "multiple-neighbors-shuffled", "collection": "neighbors", "input_order": [2, 1], "expected_order": [1, 2]},
+    {"case_id": "multiple-routes-shuffled", "collection": "routes", "input_order": [200, 100], "expected_order": [100, 200]},
+    {"case_id": "multiple-addresses-shuffled", "collection": "addresses", "input_raw_base64url": ["Ag", "AQ"], "expected_raw_base64url": ["AQ", "Ag"]},
+    {"case_id": "schema-valid-self-hashed-noncanonical-rejected", "fixture": "../../../evidence/profile4-first-live/edge-network-topology-v4-artifact.json", "schema_valid": true, "semantic_valid": false, "failure": "observation datasets are not in canonical order"},
+    {"case_id": "canonical-equivalent-passes-and-reproduces", "fixture": "generated-by-test", "schema_valid": true, "semantic_valid": true, "fingerprint_reproduces": true}
+  ]
+}

@@ -262,6 +262,74 @@ def validate_structural_order(projection: dict) -> None:
             raise ValidationError("federation endpoints are not in canonical order")
 
 
+def _binary_value(value: dict) -> bytes:
+    return _decode_unpadded_base64url(value["value"])
+
+
+def _nullable_ascii(value: str | None, *, null_last: bool = False) -> tuple:
+    return ((1 if null_last else 0), b"") if value is None else (
+        (0 if null_last else 1), value.encode("ascii")
+    )
+
+
+def validate_observation_order(projection: dict) -> None:
+    """Enforce the normative total orders before fingerprint verification."""
+    ordered = {
+        "datasets": lambda item: (
+            item["dataset"].encode("ascii"), item["namespace_key"].encode("utf-8")
+        ),
+        "interfaces": lambda item: (
+            _nullable_ascii(item.get("declared_semantic_id"), null_last=True),
+            item["observation_subject_id"].encode("ascii"),
+        ),
+        "neighbors": lambda item: (
+            _nullable_ascii(item.get("interface_semantic_id"), null_last=True),
+            _nullable_ascii(item.get("interface_subject_id"), null_last=True),
+            item["family"], _binary_value(item["address"]),
+            b"" if item.get("link_address") is None else _binary_value(item["link_address"]["address"]),
+            item["state"],
+        ),
+        "routes": lambda item: (
+            item["table"], item["family"], _binary_value(item["destination"]),
+            item["prefix_length"], item["metric"],
+            b"" if item.get("gateway") is None else _binary_value(item["gateway"]),
+            _nullable_ascii(item.get("output_interface_semantic_id"), null_last=True),
+            _nullable_ascii(item.get("output_interface_subject_id"), null_last=True),
+        ),
+        "conformance": lambda item: (
+            _nullable_ascii(item.get("declared_semantic_id"), null_last=True),
+            _nullable_ascii(item.get("observation_subject_id"), null_last=True),
+            item["status"].encode("ascii"),
+        ),
+    }
+    for name, key in ordered.items():
+        values = projection[name]
+        if values != sorted(values, key=key):
+            raise ValidationError(f"observation {name} are not in canonical order", path=(name,))
+    for interface_index, interface in enumerate(projection["interfaces"]):
+        addresses = interface.get("addresses", [])
+        address_key = lambda item: (
+            item["family"], _binary_value(item["address"]), item["prefix_length"],
+            item["scope"].encode("ascii"),
+            b"" if item.get("peer_address") is None else _binary_value(item["peer_address"]),
+        )
+        if addresses != sorted(addresses, key=address_key):
+            raise ValidationError(
+                "interface addresses are not in canonical order",
+                path=("interfaces", interface_index, "addresses"),
+            )
+    def check_reason_codes(value: object, path: tuple[object, ...] = ()) -> None:
+        if isinstance(value, dict):
+            for key, child in value.items():
+                if key in ("reason_codes", "flags") and child != sorted(child, key=lambda value: value.encode("ascii")):
+                    raise ValidationError(f"{key} are not in canonical ASCII order", path=path + (key,))
+                check_reason_codes(child, path + (key,))
+        elif isinstance(value, list):
+            for index, child in enumerate(value):
+                check_reason_codes(child, path + (index,))
+    check_reason_codes(projection)
+
+
 def _validate_tunnel_parameters(item: dict) -> None:
     base = "https://tbom.yozi.systems/registries/edge-network/tunnel-parameters/1/"
     identity_by_kind = {
@@ -381,7 +449,6 @@ def validate_artifact_fingerprints(payload: dict) -> None:
 
 def validate_profile4_semantics(payload: dict) -> None:
     validate_encoded_values(payload)
-    validate_artifact_fingerprints(payload)
     manifest = payload.get("declared_intent")
     if manifest is not None:
         validate_source_content_fingerprints(manifest)
@@ -394,6 +461,10 @@ def validate_profile4_semantics(payload: dict) -> None:
     observation = payload.get("observation")
     if observation is not None:
         validate_disclosure_projection(observation)
+        validate_observation_order(observation)
+    # Deliberately separate: a self-consistent hash of non-canonical serialized
+    # arrays is still invalid and must fail before fingerprint comparison.
+    validate_artifact_fingerprints(payload)
     intent_status = payload.get("intent_status")
     conformance = payload.get("intent_conformance")
     candidate = payload.get("candidate_intent")

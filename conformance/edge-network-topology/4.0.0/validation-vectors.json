@@ -5,7 +5,7 @@
       "input_condition": "Declared intent is missing.",
       "expected": {
         "structural_topology": null,
-        "topology_fingerprint": {"algorithm": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/topology-fingerprint-yozi-fp-v1-jcs-sha256", "availability": "unavailable", "error_code": "https://tbom.yozi.systems/registries/edge-network/error-codes/1/structural-projection-unavailable", "reason_codes": ["https://tbom.yozi.systems/registries/edge-network/reason-codes/1/declared-intent-missing"], "value": null}
+        "topology_fingerprint": {"algorithm": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/topology-fingerprint-yozi-fp-v1-jcs-sha256", "availability": "unavailable", "error_code": "https://tbom.yozi.systems/registries/edge-network/error-codes/1/structural-projection-unavailable", "reason_codes": ["https://tbom.yozi.systems/registries/edge-network/reason-codes/1/declared_intent_absent"], "value": null}
       }
     },
     {

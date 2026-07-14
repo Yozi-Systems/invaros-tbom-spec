@@ -5,6 +5,10 @@ Profile 3, and draft Edge Network Profile 4. Edge-specific versioned
 documents under [`docs/specifications/`](specifications/) govern over the
 historical umbrella [SPECIFICATION.md](../SPECIFICATION.md).
 
+The umbrella is Profile 3 material. `structural_fingerprint`,
+`host_fingerprint`, and `observed_at_epoch` are Profile 3 fields and MUST NOT
+be required, synthesized, or interpreted in a Profile 4 artifact.
+
 ## Relationship
 
 The InvarOS Agentic Topology TBoM Profile and the InvarOS Edge Network

@@ -7,6 +7,11 @@ non-breaking change to a profile. It is a companion to
 where Edge Network behavior differs, the versioned documents under
 [`docs/specifications/`](specifications/) govern.
 
+The `invarosd` Profile 4 reference producer and bootstrap discovery now exist.
+The preserved first-live captures are historical non-conformant evidence after
+independent review identified non-canonical observation arrays. Corrected
+builds qualify independently; Profile 3 bytes and fingerprints remain frozen.
+
 ## `profile_id`
 
 `profile_id` identifies a profile family. Consumers combine it with

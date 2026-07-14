@@ -1,5 +1,12 @@
 # InvarOS Topology Bill of Materials (TBoM) Specification
 
+> **Profile boundary:** This is the historical umbrella specification for the
+> Agentic and Edge Network Profile 3 families. Its fields
+> `structural_fingerprint`, `host_fingerprint`, and `observed_at_epoch` are not
+> Profile 4 fields. The normative Profile 4 contract is
+> `docs/specifications/edge-network-topology-4.0.0.md`; consumers MUST dispatch
+> by profile identifier and version and MUST NOT import Profile 3 fields into it.
+
 Version: 0.1.0 (public draft)
 Status: Draft — see [Specification status](#specification-status)
 

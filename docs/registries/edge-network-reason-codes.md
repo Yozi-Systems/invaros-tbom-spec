@@ -8,7 +8,6 @@ Reason codes are stable facts that qualify a status or error; they are not prose
 | Permanent URI | Meaning |
 |---|---|
 | `https://tbom.yozi.systems/registries/edge-network/reason-codes/1/declared_intent_absent` | no governed declared source is active; bootstrap conformance is not evaluated |
-| `https://tbom.yozi.systems/registries/edge-network/reason-codes/1/declared-intent-missing` | no declared intent was available |
 | `https://tbom.yozi.systems/registries/edge-network/reason-codes/1/declared-intent-incomplete` | a required declaration is absent |
 | `https://tbom.yozi.systems/registries/edge-network/reason-codes/1/declared-intent-invalid` | intent failed schema or semantic validation |
 | `https://tbom.yozi.systems/registries/edge-network/reason-codes/1/declared-intent-conflicting` | equal-precedence declarations conflict |
@@ -40,3 +39,9 @@ Reason codes are stable facts that qualify a status or error; they are not prose
 | `https://tbom.yozi.systems/registries/edge-network/reason-codes/1/operator-rotation` | an operator explicitly rotated a persistent alias |
 
 Unknown reason codes are not silently ignored by strict consumers. New entries require governance review and immutable semantics.
+
+`declared_intent_absent` is the sole canonical identifier for bootstrap intent
+absence. The draft-only near-synonym `declared-intent-missing` was removed
+before registry freeze because the canonical identifier was already the
+stronger dependency in schemas, producer output, bootstrap vectors, and live
+evidence. Strict consumers MUST reject the removed identifier.

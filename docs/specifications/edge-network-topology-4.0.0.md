@@ -1,6 +1,6 @@
 # InvarOS Edge Network Topology Profile 4.0.0 — Locked Normative Specification
 
-Status: Phase 0 locked engineering baseline; production runtime not implemented or conformant
+Status: normative pre-publication draft; `invarosd` reference producer and bootstrap discovery implemented; corrected qualification completed locally after remediation of the first-live canonical-ordering defect
 Specification URI: `https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0`  
 Profile family identifier: `invaros.tbom.profile.edge_network_topology`  
 Normative revision: `4.0.0`  
@@ -220,6 +220,10 @@ Observation fingerprints are disclosure-profile-specific. The profile URI is par
 
 `public-minimal` discloses each interface only as `namespace_key` plus `observation_subject_id`. It forbids both `interface_kind_observed` and `kind_state`: a modeled kind without its state is semantically incomplete, while disclosing the state would exceed the profile's minimal public boundary. Other profiles disclose the two fields together according to their registry rules.
 
+`public-minimal` still discloses dataset accounting and therefore reveals
+interface, address, route, and neighbor cardinality even where contents are
+redacted. Operators MUST include topology scale in their disclosure threat model.
+
 Instance aliases are also disclosure-scoped, but excluded from fingerprints. Disclosure of a stable alias is a correlatability decision.
 
 ## 13. Linux/OpenWrt reference adapter
@@ -272,6 +276,18 @@ Names, topology, VLANs, tunnel endpoints, federation relationships, MACs, IPs, r
 
 Secret material is forbidden from all manifests, descriptors, projections, evidence, and preimages. Closed parameter registries and schemas enforce this structurally; implementations MUST NOT claim reliable secret detection by guessing from arbitrary byte content. A structurally prohibited field or unregistered parameter causes fail-closed rejection. SHA-256 provides integrity naming, not authenticity. Artifact signing and attestation are separate layers.
 
+Fingerprints alone provide neither replay protection nor trusted freshness.
+Algorithm identifiers prevent silent substitution only when a consumer applies
+an external allow-list; they do not provide absolute downgrade resistance or
+prevent wholesale replacement of an unsigned artifact.
+
+Observation resources are bounded to the reference edge deployment envelope:
+16 namespaces / 64 dataset reports, 512 interfaces and conformance records,
+2,048 addresses, and 4,096 routes and neighbors. These match the reference
+producer's fixed capacities and 8 MiB collection budget. Producers fail closed
+with `capacity-truncation`. Consumers SHOULD check canonical order first and MAY
+validate uniqueness in linear time by adjacent comparison.
+
 Consumers MUST validate schema, algorithm URI, registry versions, completeness, canonicalization, fingerprints, and referential integrity before relying on an artifact. Unknown permanent identifiers fail closed. A future extension is recognized only through an explicitly supported profile revision and its published schema, registry, algorithm URI, and vectors.
 
 ## 16. Relationship to RFC 8342 (NMDA)
@@ -284,6 +300,6 @@ Profile 3 and Profile 4 are separate complete artifacts. A producer MUST NOT mix
 
 Consumers dispatch by `profile_id`, `profile_version`, specification URI, and algorithm URI. Profile 3 goldens remain immutable. Transition tests MUST prove unchanged Profile 3 bytes and fingerprints, independent Profile 4 validation, and failure isolation between emissions.
 
-## 17. Conformance status
+## 18. Conformance status
 
 This Phase 0 package defines a draft normative target and synthetic vectors. No current production producer claims Profile 4 implementation or conformance. Runtime captures and implementation-generated conformance artifacts are future milestones.

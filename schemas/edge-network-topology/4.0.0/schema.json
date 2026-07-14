@@ -86,7 +86,7 @@
         "activation": {"const": "operator-action-required"},
         "candidate_version": {"const": "1"},
         "completeness": {"enum": ["complete", "partial"]},
-        "interfaces": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/candidateInterface"}},
+        "interfaces": {"type": "array", "maxItems": 512, "uniqueItems": true, "items": {"$ref": "#/$defs/candidateInterface"}},
         "source_observation_fingerprint": {"anyOf": [{"$ref": "#/$defs/digest"}, {"type": "null"}]},
         "status": {"const": "candidate-not-active"}
       }
@@ -99,7 +99,7 @@
     "unavailableFingerprint": {
       "type": "object", "additionalProperties": false,
       "required": ["algorithm", "availability", "error_code", "reason_codes", "value"],
-      "properties": {"algorithm": {"type": "string", "format": "uri"}, "availability": {"const": "unavailable"}, "error_code": {"$ref": "#/$defs/error"}, "reason_codes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/reason"}, "uniqueItems": true}, "value": {"type": "null"}}
+      "properties": {"algorithm": {"type": "string", "format": "uri"}, "availability": {"const": "unavailable"}, "error_code": {"$ref": "#/$defs/error"}, "reason_codes": {"type": "array", "minItems": 1, "maxItems": 31, "items": {"$ref": "#/$defs/reason"}, "uniqueItems": true}, "value": {"type": "null"}}
     },
     "topologyFingerprint": {
       "oneOf": [

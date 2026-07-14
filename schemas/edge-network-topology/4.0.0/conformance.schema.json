@@ -8,7 +8,7 @@
   "properties": {
     "declared_semantic_id": {"anyOf": [{"$ref": "#/$defs/digest"}, {"type": "null"}]},
     "observation_subject_id": {"anyOf": [{"$ref": "#/$defs/digest"}, {"type": "null"}]},
-    "reason_codes": {"type": "array", "items": {"$ref": "#/$defs/reason"}, "uniqueItems": true},
+    "reason_codes": {"type": "array", "maxItems": 31, "items": {"$ref": "#/$defs/reason"}, "uniqueItems": true},
     "status": {"enum": ["conformant", "nonconformant", "not-observed", "unknown"]}
   },
   "$defs": {
