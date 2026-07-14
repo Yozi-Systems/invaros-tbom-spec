@@ -90,7 +90,7 @@ Inputs: common fields, bridge technology, and registered identity-affecting decl
 
 ### 5.4 VLAN
 
-Inputs: common fields, VLAN ID 0..4094 as permitted by the declared adapter policy, VLAN protocol as its unsigned 16-bit EtherType, and parent semantic ID. Parent, tag, or protocol change creates a different semantic ID. Runtime `IFLA_LINK` does not define the parent. Privacy class: organization-sensitive.
+Inputs: common fields, VLAN ID 0..4094 as permitted by the declared adapter policy, VLAN protocol as the registered IEEE 802.1Q or IEEE 802.1ad EtherType (`0x8100`/33024 or `0x88A8`/34984), and parent semantic ID. Other unsigned 16-bit EtherTypes are not valid in Profile 4.0.0. Parent, tag, or protocol change creates a different semantic ID. Runtime `IFLA_LINK` does not define the parent. Privacy class: organization-sensitive.
 
 ### 5.5 Tunnel
 
@@ -135,7 +135,7 @@ An observation projection binds only values disclosed under its `disclosure_prof
 - observed link locator, kind, parent/master relationships, current/permanent link address, MTU, flags, status, carrier and counters;
 - assigned addresses with family, raw address, prefix, scope, flags, and peer;
 - runtime neighbors with attached interface scope and NUD state;
-- routes with table, family, raw destination/prefix, type, scope, protocol, priority, output interface, gateway and canonical multipath next hops;
+- routes with table, family, raw destination/prefix, type, scope, protocol, metric (the normalized `RTA_PRIORITY` value), output interface, gateway and canonical multipath next hops;
 - tunnel runtime evidence;
 - intent-versus-runtime conformance results;
 - dataset completeness and collection consistency.
@@ -152,6 +152,11 @@ Unknown or incomplete identity-affecting kind state makes a required observation
 Every interface `observation_subject_id` is YOZI-TID over the observation-subject domain with exactly: tag 1 `4.0.0`, tag 2 `interface`, tag 3 namespace key, tag 4 exact observed name bytes, and tag 5 exact observed kind or typed null. The ID is computed from the producer's full normalized observation before disclosure filtering. No runtime index or mutable link property enters this ID.
 
 The projection MUST include the structural topology fingerprint or null, collection consistency, and disclosure profile URI. Arrays use the ordering in the observation algorithm document. A disclosure profile determines allowed and required fields. Undisclosed state MUST NOT influence the fingerprint.
+
+For neighbors and routes, the semantic interface reference and observation
+subject reference are separate nullable ordering levels in the exact order
+defined by the observation fingerprint algorithm. Implementations MUST NOT
+replace them with one selected-reference sort key.
 
 ## 9. Canonicalization and fingerprinting
 
@@ -193,6 +198,11 @@ Before projection, a producer evaluates governed declared sources into exactly o
 A successful artifact carries `intent_status`, whose values are exactly `absent` and `valid`. The third evaluation state, `invalid`, is a terminal `declared-intent-invalid`/`intent-validation-failed` discovery error and therefore never appears in a successful artifact.
 
 For `intent_status:"absent"`, `declared_intent` and `structural_topology` are null, the topology fingerprint is unavailable for reason `declared_intent_absent`, `intent_conformance.status` is `not-evaluated` with exactly that reason, and observation conformance records are empty. Observation remains an independent operational projection and does not become declared structure.
+
+> **Registry spelling:** `declared_intent_absent` intentionally contains
+> underscores. It is the sole frozen bootstrap-absence reason-code identifier;
+> hyphenated spellings and removed near-synonyms are unknown identifiers and
+> MUST be rejected by strict consumers.
 
 For `intent_status:"valid"`, the existing declared-intent structural projection, topology fingerprint, binding, conformance, and drift rules apply unchanged. `intent_conformance.status` is `evaluated`, its reason list is empty, and `candidate_intent` is null.
 

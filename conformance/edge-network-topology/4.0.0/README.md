@@ -13,5 +13,8 @@ These files are deliberately synthetic, language-neutral inputs. They are not ru
   declared-content projection, RFC 8785 bytes, and direct SHA-256 digest.
 - `validation-vectors.json` locks fail-closed semantic outcomes, duplicate/conflict behavior, byte wrappers, federation separation, and sequential-observation behavior.
 - `representative-examples.json` supplies physical, bridge, VLAN, runtime-neighbor, federation-peer, and complete-artifact examples.
+- `observation-order-vectors.json` locks every observation collection order,
+  including divergent mixed bound/unbound neighbor and route cases that prove
+  the two nullable interface references are separate ordering levels.
 
 An implementation test harness MUST parse the JSON without rewriting strings, decode hex/base64url exactly, independently reconstruct preimages, and compare every expected byte/digest. Semantic-validation vectors may contain intentionally schema-valid but semantically invalid controlled values; their `expected` object is normative.

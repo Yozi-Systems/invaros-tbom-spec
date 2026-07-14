@@ -8,6 +8,14 @@ specification repository itself; see
 
 ## [Unreleased] - target 0.2.0
 
+- Removes an independently confirmed interoperability ambiguity by spelling
+  out the two-level nullable interface-reference keys for neighbors and routes;
+  adds divergent mixed bound/unbound vectors with unique expected observation
+  fingerprints. This clarifies the existing validator and producer behavior
+  without changing the fingerprint construction or permanent identifiers.
+- Corrects observation prose from route `priority` to wire member `metric` and
+  restricts VLAN protocol prose to the registered `0x8100`/`0x88A8` values.
+
 - Repairs the independently reviewed first-live observation ordering defect:
   producer and validator now enforce normative order before fingerprinting,
   with multi-element positive, negative, and shuffle-invariance coverage.

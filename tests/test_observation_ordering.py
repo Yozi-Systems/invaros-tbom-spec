@@ -70,6 +70,44 @@ def test_multi_element_observation_total_orders_and_shuffle_invariance() -> None
         validate_observation_order(shuffled)
 
 
+def test_mixed_bound_unbound_neighbor_uses_two_independent_reference_keys() -> None:
+    projection = _projection()
+    digest = lambda value: "sha256:" + value * 64
+    projection["routes"] = []
+    projection["neighbors"] = [
+        {"address": {"encoding": "base64url", "value": "AQ"}, "family": 4, "interface_semantic_id": digest("f"), "interface_subject_id": None, "link_address": None, "namespace_key": "root", "observation_subject_id": digest("a"), "state": "1"},
+        {"address": {"encoding": "base64url", "value": "AQ"}, "family": 4, "interface_semantic_id": None, "interface_subject_id": digest("0"), "link_address": None, "namespace_key": "root", "observation_subject_id": digest("b"), "state": "1"},
+    ]
+    vectors = load_json(ROOT / "conformance/edge-network-topology/4.0.0/observation-order-vectors.json")
+    vector = next(case for case in vectors["cases"] if case["case_id"] == "mixed-bound-unbound-neighbors-two-level-key")
+    validate_observation_order(projection)
+    assert _projection_fingerprint("observation", projection) == vector["expected_observation_fingerprint"]
+    competing = copy.deepcopy(projection)
+    competing["neighbors"].reverse()
+    assert _projection_fingerprint("observation", competing) == vector["competing_noncanonical_fingerprint"]
+    with pytest.raises(ValidationError, match="observation neighbors are not in canonical order"):
+        validate_observation_order(competing)
+
+
+def test_mixed_bound_unbound_route_uses_two_independent_reference_keys() -> None:
+    projection = _projection()
+    digest = lambda value: "sha256:" + value * 64
+    projection["neighbors"] = []
+    projection["routes"] = [
+        {"destination": {"encoding": "base64url", "value": "AQ"}, "family": 4, "gateway": None, "metric": 1, "output_interface_semantic_id": digest("f"), "output_interface_subject_id": None, "prefix_length": 24, "protocol": "1", "route_type": "1", "scope": "0", "table": 100},
+        {"destination": {"encoding": "base64url", "value": "AQ"}, "family": 4, "gateway": None, "metric": 1, "output_interface_semantic_id": None, "output_interface_subject_id": digest("0"), "prefix_length": 24, "protocol": "1", "route_type": "1", "scope": "0", "table": 100},
+    ]
+    vectors = load_json(ROOT / "conformance/edge-network-topology/4.0.0/observation-order-vectors.json")
+    vector = next(case for case in vectors["cases"] if case["case_id"] == "mixed-bound-unbound-routes-two-level-key")
+    validate_observation_order(projection)
+    assert _projection_fingerprint("observation", projection) == vector["expected_observation_fingerprint"]
+    competing = copy.deepcopy(projection)
+    competing["routes"].reverse()
+    assert _projection_fingerprint("observation", competing) == vector["competing_noncanonical_fingerprint"]
+    with pytest.raises(ValidationError, match="observation routes are not in canonical order"):
+        validate_observation_order(competing)
+
+
 def test_first_live_artifact_is_schema_valid_but_semantically_nonconformant() -> None:
     path = ROOT.parent / "evidence/profile4-first-live/edge-network-topology-v4-artifact.json"
     artifact = json.loads(path.read_text(encoding="utf-8"))

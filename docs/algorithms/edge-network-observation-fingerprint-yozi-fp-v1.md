@@ -16,12 +16,21 @@ Required ordering:
 - datasets: `dataset`, then `namespace_key`;
 - interface observations: declared semantic ID (null last), then observation-subject ID;
 - addresses: family, raw-address base64url bytes, prefix length, scope, peer bytes (null first);
-- neighbors: interface semantic ID or observation locator, family, raw address bytes, link address bytes (null first), state;
-- routes: table, family, raw destination bytes, prefix, metric, gateway bytes (null first), output-interface reference;
+- neighbors: `interface_semantic_id` (unsigned ASCII, null last), then `interface_subject_id` (unsigned ASCII, null last), then family, raw address bytes, link address bytes (null first), and state;
+- routes: table, family, raw destination bytes, prefix length, metric, gateway bytes (null first), `output_interface_semantic_id` (unsigned ASCII, null last), then `output_interface_subject_id` (unsigned ASCII, null last);
 - conformance results: declared semantic ID (null last), observation-subject ID (null last), then status;
 - reason-code arrays: unsigned ASCII URI order.
 
 Exact normalized duplicates coalesce. Conflicting keyed records or missing required disclosed data make the observation fingerprint unavailable.
+
+The two interface-reference members in each neighbor or route key are
+independent ordering levels; they MUST NOT be collapsed into a single
+"semantic ID or subject ID" substitute key. `namespace_key` is carried by a
+neighbor record and is already bound into its interface subject reference; it
+is not an additional ordering level. Route records have no `namespace_key`
+wire member. Fields following the stated keys do not act as hidden
+tie-breakers: two non-identical records with an equal stated key are
+conflicting keyed records and make the observation fingerprint unavailable.
 
 Interface `kind_state` is part of the projection whenever the disclosure profile includes it and is covered byte-for-byte by JCS and this fingerprint. Interface observation-subject IDs use only the normative interface descriptor in YOZI-TID; `ifindex`, MAC addresses, and producer-local locators MUST NOT replace it.
 
