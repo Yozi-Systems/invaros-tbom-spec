@@ -190,10 +190,10 @@ def test_encoded_value_vectors_reproduce_bytes_and_outcomes() -> None:
             assert bytes.fromhex(case["input_bytes_hex"]).decode("utf-8", errors="ignore") == ""
             continue
         if case["valid"]:
-            validate_encoded_values(encoded)
+            validate_encoded_values(encoded, tuple(case.get("path", ())))
         else:
             with pytest.raises(ValidationError):
-                validate_encoded_values(encoded)
+                validate_encoded_values(encoded, tuple(case.get("path", ())))
         if encoded["encoding"] == "utf-8":
             raw = encoded["value"].encode("utf-8")
         else:

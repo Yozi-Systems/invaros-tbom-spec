@@ -53,20 +53,32 @@ def validate_encoded_values(value: object, path: tuple[object, ...] = ()) -> Non
             "utf-8",
             "base64url",
         }:
+            binary_protocol_field = bool(path) and path[-1] in {
+                "address",
+                "destination",
+                "gateway",
+                "peer_address",
+            }
             if value["encoding"] == "utf-8":
                 # A JSON string is Unicode and its UTF-8 encoding is therefore valid.
                 value["value"].encode("utf-8")
-            else:
-                raw = _decode_unpadded_base64url(value["value"])
-                try:
-                    raw.decode("utf-8")
-                except UnicodeDecodeError:
-                    pass
-                else:
+                if binary_protocol_field:
                     raise ValidationError(
-                        "encodedValue MUST use utf-8 when the original bytes are valid UTF-8",
+                        "binary network values MUST use canonical base64url",
                         path=path,
                     )
+            else:
+                raw = _decode_unpadded_base64url(value["value"])
+                if not binary_protocol_field:
+                    try:
+                        raw.decode("utf-8")
+                    except UnicodeDecodeError:
+                        pass
+                    else:
+                        raise ValidationError(
+                            "encodedValue MUST use utf-8 when the original bytes are valid UTF-8",
+                            path=path,
+                        )
         for key, child in value.items():
             validate_encoded_values(child, path + (key,))
     elif isinstance(value, list):

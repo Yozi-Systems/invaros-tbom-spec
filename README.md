@@ -84,6 +84,10 @@ captures. A passing validator test does not establish producer conformance.
 
 Profile 4 defines bootstrap discovery for an unknown device. Intent absence produces observation-only evidence, `intent_status: "absent"`, unavailable intent conformance, and a deterministic inactive candidate for operator review. Activated invalid intent still fails closed; observation is never auto-promoted.
 
+Profile 4 distinguishes textual encoded values from binary network protocol
+octets: textual fields prefer UTF-8, while IP, route, neighbor, tunnel, and
+link-layer address fields always use canonical unpadded base64url.
+
 ## Compatibility
 
 Edge Profile 3 is frozen exactly as implemented. Its schema, examples,

@@ -74,6 +74,7 @@ Every node has a `node_type` registry URI, `namespace_key`, typed interface or p
 
 - `namespace_key` is a non-empty operator-assigned UTF-8 string; `root` is the default namespace key.
 - Interface names preserve exact declared bytes as an encoded-value object. The encoding MUST be `utf-8` if and only if the original bytes are valid UTF-8; otherwise it MUST be canonical unpadded `base64url`. A base64url wrapper for valid UTF-8 bytes is invalid.
+- IP addresses, route destinations and gateways, neighbor protocol addresses, tunnel endpoint addresses, and link-layer addresses are semantically binary protocol octets, not text. They MUST use the `binaryValue` shape and canonical unpadded `base64url` regardless of whether their octets happen to form valid UTF-8. Producers and validators MUST NOT apply textual UTF-8 preference to these fields. Textual presentation forms such as dotted-decimal IPv4, colon-form IPv6, and colon-delimited MAC addresses are not wire representations for these members.
 - No Unicode normalization, case folding, trimming, or locale-sensitive transform is permitted.
 - Registry values and algorithm identifiers are exact permanent HTTPS URIs.
 - Integers are unsigned and bounded by their field definition.

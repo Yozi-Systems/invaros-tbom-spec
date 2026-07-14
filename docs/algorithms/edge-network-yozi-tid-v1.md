@@ -82,13 +82,21 @@ A nested record has no magic, version, domain, or record-length member because i
 ## 3. String and byte rules
 
 No NFC/NFD normalization, case folding, trimming, locale transformation, or
-line-ending rewrite is allowed. An original byte sequence uses type `01` if and
-only if it is valid UTF-8. It uses type `02` if and only if it is not valid
-UTF-8; its JSON representation uses canonical unpadded base64url. A validator
-MUST reject base64url whose decoded bytes are valid UTF-8, invalid UTF-8 JSON
-strings, padding, non-alphabet characters, and non-canonical base64url. Thus one
-byte sequence has exactly one valid representation. Two distinct byte sequences
-never normalize to the same value.
+line-ending rewrite is allowed. A textual identity byte sequence, such as an
+interface name, uses type `01` if and only if it is valid UTF-8. It uses type
+`02` if and only if it is not valid UTF-8; its JSON representation uses
+canonical unpadded base64url. A validator MUST reject base64url for a textual
+field whose decoded bytes are valid UTF-8, invalid UTF-8 JSON strings, padding,
+non-alphabet characters, and non-canonical base64url.
+
+Semantically binary network-protocol fields always use type `02` and the JSON
+`binaryValue` canonical-unpadded-base64url representation, even when their
+octets happen to be valid UTF-8. This class includes IP addresses, route
+destinations and gateways, neighbor addresses, tunnel endpoints, and
+link-layer addresses. The field's normative semantic class, not a successful
+UTF-8 decode, selects the representation. Thus one byte sequence in one field
+class has exactly one valid representation. Two distinct byte sequences never
+normalize to the same value.
 
 Permanent URIs are encoded exactly as lowercase-scheme/host ASCII strings published by this package. UUIDs do not occur in semantic records. IP endpoints use raw network-order address bytes, never presentation text. A missing endpoint is typed null, not an all-zero address.
 

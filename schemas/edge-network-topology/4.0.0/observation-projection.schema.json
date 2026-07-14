@@ -27,6 +27,11 @@
         {"type": "object", "additionalProperties": false, "required": ["encoding", "value"], "properties": {"encoding": {"const": "base64url"}, "value": {"type": "string", "minLength": 2, "pattern": "^(?:[A-Za-z0-9_-]{4})*(?:[A-Za-z0-9_-]{2}|[A-Za-z0-9_-]{3})?$"}}}
       ]
     },
+    "binaryValue": {
+      "description": "A semantically binary network-protocol value encoded as canonical unpadded base64url. UTF-8 preference does not apply.",
+      "type": "object", "additionalProperties": false, "required": ["encoding", "value"],
+      "properties": {"encoding": {"const": "base64url"}, "value": {"type": "string", "minLength": 2, "pattern": "^(?:[A-Za-z0-9_-]{4})*(?:[A-Za-z0-9_-]{2}|[A-Za-z0-9_-]{3})?$"}}
+    },
     "dataset": {
       "type": "object", "additionalProperties": false,
       "required": ["attempts", "dataset", "namespace_key", "reason_codes", "records_emitted", "records_seen", "status"],
@@ -44,17 +49,17 @@
       "type": "object", "additionalProperties": false,
       "required": ["address", "family", "flags", "peer_address", "prefix_length", "scope"],
       "properties": {
-        "address": {"$ref": "#/$defs/encodedValue"}, "family": {"enum": [4, 6]},
+        "address": {"$ref": "#/$defs/binaryValue"}, "family": {"enum": [4, 6]},
         "flags": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
-        "peer_address": {"anyOf": [{"$ref": "#/$defs/encodedValue"}, {"type": "null"}]},
+        "peer_address": {"anyOf": [{"$ref": "#/$defs/binaryValue"}, {"type": "null"}]},
         "prefix_length": {"type": "integer", "minimum": 0, "maximum": 128}, "scope": {"type": "string", "minLength": 1}
       }
     },
     "linkAddress": {
       "type": "object", "additionalProperties": false, "required": ["address", "address_type"],
-      "properties": {"address": {"$ref": "#/$defs/encodedValue"}, "address_type": {"type": "string", "minLength": 1}}
+      "properties": {"address": {"$ref": "#/$defs/binaryValue"}, "address_type": {"type": "string", "minLength": 1}}
     },
-    "endpoint": {"type": "object", "additionalProperties": false, "required": ["address", "family", "port", "transport"], "properties": {"address": {"$ref": "#/$defs/encodedValue"}, "family": {"enum": [4, 6]}, "port": {"type": ["integer", "null"], "minimum": 0, "maximum": 65535}, "transport": {"type": ["string", "null"], "enum": ["tcp", "udp", null]}}},
+    "endpoint": {"type": "object", "additionalProperties": false, "required": ["address", "family", "port", "transport"], "properties": {"address": {"$ref": "#/$defs/binaryValue"}, "family": {"enum": [4, 6]}, "port": {"type": ["integer", "null"], "minimum": 0, "maximum": 65535}, "transport": {"type": ["string", "null"], "enum": ["tcp", "udp", null]}}},
     "bridgeState": {
       "type": "object", "additionalProperties": false,
       "required": ["kind", "stp_state", "vlan_filtering"],
@@ -120,7 +125,7 @@
       "type": "object", "additionalProperties": false,
       "required": ["address", "family", "interface_semantic_id", "interface_subject_id", "link_address", "namespace_key", "observation_subject_id", "state"],
       "properties": {
-        "address": {"$ref": "#/$defs/encodedValue"}, "family": {"enum": [4, 6]},
+        "address": {"$ref": "#/$defs/binaryValue"}, "family": {"enum": [4, 6]},
         "interface_semantic_id": {"anyOf": [{"$ref": "#/$defs/digest"}, {"type": "null"}]},
         "interface_subject_id": {"anyOf": [{"$ref": "#/$defs/digest"}, {"type": "null"}]},
         "link_address": {"anyOf": [{"$ref": "#/$defs/linkAddress"}, {"type": "null"}]}, "namespace_key": {"type": "string", "minLength": 1},
@@ -131,8 +136,8 @@
       "type": "object", "additionalProperties": false,
       "required": ["destination", "family", "gateway", "metric", "output_interface_semantic_id", "output_interface_subject_id", "prefix_length", "protocol", "route_type", "scope", "table"],
       "properties": {
-        "destination": {"$ref": "#/$defs/encodedValue"}, "family": {"enum": [4, 6]},
-        "gateway": {"anyOf": [{"$ref": "#/$defs/encodedValue"}, {"type": "null"}]}, "metric": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+        "destination": {"$ref": "#/$defs/binaryValue"}, "family": {"enum": [4, 6]},
+        "gateway": {"anyOf": [{"$ref": "#/$defs/binaryValue"}, {"type": "null"}]}, "metric": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
         "output_interface_semantic_id": {"anyOf": [{"$ref": "#/$defs/digest"}, {"type": "null"}]},
         "output_interface_subject_id": {"anyOf": [{"$ref": "#/$defs/digest"}, {"type": "null"}]},
         "prefix_length": {"type": "integer", "minimum": 0, "maximum": 128}, "protocol": {"type": "string", "minLength": 1},

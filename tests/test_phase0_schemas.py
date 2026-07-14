@@ -180,6 +180,26 @@ def test_runtime_neighbor_and_conformance_validate() -> None:
     )
 
 
+@pytest.mark.parametrize(
+    "value",
+    ["AAAAAA", "AAAAAAAAAAAAAAAAAAAAAA", "fwAAAQ", "AQBeAAD7", "_wIAAAAAAAAAAAAAAAAAAQ"],
+)
+def test_binary_network_values_are_always_base64url(value: str) -> None:
+    schema_id = (
+        "https://tbom.yozi.systems/schemas/edge-network-topology/4.0.0/"
+        "observation-projection.schema.json"
+    )
+    _validate_definition(
+        schema_id, "binaryValue", {"encoding": "base64url", "value": value}
+    )
+    with pytest.raises(jsonschema.ValidationError):
+        _validate_definition(
+            schema_id,
+            "binaryValue",
+            {"encoding": "utf-8", "value": "127.0.0.1"},
+        )
+
+
 def test_foreign_trust_domain_is_valid_and_unknown_declared_kind_is_not() -> None:
     examples = load_json(PHASE0 / "representative-examples.json")["representative_fragments"]
     peer = copy.deepcopy(examples["declared_federation_peer"])
