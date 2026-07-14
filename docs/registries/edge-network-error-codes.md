@@ -9,6 +9,7 @@ Owner: Yozi Systems
 | Observation projection unavailable | `https://tbom.yozi.systems/registries/edge-network/error-codes/1/observation-projection-unavailable` | observation projection/fingerprint |
 | Semantic identity unavailable | `https://tbom.yozi.systems/registries/edge-network/error-codes/1/semantic-identity-unavailable` | node identity |
 | Intent validation failed | `https://tbom.yozi.systems/registries/edge-network/error-codes/1/intent-validation-failed` | declared intent |
+| Declared intent invalid | `https://tbom.yozi.systems/registries/edge-network/error-codes/1/declared-intent-invalid` | activated malformed, contradictory, ambiguous, incomplete, or unsupported intent; discovery fails closed |
 | Canonicalization failed | `https://tbom.yozi.systems/registries/edge-network/error-codes/1/canonicalization-failed` | any fingerprint |
 | Cryptographic operation failed | `https://tbom.yozi.systems/registries/edge-network/error-codes/1/cryptographic-operation-failed` | any digest/identity operation |
 | Artifact invalid | `https://tbom.yozi.systems/registries/edge-network/error-codes/1/artifact-invalid` | whole artifact |

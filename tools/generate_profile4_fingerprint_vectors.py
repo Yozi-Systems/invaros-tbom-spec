@@ -67,6 +67,21 @@ def main() -> None:
         OBSERVATION_DOMAIN, observation,
     )
     document["observation_vectors"] = [item for item in document["observation_vectors"] if item["vector_id"] != observation_vector["vector_id"]] + [observation_vector]
+    bootstrap = {
+        "collection_consistency": "generation_validated_sequential",
+        "conformance": [],
+        "datasets": [{"attempts": 1, "dataset": "links", "namespace_key": "root", "reason_codes": [], "records_emitted": 0, "records_seen": 0, "status": "complete"}],
+        "disclosure_profile_id": "https://tbom.yozi.systems/registries/edge-network/disclosure-profiles/1/structural-conformance",
+        "interfaces": [], "neighbors": [],
+        "projection_id": "https://tbom.yozi.systems/projections/edge-network-topology/4.0.0/observation",
+        "routes": [], "structural_topology_fingerprint": None,
+    }
+    bootstrap_vector = fingerprint_vector(
+        "observation-bootstrap-no-intent-003",
+        "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/observation-fingerprint-yozi-fp-v1-jcs-sha256",
+        OBSERVATION_DOMAIN, bootstrap,
+    )
+    document["observation_vectors"] = [item for item in document["observation_vectors"] if item["vector_id"] != bootstrap_vector["vector_id"]] + [bootstrap_vector]
     VECTOR.write_text(json.dumps(document, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 

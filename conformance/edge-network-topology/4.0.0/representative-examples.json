@@ -1,6 +1,7 @@
 {
   "complete_host_artifact": {
     "artifact_id": "018f6f2a-7c4d-4a1b-8e21-1c9b57c84a10",
+    "candidate_intent": null,
     "collection": {"consistency": "generation_validated_sequential", "finished_at": "2026-07-13T12:00:01Z", "overall_status": "complete", "started_at": "2026-07-13T12:00:00Z"},
     "compatibility": {"dual_emission": false, "profile3_artifact_reference": null},
     "declared_intent": {
@@ -17,6 +18,8 @@
     "generated_at": "2026-07-13T12:00:01Z",
     "host_identity": {"disclosure_scope": "local", "evidence": [], "identity_source_class": "generated-persistent", "instance_id": "b17d7437-2e3e-4c88-9bea-325fa075331e", "persistence": "persistent", "privacy_classification": "scope-correlatable", "reproducibility": "producer-local-not-independently-reproducible"},
     "identity_plane": {"nodes": [{"continuity": "confirmed", "disclosure_scope": "local", "instance_id": "76dc2c62-8f3f-4fa8-bbc0-ec5ce202ceef", "semantic_id": "sha256:e23b81c1de8f4245afaee143ed4c0194382bf78149e0fbac6294ba21f3f0a3f2"}]},
+    "intent_conformance": {"reason_codes": [], "status": "evaluated"},
+    "intent_status": "valid",
     "observation": {
       "collection_consistency": "generation_validated_sequential", "conformance": [],
       "datasets": [{"attempts": 1, "dataset": "links", "namespace_key": "root", "reason_codes": [], "records_emitted": 0, "records_seen": 0, "status": "complete"}],

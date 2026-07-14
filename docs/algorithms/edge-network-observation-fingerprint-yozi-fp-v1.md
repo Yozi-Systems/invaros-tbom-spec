@@ -5,6 +5,8 @@ Status: normative Phase 0 draft
 
 ## 1. Projection and disclosure binding
 
+Bootstrap fields `intent_status`, `intent_conformance`, and `candidate_intent` are artifact-control fields and are not members of the observation projection or its fingerprint preimage. The candidate records the resulting observation fingerprint when available; it never contributes to that fingerprint.
+
 The input is exactly the observation projection disclosed under its permanent `disclosure_profile_id`. Undisclosed producer state MUST NOT affect any byte. The profile URI, collection consistency, dataset status, and structural topology fingerprint or null are inside the projection.
 
 Observation timestamps are metadata and are excluded from the fingerprinted projection. Dataset completeness and consistency are included because they qualify the meaning of disclosed evidence.

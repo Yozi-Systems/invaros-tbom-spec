@@ -99,7 +99,10 @@ def validate_payload(payload: dict) -> None:
         "invaros.tbom.profile.edge_network_topology",
         "4.0.0",
     ):
-        from .profile4_semantics import validate_profile4_semantics
+        try:
+            from .profile4_semantics import validate_profile4_semantics
+        except ImportError:  # direct script execution
+            from validator.profile4_semantics import validate_profile4_semantics
 
         validate_profile4_semantics(payload)
 

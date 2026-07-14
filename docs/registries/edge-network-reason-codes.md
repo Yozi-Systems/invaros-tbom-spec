@@ -7,6 +7,7 @@ Reason codes are stable facts that qualify a status or error; they are not prose
 
 | Permanent URI | Meaning |
 |---|---|
+| `https://tbom.yozi.systems/registries/edge-network/reason-codes/1/declared_intent_absent` | no governed declared source is active; bootstrap conformance is not evaluated |
 | `https://tbom.yozi.systems/registries/edge-network/reason-codes/1/declared-intent-missing` | no declared intent was available |
 | `https://tbom.yozi.systems/registries/edge-network/reason-codes/1/declared-intent-incomplete` | a required declaration is absent |
 | `https://tbom.yozi.systems/registries/edge-network/reason-codes/1/declared-intent-invalid` | intent failed schema or semantic validation |

@@ -4,9 +4,10 @@
   "title": "InvarOS Edge Network Topology Profile 4 Complete Artifact",
   "type": "object",
   "additionalProperties": false,
-  "required": ["artifact_id", "collection", "compatibility", "declared_intent", "fingerprints", "generated_at", "host_identity", "identity_plane", "observation", "profile_id", "profile_version", "schema_uri", "specification_uri", "structural_topology"],
+  "required": ["artifact_id", "candidate_intent", "collection", "compatibility", "declared_intent", "fingerprints", "generated_at", "host_identity", "identity_plane", "intent_conformance", "intent_status", "observation", "profile_id", "profile_version", "schema_uri", "specification_uri", "structural_topology"],
   "properties": {
     "artifact_id": {"type": "string", "format": "uuid"},
+    "candidate_intent": {"anyOf": [{"$ref": "#/$defs/candidateIntent"}, {"type": "null"}]},
     "collection": {"$ref": "#/$defs/collection"},
     "compatibility": {"$ref": "#/$defs/compatibility"},
     "declared_intent": {"anyOf": [{"$ref": "https://tbom.yozi.systems/schemas/edge-network-topology/4.0.0/intent-manifest.schema.json"}, {"type": "null"}]},
@@ -20,6 +21,8 @@
     "generated_at": {"type": "string", "format": "date-time"},
     "host_identity": {"$ref": "#/$defs/hostIdentity"},
     "identity_plane": {"$ref": "#/$defs/identityPlane"},
+    "intent_conformance": {"$ref": "#/$defs/intentConformance"},
+    "intent_status": {"enum": ["absent", "valid"]},
     "observation": {"anyOf": [{"$ref": "https://tbom.yozi.systems/schemas/edge-network-topology/4.0.0/observation-projection.schema.json"}, {"type": "null"}]},
     "profile_id": {"const": "invaros.tbom.profile.edge_network_topology"},
     "profile_version": {"const": "4.0.0"},
@@ -30,7 +33,11 @@
   "allOf": [
     {
       "if": {"properties": {"declared_intent": {"type": "null"}}, "required": ["declared_intent"]},
-      "then": {"properties": {"structural_topology": {"type": "null"}, "fingerprints": {"properties": {"topology": {"properties": {"availability": {"const": "unavailable"}}}}}}}
+      "then": {"properties": {"intent_status": {"const": "absent"}, "structural_topology": {"type": "null"}, "fingerprints": {"properties": {"topology": {"properties": {"availability": {"const": "unavailable"}}}}}, "intent_conformance": {"properties": {"status": {"const": "not-evaluated"}}}}}
+    },
+    {
+      "if": {"properties": {"declared_intent": {"type": "object"}}, "required": ["declared_intent"]},
+      "then": {"properties": {"intent_status": {"const": "valid"}, "candidate_intent": {"type": "null"}, "intent_conformance": {"properties": {"status": {"const": "evaluated"}}}}}
     },
     {
       "if": {"properties": {"structural_topology": {"type": "null"}}, "required": ["structural_topology"]},
@@ -42,7 +49,7 @@
     },
     {
       "if": {"properties": {"observation": {"type": "null"}}, "required": ["observation"]},
-      "then": {"properties": {"fingerprints": {"properties": {"observation": {"properties": {"availability": {"const": "unavailable"}}}}}}}
+      "then": {"properties": {"candidate_intent": {"type": "null"}, "fingerprints": {"properties": {"observation": {"properties": {"availability": {"const": "unavailable"}}}}}}}
     },
     {
       "if": {"properties": {"fingerprints": {"properties": {"observation": {"properties": {"availability": {"const": "available"}}, "required": ["availability"]}}, "required": ["observation"]}}, "required": ["fingerprints"]},
@@ -53,6 +60,37 @@
     "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
     "reason": {"type": "string", "pattern": "^https://tbom\\.yozi\\.systems/registries/edge-network/reason-codes/1/"},
     "error": {"type": "string", "pattern": "^https://tbom\\.yozi\\.systems/registries/edge-network/error-codes/1/"},
+    "intentConformance": {
+      "oneOf": [
+        {"type": "object", "additionalProperties": false, "required": ["reason_codes", "status"], "properties": {"reason_codes": {"type": "array", "maxItems": 0}, "status": {"const": "evaluated"}}},
+        {"type": "object", "additionalProperties": false, "required": ["reason_codes", "status"], "properties": {"reason_codes": {"type": "array", "minItems": 1, "maxItems": 1, "items": {"const": "https://tbom.yozi.systems/registries/edge-network/reason-codes/1/declared_intent_absent"}}, "status": {"const": "not-evaluated"}}}
+      ]
+    },
+    "candidateInterface": {
+      "type": "object", "additionalProperties": false,
+      "required": ["interface_kind_observed", "interface_name_observed", "kind_state", "master_observed", "namespace_key", "observation_subject_id", "parent_observed"],
+      "properties": {
+        "interface_kind_observed": {"type": ["string", "null"]},
+        "interface_name_observed": {"$ref": "https://tbom.yozi.systems/schemas/edge-network-topology/4.0.0/observation-projection.schema.json#/$defs/encodedValue"},
+        "kind_state": {"$ref": "https://tbom.yozi.systems/schemas/edge-network-topology/4.0.0/observation-projection.schema.json#/$defs/kindState"},
+        "master_observed": {"anyOf": [{"$ref": "#/$defs/digest"}, {"type": "null"}]},
+        "namespace_key": {"type": "string", "minLength": 1},
+        "observation_subject_id": {"$ref": "#/$defs/digest"},
+        "parent_observed": {"anyOf": [{"$ref": "#/$defs/digest"}, {"type": "null"}]}
+      }
+    },
+    "candidateIntent": {
+      "type": "object", "additionalProperties": false,
+      "required": ["activation", "candidate_version", "completeness", "interfaces", "source_observation_fingerprint", "status"],
+      "properties": {
+        "activation": {"const": "operator-action-required"},
+        "candidate_version": {"const": "1"},
+        "completeness": {"enum": ["complete", "partial"]},
+        "interfaces": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/candidateInterface"}},
+        "source_observation_fingerprint": {"anyOf": [{"$ref": "#/$defs/digest"}, {"type": "null"}]},
+        "status": {"const": "candidate-not-active"}
+      }
+    },
     "availableFingerprint": {
       "type": "object", "additionalProperties": false,
       "required": ["algorithm", "availability", "error_code", "reason_codes", "value"],

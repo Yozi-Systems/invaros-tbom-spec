@@ -64,6 +64,8 @@ specification.
 
 ## Compatibility expectations
 
+Profile 4 bootstrap discovery is an additive correction to the draft contract. It preserves the meaning and fingerprint bytes of every valid-intent structural and observation projection. Successful artifacts now explicitly distinguish absent from valid intent; invalid intent remains a discovery error and never becomes a successful artifact.
+
 - An artifact valid under a given `profile_version` remains valid under
   that same `profile_version` forever; profile schemas in this repository
   are not modified retroactively except to fix a genuine copying or

@@ -65,6 +65,59 @@ def test_complete_profile4_artifact_validates() -> None:
     validate_payload(data["complete_host_artifact"])
 
 
+def test_bootstrap_artifact_and_candidate_validate_semantically() -> None:
+    artifact = copy.deepcopy(
+        load_json(PHASE0 / "representative-examples.json")["complete_host_artifact"]
+    )
+    reason = (
+        "https://tbom.yozi.systems/registries/edge-network/"
+        "reason-codes/1/declared_intent_absent"
+    )
+    artifact["declared_intent"] = None
+    artifact["structural_topology"] = None
+    artifact["identity_plane"]["nodes"] = []
+    artifact["intent_status"] = "absent"
+    artifact["intent_conformance"] = {
+        "reason_codes": [reason], "status": "not-evaluated"
+    }
+    artifact["fingerprints"]["topology"] = {
+        "algorithm": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/topology-fingerprint-yozi-fp-v1-jcs-sha256",
+        "availability": "unavailable",
+        "error_code": "https://tbom.yozi.systems/registries/edge-network/error-codes/1/structural-projection-unavailable",
+        "reason_codes": [reason],
+        "value": None,
+    }
+    artifact["observation"]["structural_topology_fingerprint"] = None
+    artifact["fingerprints"]["observation"]["value"] = (
+        "sha256:cf5cfe908280c477f6fa29d396fabdcb781c7508845e2d8ff4e342e35837cd5c"
+    )
+    artifact["candidate_intent"] = {
+        "activation": "operator-action-required",
+        "candidate_version": "1",
+        "completeness": "complete",
+        "interfaces": [],
+        "source_observation_fingerprint": artifact["fingerprints"]["observation"]["value"],
+        "status": "candidate-not-active",
+    }
+    validate_payload(artifact)
+
+    activated = copy.deepcopy(artifact)
+    activated["candidate_intent"]["status"] = "active"
+    with pytest.raises(jsonschema.ValidationError):
+        validate_payload(activated)
+
+
+def test_bootstrap_conformance_vectors_define_all_three_input_states() -> None:
+    vectors = load_json(PHASE0 / "bootstrap-vectors.json")["cases"]
+    assert {case["case_id"] for case in vectors} == {
+        "intent-absent-complete-observation",
+        "intent-absent-partial-observation",
+        "activated-intent-invalid",
+    }
+    invalid = next(case for case in vectors if case["case_id"] == "activated-intent-invalid")
+    assert invalid["expected"]["artifact_emitted"] is False
+
+
 def test_profile4_projections_and_manifest_validate() -> None:
     artifact = load_json(PHASE0 / "representative-examples.json")["complete_host_artifact"]
     store = schema_store()

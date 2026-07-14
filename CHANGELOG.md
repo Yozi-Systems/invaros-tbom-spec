@@ -8,6 +8,8 @@ specification repository itself; see
 
 ## [Unreleased] - target 0.2.0
 
+- Defines the required Profile 4 bootstrap intent-state model: absent intent yields a valid observation-only artifact and deterministic inactive candidate, valid intent retains the existing structural/conformance workflow, and invalid activated intent remains fail closed.
+
 Draft integration of the Edge Network Topology Phase 0 specification lock:
 
 - Closes three deterministic implementation gaps without changing the Profile

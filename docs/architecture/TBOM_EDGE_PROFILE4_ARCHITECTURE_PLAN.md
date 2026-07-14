@@ -1,5 +1,7 @@
 # InvarOS Edge Network Topology Identity Review and Profile 4 Architecture Plan
 
+> **2026-07-14 bootstrap correction.** Governed intent has absent, valid, and invalid input states. Absent intent yields a valid observation-only artifact and deterministic inactive candidate; valid intent retains structural fingerprints and drift evaluation; invalid activated intent remains fail closed. Observation is never declared structure without explicit operator adoption.
+
 > **Informative design record — not normative specification text.** The
 > normative pre-implementation drafts are under `docs/specifications/`,
 > `docs/algorithms/`, `docs/registries/`, and `schemas/`.

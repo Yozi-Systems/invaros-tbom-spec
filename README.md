@@ -82,6 +82,8 @@ permanent URIs, and profile dispatch.
 The vectors under `conformance/` are synthetic normative inputs, not runtime
 captures. A passing validator test does not establish producer conformance.
 
+Profile 4 defines bootstrap discovery for an unknown device. Intent absence produces observation-only evidence, `intent_status: "absent"`, unavailable intent conformance, and a deterministic inactive candidate for operator review. Activated invalid intent still fails closed; observation is never auto-promoted.
+
 ## Compatibility
 
 Edge Profile 3 is frozen exactly as implemented. Its schema, examples,
@@ -101,7 +103,7 @@ See the [compatibility policy](docs/compatibility.md),
 - Fingerprints provide deterministic comparison, not authenticity.
 - Receipts, commitments, recognition, and transparency are separate artifact
   families.
-- Profile 4 production code and runtime conformance do not yet exist.
+- The invarosd reference runtime implements Profile 4, including bootstrap discovery; deployment evidence and publication remain separate qualification steps.
 
 ## License
 

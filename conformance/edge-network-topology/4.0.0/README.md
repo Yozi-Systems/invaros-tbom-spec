@@ -1,5 +1,7 @@
 # Edge Network Topology Profile 4 Conformance Vectors
 
+`bootstrap-vectors.json` normatively distinguishes absent, valid, and invalid intent inputs, including complete and partial observation bootstrap outcomes. Invalid activated intent emits no artifact.
+
 Status: normative synthetic Phase 0 vectors  
 Vector-set URI: `https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0/phase0`
 

@@ -91,6 +91,8 @@ validation checks:
 
 ## Structural fingerprints
 
+Bootstrap discovery does not authorize observed state. `candidate_intent` is review material, is explicitly inactive, excludes operational addresses, routes, neighbors, and secret material, and cannot create a structural fingerprint. Only a separately installed, validated governed source can activate declared structure.
+
 Both profiles include a structural fingerprint
 (`structural_fingerprint` for Agentic, `topology_fingerprint` for Edge
 Network — see [SPECIFICATION.md § 7](../SPECIFICATION.md#7-fingerprint-expectations)

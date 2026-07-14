@@ -331,8 +331,38 @@ def validate_source_content_fingerprints(manifest: dict) -> None:
             )
 
 
+def _projection_fingerprint(kind: str, projection: dict) -> str:
+    canonical = json.dumps(
+        projection, ensure_ascii=False, separators=(",", ":"), sort_keys=True
+    ).encode("utf-8")
+    domain = (
+        "https://tbom.yozi.systems/domain/edge-network-topology/"
+        f"4.0.0/fingerprint/{kind}"
+    ).encode("ascii")
+    envelope = (
+        b"YOZI-FP\0" + struct.pack(">HH", 1, len(domain)) + domain +
+        b"\x01" + struct.pack(">Q", len(canonical)) + canonical
+    )
+    return "sha256:" + hashlib.sha256(envelope).hexdigest()
+
+
+def validate_artifact_fingerprints(payload: dict) -> None:
+    for name, projection_key in (
+        ("topology", "structural_topology"), ("observation", "observation")
+    ):
+        fingerprint = payload["fingerprints"][name]
+        projection = payload.get(projection_key)
+        if fingerprint["availability"] == "available":
+            if projection is None:
+                raise ValidationError(f"available {name} fingerprint has no projection")
+            expected = _projection_fingerprint(name, projection)
+            if fingerprint["value"] != expected:
+                raise ValidationError(f"{name} fingerprint does not match projection")
+
+
 def validate_profile4_semantics(payload: dict) -> None:
     validate_encoded_values(payload)
+    validate_artifact_fingerprints(payload)
     manifest = payload.get("declared_intent")
     if manifest is not None:
         validate_source_content_fingerprints(manifest)
@@ -345,3 +375,51 @@ def validate_profile4_semantics(payload: dict) -> None:
     observation = payload.get("observation")
     if observation is not None:
         validate_disclosure_projection(observation)
+    intent_status = payload.get("intent_status")
+    conformance = payload.get("intent_conformance")
+    candidate = payload.get("candidate_intent")
+    absent_reason = (
+        "https://tbom.yozi.systems/registries/edge-network/"
+        "reason-codes/1/declared_intent_absent"
+    )
+    if intent_status == "absent":
+        if payload.get("declared_intent") is not None or payload.get("structural_topology") is not None:
+            raise ValidationError("absent intent cannot contain declared structure")
+        if conformance != {"reason_codes": [absent_reason], "status": "not-evaluated"}:
+            raise ValidationError("absent intent requires not-evaluated conformance")
+        if observation is not None and observation.get("conformance"):
+            raise ValidationError("absent intent cannot contain conformance records")
+        candidate_fields_available = (
+            observation is not None and
+            not observation["disclosure_profile_id"].endswith("/public-minimal") and all(
+            all(key in interface for key in (
+                "interface_kind_observed", "interface_name_observed", "kind_state",
+                "master_observed", "parent_observed",
+            ))
+            for interface in observation["interfaces"])
+        )
+        if candidate_fields_available and candidate is None:
+            raise ValidationError("bootstrap observation requires candidate_intent")
+        if candidate is not None:
+            expected = [
+                {
+                    key: interface[key]
+                    for key in (
+                        "interface_kind_observed", "interface_name_observed",
+                        "kind_state", "master_observed", "namespace_key",
+                        "observation_subject_id", "parent_observed",
+                    )
+                }
+                for interface in observation["interfaces"]
+            ]
+            if candidate["interfaces"] != expected:
+                raise ValidationError("candidate_intent is not the deterministic observation projection")
+            fingerprint = payload["fingerprints"]["observation"]
+            expected_fingerprint = fingerprint["value"] if fingerprint["availability"] == "available" else None
+            if candidate["source_observation_fingerprint"] != expected_fingerprint:
+                raise ValidationError("candidate_intent observation fingerprint mismatch")
+    elif intent_status == "valid":
+        if payload.get("declared_intent") is None or candidate is not None:
+            raise ValidationError("valid intent requires declared_intent and forbids candidate_intent")
+        if conformance != {"reason_codes": [], "status": "evaluated"}:
+            raise ValidationError("valid intent requires evaluated conformance")

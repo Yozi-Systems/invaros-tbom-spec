@@ -75,6 +75,35 @@
         "structural_topology_fingerprint": null
       },
       "vector_id": "observation-bridge-kind-state-002"
+    },
+    {
+      "algorithm": "https://tbom.yozi.systems/algorithms/edge-network-topology/4.0.0/observation-fingerprint-yozi-fp-v1-jcs-sha256",
+      "canonical_utf8": "{\"collection_consistency\":\"generation_validated_sequential\",\"conformance\":[],\"datasets\":[{\"attempts\":1,\"dataset\":\"links\",\"namespace_key\":\"root\",\"reason_codes\":[],\"records_emitted\":0,\"records_seen\":0,\"status\":\"complete\"}],\"disclosure_profile_id\":\"https://tbom.yozi.systems/registries/edge-network/disclosure-profiles/1/structural-conformance\",\"interfaces\":[],\"neighbors\":[],\"projection_id\":\"https://tbom.yozi.systems/projections/edge-network-topology/4.0.0/observation\",\"routes\":[],\"structural_topology_fingerprint\":null}",
+      "domain": "https://tbom.yozi.systems/domain/edge-network-topology/4.0.0/fingerprint/observation",
+      "expected_envelope_hex": "594f5a492d4650000001005468747470733a2f2f74626f6d2e796f7a692e73797374656d732f646f6d61696e2f656467652d6e6574776f726b2d746f706f6c6f67792f342e302e302f66696e6765727072696e742f6f62736572766174696f6e0100000000000002087b22636f6c6c656374696f6e5f636f6e73697374656e6379223a2267656e65726174696f6e5f76616c6964617465645f73657175656e7469616c222c22636f6e666f726d616e6365223a5b5d2c226461746173657473223a5b7b22617474656d707473223a312c2264617461736574223a226c696e6b73222c226e616d6573706163655f6b6579223a22726f6f74222c22726561736f6e5f636f646573223a5b5d2c227265636f7264735f656d6974746564223a302c227265636f7264735f7365656e223a302c22737461747573223a22636f6d706c657465227d5d2c22646973636c6f737572655f70726f66696c655f6964223a2268747470733a2f2f74626f6d2e796f7a692e73797374656d732f726567697374726965732f656467652d6e6574776f726b2f646973636c6f737572652d70726f66696c65732f312f7374727563747572616c2d636f6e666f726d616e6365222c22696e7465726661636573223a5b5d2c226e65696768626f7273223a5b5d2c2270726f6a656374696f6e5f6964223a2268747470733a2f2f74626f6d2e796f7a692e73797374656d732f70726f6a656374696f6e732f656467652d6e6574776f726b2d746f706f6c6f67792f342e302e302f6f62736572766174696f6e222c22726f75746573223a5b5d2c227374727563747572616c5f746f706f6c6f67795f66696e6765727072696e74223a6e756c6c7d",
+      "expected_fingerprint": "sha256:cf5cfe908280c477f6fa29d396fabdcb781c7508845e2d8ff4e342e35837cd5c",
+      "projection": {
+        "collection_consistency": "generation_validated_sequential",
+        "conformance": [],
+        "datasets": [
+          {
+            "attempts": 1,
+            "dataset": "links",
+            "namespace_key": "root",
+            "reason_codes": [],
+            "records_emitted": 0,
+            "records_seen": 0,
+            "status": "complete"
+          }
+        ],
+        "disclosure_profile_id": "https://tbom.yozi.systems/registries/edge-network/disclosure-profiles/1/structural-conformance",
+        "interfaces": [],
+        "neighbors": [],
+        "projection_id": "https://tbom.yozi.systems/projections/edge-network-topology/4.0.0/observation",
+        "routes": [],
+        "structural_topology_fingerprint": null
+      },
+      "vector_id": "observation-bootstrap-no-intent-003"
     }
   ],
   "status": "normative-synthetic",

@@ -185,6 +185,20 @@ Declared-intent source content fingerprints use
 
 ## 10. Completeness, availability, and failure
 
+### 10.1 Bootstrap intent state
+
+Before projection, a producer evaluates governed declared sources into exactly one of three states: `absent`, `valid`, or `invalid`. A missing governed source and a governed source containing no declarations are `absent`. Merely installed vendor configuration is not operator adoption unless an adapter explicitly activates it as a governed source. Once any governed source is activated, malformed syntax, contradictory equal-precedence facts, unsupported identity-affecting constructs, ambiguity, incompleteness, or failed validation makes the state `invalid`.
+
+A successful artifact carries `intent_status`, whose values are exactly `absent` and `valid`. The third evaluation state, `invalid`, is a terminal `declared-intent-invalid`/`intent-validation-failed` discovery error and therefore never appears in a successful artifact.
+
+For `intent_status:"absent"`, `declared_intent` and `structural_topology` are null, the topology fingerprint is unavailable for reason `declared_intent_absent`, `intent_conformance.status` is `not-evaluated` with exactly that reason, and observation conformance records are empty. Observation remains an independent operational projection and does not become declared structure.
+
+For `intent_status:"valid"`, the existing declared-intent structural projection, topology fingerprint, binding, conformance, and drift rules apply unchanged. `intent_conformance.status` is `evaluated`, its reason list is empty, and `candidate_intent` is null.
+
+An absent-intent artifact whose disclosure profile exposes the candidate fields contains `candidate_intent`; `public-minimal` uses null and the operator requests `structural-conformance`, `network-operations`, or `internal-full` for the adoption workflow. It is a deterministic, non-authoritative projection of observed interface name, kind, kind state, namespace, parent/master observation-subject references, and observation-subject ID. It has `status:"candidate-not-active"` and `activation:"operator-action-required"`. Its interface order is the observation interface order, and `source_observation_fingerprint` is the available observation fingerprint or null. It excludes addresses, neighbors, routes, secrets, declared semantic IDs, and operator roles. It cannot be consumed as active intent. Activation requires an operator to review and translate or edit it into a valid governed manifest or overlay and explicitly install that source.
+
+If observation is partial, the artifact remains valid with collection status `partial`, unavailable observation fingerprint, candidate completeness `partial`, and a null candidate source fingerprint. If observation is unavailable, observation and candidate are null. Absence never repairs collection failure, and observation never repairs invalid intent.
+
 No incomplete artifact may present itself as complete. The artifact and each dataset carry `status`, record counts, attempts, and reason-code URIs. Structural and observation fingerprints use an availability object.
 
 If required structural data is incomplete, conflicting, unavailable, unsupported, or invalid, the structural projection MUST be null and the topology fingerprint MUST have `availability: "unavailable"`, `value: null`, one stable error-code URI, and one or more reason-code URIs. A producer MAY still emit governed observation evidence.

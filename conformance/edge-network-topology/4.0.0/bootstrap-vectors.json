@@ -1,0 +1,38 @@
+{
+  "profile_version": "4.0.0",
+  "cases": [
+    {
+      "case_id": "intent-absent-complete-observation",
+      "input": {"governed_sources": [], "observation_status": "complete"},
+      "expected": {
+        "candidate_completeness": "complete",
+        "candidate_status": "candidate-not-active",
+        "conformance_status": "not-evaluated",
+        "intent_status": "absent",
+        "reason_code": "https://tbom.yozi.systems/registries/edge-network/reason-codes/1/declared_intent_absent",
+        "structural_topology": null,
+        "topology_fingerprint_availability": "unavailable"
+      }
+    },
+    {
+      "case_id": "intent-absent-partial-observation",
+      "input": {"governed_sources": [], "observation_status": "partial"},
+      "expected": {
+        "candidate_completeness": "partial",
+        "conformance_status": "not-evaluated",
+        "intent_status": "absent",
+        "observation_fingerprint_availability": "unavailable"
+      }
+    },
+    {
+      "case_id": "activated-intent-invalid",
+      "input": {"governed_sources": ["malformed-or-unsupported"], "observation_status": "complete"},
+      "expected": {
+        "artifact_emitted": false,
+        "error_code": "https://tbom.yozi.systems/registries/edge-network/error-codes/1/declared-intent-invalid",
+        "evaluation_state": "invalid"
+      }
+    }
+  ],
+  "status": "normative-synthetic-not-runtime-capture"
+}
