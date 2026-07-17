@@ -16,7 +16,7 @@
 
 Status: final implementation architecture with Phase 0 normative draft package; production implementation not started  
 Review date: 2026-07-13  
-Repository: `/home/yozi/invarosd`  
+Implementation repository: InvarOS runtime  
 Specification owner and change controller: Yozi Systems  
 Intended public specification and schema authority: `https://tbom.yozi.systems/`
 
