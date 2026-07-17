@@ -16,10 +16,12 @@ Yozi Systems is the specification owner and change controller. Permanent
 specification, schema, registry, conformance, and algorithm identifiers are
 rooted at `https://tbom.yozi.systems/`.
 
-The remediated Phase 0 Edge Profile 4 material is the locked engineering
-baseline. It has not been externally published and makes no claim of runtime
-implementation or Profile 4 conformance. The independent RFC 8785 oracle is
-[pinned here](docs/conformance/rfc8785-independent-oracle.md).
+The remediated Edge Profile 4 material is the locked specification baseline.
+The `invarosd` reference producer implements Profile 4 and bootstrap discovery,
+and corrected local and live qualification has completed. Exact GL-MT3000 SDK
+build provenance has not been independently established and must not be
+inferred from successful live-device runtime qualification. The independent
+RFC 8785 oracle is [pinned here](docs/conformance/rfc8785-independent-oracle.md).
 
 ## Current profiles
 

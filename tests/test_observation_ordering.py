@@ -3,8 +3,6 @@
 from __future__ import annotations
 
 import copy
-import json
-
 import pytest
 import jsonschema
 from jsonschema import ValidationError
@@ -108,9 +106,11 @@ def test_mixed_bound_unbound_route_uses_two_independent_reference_keys() -> None
         validate_observation_order(competing)
 
 
-def test_first_live_artifact_is_schema_valid_but_semantically_nonconformant() -> None:
-    path = ROOT.parent / "evidence/profile4-first-live/edge-network-topology-v4-artifact.json"
-    artifact = json.loads(path.read_text(encoding="utf-8"))
+def test_synthetic_noncanonical_artifact_is_schema_valid_but_semantically_nonconformant() -> None:
+    # This synthetic fixture models the historical ordering defect without
+    # incorporating any private live-device evidence.
+    path = ROOT / "tests/fixtures/profile4/noncanonical-observation-order.json"
+    artifact = load_json(path)
     schema = load_json(PROFILE_SCHEMAS[profile_key(artifact)])
     jsonschema.validators.validator_for(schema)(
         schema, registry=schema_registry(), format_checker=jsonschema.FormatChecker()
