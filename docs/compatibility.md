@@ -7,10 +7,29 @@ non-breaking change to a profile. It is a companion to
 where Edge Network behavior differs, the versioned documents under
 [`docs/specifications/`](specifications/) govern.
 
-The `invarosd` Profile 4 reference producer and bootstrap discovery now exist.
+The InvarOS Runtime (`invaros-runtime`) Profile 4 reference producer and bootstrap discovery now exist.
 The preserved first-live captures are historical non-conformant evidence after
 independent review identified non-canonical observation arrays. Corrected
 builds qualify independently; Profile 3 bytes and fingerprints remain frozen.
+
+## Producer naming
+
+The reference producer for the Edge Network Topology profiles is **InvarOS
+Runtime**, whose repository, package, and binary identity is
+`invaros-runtime`. It was previously named `invarosd`, and the frozen legacy
+Profile 3 assets record that earlier name.
+
+| Legacy name | Canonical name |
+| --- | --- |
+| `invarosd` | InvarOS Runtime (`invaros-runtime`) |
+| `invarosd-v2` | InvarOS Authority (`invaros-authority`) |
+
+Producer naming inside frozen assets is **not** rewritten. The Profile 3
+schema and golden artifacts are byte-frozen and hash-pinned; their recorded
+producer name is the legacy name at time of publication and remains exactly as
+published. Documentation, Profile 4 material, and any future profile use the
+canonical name. A serialized or fingerprinted producer identity may only change
+under a new `profile_version`, per the breaking-change rules below.
 
 ## `profile_id`
 

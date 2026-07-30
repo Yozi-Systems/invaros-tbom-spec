@@ -1,5 +1,12 @@
 # InvarOS Edge Network Topology Profile 3.0.0 — Frozen Legacy Compatibility Specification
 
+> **Canonical vocabulary notice (Migration Phase 8, 2026-07-30).** `invarosd` is
+> the legacy name at time of evidence for **InvarOS Runtime** (repository,
+> package, and binary `invaros-runtime`). This frozen legacy specification pins a
+> specific reference-implementation commit and is preserved as published; the
+> recorded name is not rewritten. Current material uses the canonical name.
+> Glossary: `atgs-foundation/platform-record/INVAROS_CANONICAL_VOCABULARY_2026.md`.
+
 Status: normative draft describing the existing reference implementation exactly  
 Specification URI: `https://tbom.yozi.systems/specifications/edge-network-topology/3.0.0-legacy`  
 Legacy algorithm URI: `https://tbom.yozi.systems/algorithms/edge-network-topology/3.0.0/legacy-reference-sha256-v1`  

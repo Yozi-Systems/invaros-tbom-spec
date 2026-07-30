@@ -64,8 +64,8 @@ The accepted direction is a dual-plane Profile 4 architecture:
 - `src/plugin_loader.c` performs `dlopen` and `dlsym` plugin loading.
 - `src/daemon.c` runs the uloop event loop.
 - `src/ubus.c` handles `invaros.topology discover`, invokes the plugin, and returns the TBoM as an escaped JSON string in the ubus `tbom` field.
-- `include/invarosd/topology.h` defines the topology extension API.
-- `include/invarosd/ubus.h` defines ubus discovery wiring.
+- `include/invaros/runtime/topology.h` defines the topology extension API.
+- `include/invaros/runtime/ubus.h` defines ubus discovery wiring.
 
 ### 2.2 Discovery and identifier implementation
 
@@ -1698,10 +1698,10 @@ Rollback: keep unpublished drafts.
 Potential modifications:
 
 - `plugins/topology/topology_plugin.c`
-- `include/invarosd/topology.h`
+- `include/invaros/runtime/topology.h`
 - `src/main.c`
 - `src/ubus.c`
-- `include/invarosd/ubus.h`
+- `include/invaros/runtime/ubus.h`
 - CMake/test files
 - packaging validation
 - Linux/OpenWrt documentation
@@ -1862,7 +1862,7 @@ The following publication and governance direction is accepted together with the
 
 ## 29. Current status and explicit non-claims
 
-- Profile 3 implementation remains the code currently present in `invarosd`.
+- Profile 3 implementation remains the code currently present in InvarOS Runtime.
 - Profile 4 has draft JSON Schemas and normative synthetic vectors, but no production code, final published schema, conformance implementation, deployed artifact, or verified runtime behavior.
 - This document does not claim Profile 4 conformance.
 - No Profile 3 algorithm or golden fingerprint has been changed by this architecture review.

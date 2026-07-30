@@ -1,6 +1,6 @@
 # InvarOS Edge Network Topology Profile 4.0.0 — Locked Normative Specification
 
-Status: normative pre-publication draft; `invarosd` reference producer and bootstrap discovery implemented; corrected qualification completed locally after remediation of the first-live canonical-ordering defect
+Status: normative pre-publication draft; InvarOS Runtime reference producer and bootstrap discovery implemented; corrected qualification completed locally after remediation of the first-live canonical-ordering defect
 Specification URI: `https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0`  
 Profile family identifier: `invaros.tbom.profile.edge_network_topology`  
 Normative revision: `4.0.0`  
