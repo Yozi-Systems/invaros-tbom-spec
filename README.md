@@ -1,119 +1,30 @@
-# InvarOS Topology Bill of Materials (TBoM)
+# Trust Bill of Materials Standard Specification (`invaros-tbom-spec`)
 
-A Topology Bill of Materials is a deterministic, metadata-only JSON artifact
-describing topology: its participants, declared pathways, and profile-defined
-fingerprints. This repository contains specification drafts, JSON Schemas,
-registries, algorithms, examples, synthetic conformance vectors, and a
-reference validator. It does not contain a TBoM producer or runtime.
+## 1. What is this repository?
+**Component Name:** Trust Bill of Materials (TBOM) Standard Specification Repository (`invaros-tbom-spec`)  
+**Owner:** Yozi Systems Standards & Specification Governance Board  
+**Scope:** Canonical JSON-LD schemas, profile specifications, algorithm definitions, and conformance suites for the TBOM open standard.
 
-TBoM means **Topology** Bill of Materials, never “Trust” Bill of Materials.
-A TBoM is not by itself a trust assertion, signature, runtime enforcement
-mechanism, or proof of authenticity.
+## 2. What problem does it solve?
+Defines an open, vendor-neutral standard for declaring, verifying, and auditing software trust metadata, cryptographic provenance, and runtime governance policies.
 
-## Governance and permanent authority
+## 3. How is it built and tested?
+- **Prerequisites:** Python 3.10+, `pytest`, `jsonschema`
+- **Validation & Test Commands:**
+  ```bash
+  python3 scripts/validate_schemas.py
+  pytest conformance/
+  ```
 
-Yozi Systems is the specification owner and change controller. Permanent
-specification, schema, registry, conformance, and algorithm identifiers are
-rooted at `https://tbom.yozi.systems/`.
+## 4. Where is the canonical institutional documentation?
+Canonical platform standards, corporate strategy, and governance rules reside in central `yozi-docs`:
+- 📍 **Canonical Platform Specs:** [`yozi-docs/canonical-specs/`](file:///home/yozi/yozi-docs/canonical-specs/)
+- 📍 **TBOM Explorer Products:** [`yozi-docs/products/tbom-explorer/`](file:///home/yozi/yozi-docs/products/tbom-explorer/)
 
-The remediated Edge Profile 4 material is the locked specification baseline.
-The InvarOS Runtime (`invaros-runtime`) reference producer implements Profile 4 and bootstrap discovery,
-and corrected local and live qualification has completed. Exact GL-MT3000 SDK
-build provenance has not been independently established and must not be
-inferred from successful live-device runtime qualification. The independent
-RFC 8785 oracle is [pinned here](docs/conformance/rfc8785-independent-oracle.md).
+## 5. Which repositories does it depend on?
+- **Upstream Dependencies:** None (Authoritative Standard Repository)
+- **Downstream Consumers:** [`invaros-runtime`](file:///home/yozi/invaros-runtime), [`invaros-authority`](file:///home/yozi/invaros-authority), [`invaros-development-tbom-explorer`](file:///home/yozi/invaros-development-tbom-explorer), [`invaros-enterprise-tbom-explorer`](file:///home/yozi/invaros-enterprise-tbom-explorer)
 
-## Current profiles
-
-| Profile | Version | Status | Authoritative material |
-| --- | ---: | --- | --- |
-| Agentic Topology | 3.0.0 | Existing public draft with schema, example, and validator support | [SPECIFICATION.md](SPECIFICATION.md), [`schemas/agentic/`](schemas/agentic/) |
-| Edge Network Topology | 3.0.0 | Frozen legacy compatibility profile; current implementation and fingerprints remain unchanged | [Legacy specification](docs/specifications/edge-network-topology-3.0.0-legacy.md), [legacy algorithm](docs/algorithms/edge-network-profile3-legacy-fingerprint.md), [`schemas/edge-network/`](schemas/edge-network/) |
-| Edge Network Topology | 4.0.0 | Reference producer and bootstrap discovery implemented in InvarOS Runtime; corrected qualification completed locally after independent review found the first-live ordering defect | [Profile 4 specification](docs/specifications/edge-network-topology-4.0.0.md), [`schemas/edge-network-topology/4.0.0/`](schemas/edge-network-topology/4.0.0/), [synthetic vectors](conformance/edge-network-topology/4.0.0/) |
-
-Profile 3 and Profile 4 share the Edge profile family identifier but use
-different `profile_version` and algorithm identifiers. Consumers must
-dispatch on both profile family and version. Profile 4 follows the governing
-rule: **structure is defined by declared intent, not by observed behavior**.
-
-## Repository structure
-
-```text
-SPECIFICATION.md             Historical 0.1 umbrella draft; Agentic Profile 3
-docs/
-  specifications/            Edge Profile 3 frozen and Profile 4 draft specs
-  algorithms/                Exact language-neutral fingerprint/identity rules
-  registries/                Permanent Edge Network registry drafts
-  architecture/              Informative design record; not normative
-schemas/
-  agentic/                   Agentic Profile 3 schema
-  edge-network/              Frozen Edge Profile 3 schema
-  edge-network-topology/
-    4.0.0/                   Closed Profile 4 draft schemas
-examples/                    Existing Agentic and Edge Profile 3 examples
-conformance/
-  edge-network-topology/
-    4.0.0/                   Normative synthetic Phase 0 vectors
-validator/                   Offline reference schema validator
-tests/                       Schema, vector, preservation, and CLI tests
-```
-
-The complete architecture plan is retained at
-[`docs/architecture/TBOM_EDGE_PROFILE4_ARCHITECTURE_PLAN.md`](docs/architecture/TBOM_EDGE_PROFILE4_ARCHITECTURE_PLAN.md)
-as an informative engineering record. Normative requirements are in
-`docs/specifications`, `docs/algorithms`, `docs/registries`, and `schemas`.
-
-## Validation and conformance
-
-```console
-python3 -m venv .venv
-. .venv/bin/activate
-python -m pip install .[test]
-python -m pytest -q
-python validator/validate_examples.py
-tbom-validate examples/agentic/*.json examples/edge-network/*.json
-```
-
-The pytest suite parses and meta-validates every schema; validates existing
-examples and Profile 4 representative data; reconstructs YOZI-TID-v1 and
-YOZI-FP-v1 vectors; checks federation separation, fail-closed incomplete
-structure, and sequential-observation behavior; locks
-Profile 3 assets and fingerprints; and checks UTF-8, Markdown fences,
-permanent URIs, and profile dispatch.
-
-The vectors under `conformance/` are synthetic normative inputs, not runtime
-captures. A passing validator test does not establish producer conformance.
-
-Profile 4 defines bootstrap discovery for an unknown device. Intent absence produces observation-only evidence, `intent_status: "absent"`, unavailable intent conformance, and a deterministic inactive candidate for operator review. Activated invalid intent still fails closed; observation is never auto-promoted.
-
-Profile 4 distinguishes textual encoded values from binary network protocol
-octets: textual fields prefer UTF-8, while IP, route, neighbor, tunnel, and
-link-layer address fields always use canonical unpadded base64url.
-
-## Compatibility
-
-Edge Profile 3 is frozen exactly as implemented. Its schema, examples,
-serialization quirks, IDs, and fingerprints must not be repaired in place.
-Profile 4 is a separate artifact and intentionally changes identity,
-canonicalization, completeness, and fingerprint semantics. The approved
-migration model is separate dual emission after a producer becomes
-conformant; no current producer is claimed to do so.
-
-See the [compatibility policy](docs/compatibility.md),
-[profile comparison](docs/profiles.md), and [security guidance](docs/security.md).
-
-## Scope and non-claims
-
-- TBoM artifacts describe topology; they do not enforce it by themselves.
-- Profile 4 observation is evidence, not structure.
-- Fingerprints provide deterministic integrity naming, not authenticity,
-  replay protection, trusted freshness, or absolute downgrade resistance.
-- Receipts, commitments, recognition, and transparency are separate artifact
-  families.
-- The InvarOS Runtime reference producer implements Profile 4 and bootstrap discovery.
-  Its first live artifacts are preserved as non-conformant historical evidence
-  after independent review found non-canonical observation array order.
-
-## License
-
-Apache License 2.0. See [LICENSE](LICENSE).
+## 6. Where should new documentation for this repository be placed?
+- **Repository-Local Technical Documentation (`docs/` & `SPECIFICATION.md`):** Normative specifications (`SPECIFICATION.md`), algorithm definitions (`docs/algorithms/`), registry parameter rules (`docs/registries/`), and conformance guides.
+- **Central Institutional Documentation (`yozi-docs/`):** TBOM commercial strategy, adoption proposals, and cross-repo governance roadmaps (`yozi-docs/`).
