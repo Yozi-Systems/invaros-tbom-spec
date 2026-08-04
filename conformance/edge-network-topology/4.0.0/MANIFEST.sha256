@@ -1,0 +1,25 @@
+# Profile 4 criteria manifest — Edge Network Topology 4.0.0
+#
+# CANONICAL HOME: invaros-tbom-spec/conformance/edge-network-topology/4.0.0/
+# This file is mirrored byte-identically into invaros-runtime. Consumers verify
+# it; nothing rewrites it automatically.
+#
+# Covers every *.json criteria file in this directory. README.md is excluded
+# deliberately: it is repository prose, differs legitimately between the
+# custodian and its mirrors, and is not criteria.
+#
+# A gate fails on a digest mismatch, on a listed file that is missing, and on a
+# *.json file present here but absent from this list. There is no override flag.
+# Changing a criterion means editing this manifest in the same commit.
+#
+# Regenerate with:  sha256sum *.json | LC_ALL=C sort -k2
+32690ff88d0150f633ad9dfbca0bd973a062d3072620d7d2973515f77169e689  bootstrap-vectors.json
+01d2ef4a2caac09d69be5a2a5931e024d94ea058138f95950f483e754835dacb  canonicalization-vectors.json
+77bc9592f897a6f5f81398e5682c31380dc87ab2878dc4aec4ce966509478dab  disclosure-profile-vectors.json
+d72580f85533e3e1a3ee3aa3b8b0e34d24d423da844622b36252ce8ae7ce7258  encoded-value-vectors.json
+6bf70923ab274aa9865e8062ed860dceebfca06b6510f1c1b03bf1ce98091240  fingerprint-vectors.json
+3134ae19850e578cc8af9b07078faecc7783bed486e5755f81a475b8df8d5f1e  observation-order-vectors.json
+75c53f0848827532ea7c6c6cfd71038612b14a27a97b0917f95c667c8c3bdd15  representative-examples.json
+68b442666cd2658d3ba3f2b5fed61317f08b9571be4e095b544b3a1e7040a6f9  semantic-identity-vectors.json
+ec6197edec7d146c25b2172bcab997dd0a124aa43e4f9b3581e6495629f87d74  source-content-fingerprint-vectors.json
+61a9bc5a44b58bea4b0f1e3909c211861727270b958526aa2a9078f164693ec3  validation-vectors.json
