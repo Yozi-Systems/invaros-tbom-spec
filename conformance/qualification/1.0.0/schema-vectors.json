@@ -1,0 +1,1994 @@
+{
+  "vector_set": "https://tbom.yozi.systems/conformance/qualification/1.0.0/schema-vectors",
+  "status": "normative",
+  "cases": [
+    {
+      "case_id": "transcript-valid",
+      "artifact": "transcript",
+      "valid": true,
+      "rationale": "A complete transcript with declared coverage gaps. Note it carries no status: that is the point of the artifact.",
+      "document": {
+        "schema_id": "invaros.qualification.transcript/v1",
+        "subject": {
+          "component": "invaros-runtime",
+          "build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "source_commit": "9f9c8f9",
+          "worktree_clean": true,
+          "build_configuration": "Release",
+          "toolchain": "GCC 13.3.0",
+          "surface_under_test": [
+            "plugins/topology/profile4",
+            "src/profile4"
+          ]
+        },
+        "criteria": {
+          "kind": "conformance-vectors",
+          "uri": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0",
+          "manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "specification_uri": "https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0",
+          "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "coverage": {
+          "units_available": [
+            "validation",
+            "disclosure-profile",
+            "observation-order",
+            "representative-examples"
+          ],
+          "units_executed": [
+            "validation",
+            "disclosure-profile"
+          ],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable",
+              "detail": "expected_keys are stated over a synthetic projection the producer cannot emit without live capture"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ],
+          "specification_sections_covered": [
+            "8",
+            "9"
+          ]
+        },
+        "observations": [
+          {
+            "unit": "validation",
+            "case_id": "null-structural-fingerprint-incomplete-intent",
+            "input_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+            "observed": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+          }
+        ],
+        "environment": {
+          "kernel": "Linux 6.8.0-124-generic",
+          "emitted_at": "2026-08-04T12:00:00Z"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+          "provider_kind": "Software",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "attestation-valid-incomplete",
+      "artifact": "attestation",
+      "valid": true,
+      "rationale": "incomplete is a first-class outcome and the platform's expected steady state (QE-D7), not an edge case.",
+      "document": {
+        "schema_id": "invaros.qualification.attestation/v1",
+        "transcript_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+        "subject_build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "criteria_manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "verifier": {
+          "implementation": "atgs-validator",
+          "version": "0.1.0",
+          "independence": "shares_no_code_with_subject"
+        },
+        "result": {
+          "status": "incomplete",
+          "cases_checked": 1,
+          "cases_passed": 1,
+          "cases_failed": 0,
+          "per_unit": [
+            {
+              "unit": "validation",
+              "status": "qualified",
+              "cases": 1
+            }
+          ],
+          "failures": [],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ]
+        },
+        "claim": {
+          "statement": "The Profile 4 producer in the named build reproduced every digest required by the named criteria set for the units listed as executed.",
+          "supported_domain": [
+            "It is not a statement that the specification is correct.",
+            "It is not a security claim.",
+            "It says nothing about units not executed.",
+            "It says nothing about any other build."
+          ],
+          "assumptions": [
+            {
+              "assumption": "criteria integrity",
+              "statement": "The criteria digest resolved against the public custodian copy."
+            }
+          ],
+          "does_not_close": [
+            "The P8-B4 security review.",
+            "Producer behaviour on live netlink capture."
+          ]
+        },
+        "validity": {
+          "binds_to": [
+            "subject_build_digest",
+            "criteria_manifest_digest",
+            "specification_digest",
+            "declared_environment"
+          ],
+          "voided_by": "any change to a bound identity — never elapsed time"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "transcript-valid-full-coverage",
+      "artifact": "transcript",
+      "valid": true,
+      "rationale": "An empty units_not_executed is expressible and is what qualified would require.",
+      "document": {
+        "schema_id": "invaros.qualification.transcript/v1",
+        "subject": {
+          "component": "invaros-runtime",
+          "build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "source_commit": "9f9c8f9",
+          "worktree_clean": true,
+          "build_configuration": "Release",
+          "toolchain": "GCC 13.3.0",
+          "surface_under_test": [
+            "plugins/topology/profile4",
+            "src/profile4"
+          ]
+        },
+        "criteria": {
+          "kind": "conformance-vectors",
+          "uri": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0",
+          "manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "specification_uri": "https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0",
+          "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "coverage": {
+          "units_available": [
+            "validation",
+            "disclosure-profile",
+            "observation-order",
+            "representative-examples"
+          ],
+          "units_executed": [
+            "validation",
+            "disclosure-profile",
+            "observation-order",
+            "representative-examples"
+          ],
+          "units_not_executed": [],
+          "specification_sections_covered": [
+            "8",
+            "9"
+          ]
+        },
+        "observations": [
+          {
+            "unit": "validation",
+            "case_id": "null-structural-fingerprint-incomplete-intent",
+            "input_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+            "observed": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+          }
+        ],
+        "environment": {
+          "kernel": "Linux 6.8.0-124-generic",
+          "emitted_at": "2026-08-04T12:00:00Z"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+          "provider_kind": "Software",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "transcript-carrying-status",
+      "artifact": "transcript",
+      "valid": false,
+      "rationale": "V1 / QR2. The transcript schema defines no status field and closes the object, so a signed subject-authored verdict is not expressible inside the artifact.",
+      "document": {
+        "schema_id": "invaros.qualification.transcript/v1",
+        "subject": {
+          "component": "invaros-runtime",
+          "build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "source_commit": "9f9c8f9",
+          "worktree_clean": true,
+          "build_configuration": "Release",
+          "toolchain": "GCC 13.3.0",
+          "surface_under_test": [
+            "plugins/topology/profile4",
+            "src/profile4"
+          ]
+        },
+        "criteria": {
+          "kind": "conformance-vectors",
+          "uri": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0",
+          "manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "specification_uri": "https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0",
+          "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "coverage": {
+          "units_available": [
+            "validation",
+            "disclosure-profile",
+            "observation-order",
+            "representative-examples"
+          ],
+          "units_executed": [
+            "validation",
+            "disclosure-profile"
+          ],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable",
+              "detail": "expected_keys are stated over a synthetic projection the producer cannot emit without live capture"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ],
+          "specification_sections_covered": [
+            "8",
+            "9"
+          ]
+        },
+        "observations": [
+          {
+            "unit": "validation",
+            "case_id": "null-structural-fingerprint-incomplete-intent",
+            "input_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+            "observed": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+          }
+        ],
+        "environment": {
+          "kernel": "Linux 6.8.0-124-generic",
+          "emitted_at": "2026-08-04T12:00:00Z"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+          "provider_kind": "Software",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "status": "qualified"
+      }
+    },
+    {
+      "case_id": "transcript-carrying-nested-status",
+      "artifact": "transcript",
+      "valid": false,
+      "rationale": "A status smuggled under a new member is rejected by the same closure.",
+      "document": {
+        "schema_id": "invaros.qualification.transcript/v1",
+        "subject": {
+          "component": "invaros-runtime",
+          "build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "source_commit": "9f9c8f9",
+          "worktree_clean": true,
+          "build_configuration": "Release",
+          "toolchain": "GCC 13.3.0",
+          "surface_under_test": [
+            "plugins/topology/profile4",
+            "src/profile4"
+          ]
+        },
+        "criteria": {
+          "kind": "conformance-vectors",
+          "uri": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0",
+          "manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "specification_uri": "https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0",
+          "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "coverage": {
+          "units_available": [
+            "validation",
+            "disclosure-profile",
+            "observation-order",
+            "representative-examples"
+          ],
+          "units_executed": [
+            "validation",
+            "disclosure-profile"
+          ],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable",
+              "detail": "expected_keys are stated over a synthetic projection the producer cannot emit without live capture"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ],
+          "specification_sections_covered": [
+            "8",
+            "9"
+          ]
+        },
+        "observations": [
+          {
+            "unit": "validation",
+            "case_id": "null-structural-fingerprint-incomplete-intent",
+            "input_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+            "observed": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+          }
+        ],
+        "environment": {
+          "kernel": "Linux 6.8.0-124-generic",
+          "emitted_at": "2026-08-04T12:00:00Z"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+          "provider_kind": "Software",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "result": {
+          "status": "qualified"
+        }
+      }
+    },
+    {
+      "case_id": "attestation-missing-supported-domain",
+      "artifact": "attestation",
+      "valid": false,
+      "rationale": "V11 / P4 / G3. An attestation without a supported domain cannot be emitted.",
+      "document": {
+        "schema_id": "invaros.qualification.attestation/v1",
+        "transcript_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+        "subject_build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "criteria_manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "verifier": {
+          "implementation": "atgs-validator",
+          "version": "0.1.0",
+          "independence": "shares_no_code_with_subject"
+        },
+        "result": {
+          "status": "incomplete",
+          "cases_checked": 1,
+          "cases_passed": 1,
+          "cases_failed": 0,
+          "per_unit": [
+            {
+              "unit": "validation",
+              "status": "qualified",
+              "cases": 1
+            }
+          ],
+          "failures": [],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ]
+        },
+        "claim": {
+          "statement": "The Profile 4 producer in the named build reproduced every digest required by the named criteria set for the units listed as executed.",
+          "assumptions": [
+            {
+              "assumption": "criteria integrity",
+              "statement": "The criteria digest resolved against the public custodian copy."
+            }
+          ],
+          "does_not_close": [
+            "The P8-B4 security review.",
+            "Producer behaviour on live netlink capture."
+          ]
+        },
+        "validity": {
+          "binds_to": [
+            "subject_build_digest",
+            "criteria_manifest_digest",
+            "specification_digest",
+            "declared_environment"
+          ],
+          "voided_by": "any change to a bound identity — never elapsed time"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "attestation-empty-supported-domain",
+      "artifact": "attestation",
+      "valid": false,
+      "rationale": "An empty supported domain is the same defect as a missing one.",
+      "document": {
+        "schema_id": "invaros.qualification.attestation/v1",
+        "transcript_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+        "subject_build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "criteria_manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "verifier": {
+          "implementation": "atgs-validator",
+          "version": "0.1.0",
+          "independence": "shares_no_code_with_subject"
+        },
+        "result": {
+          "status": "incomplete",
+          "cases_checked": 1,
+          "cases_passed": 1,
+          "cases_failed": 0,
+          "per_unit": [
+            {
+              "unit": "validation",
+              "status": "qualified",
+              "cases": 1
+            }
+          ],
+          "failures": [],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ]
+        },
+        "claim": {
+          "statement": "The Profile 4 producer in the named build reproduced every digest required by the named criteria set for the units listed as executed.",
+          "supported_domain": [],
+          "assumptions": [
+            {
+              "assumption": "criteria integrity",
+              "statement": "The criteria digest resolved against the public custodian copy."
+            }
+          ],
+          "does_not_close": [
+            "The P8-B4 security review.",
+            "Producer behaviour on live netlink capture."
+          ]
+        },
+        "validity": {
+          "binds_to": [
+            "subject_build_digest",
+            "criteria_manifest_digest",
+            "specification_digest",
+            "declared_environment"
+          ],
+          "voided_by": "any change to a bound identity — never elapsed time"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "attestation-missing-claim",
+      "artifact": "attestation",
+      "valid": false,
+      "rationale": "The claim block is mandatory.",
+      "document": {
+        "schema_id": "invaros.qualification.attestation/v1",
+        "transcript_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+        "subject_build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "criteria_manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "verifier": {
+          "implementation": "atgs-validator",
+          "version": "0.1.0",
+          "independence": "shares_no_code_with_subject"
+        },
+        "result": {
+          "status": "incomplete",
+          "cases_checked": 1,
+          "cases_passed": 1,
+          "cases_failed": 0,
+          "per_unit": [
+            {
+              "unit": "validation",
+              "status": "qualified",
+              "cases": 1
+            }
+          ],
+          "failures": [],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ]
+        },
+        "validity": {
+          "binds_to": [
+            "subject_build_digest",
+            "criteria_manifest_digest",
+            "specification_digest",
+            "declared_environment"
+          ],
+          "voided_by": "any change to a bound identity — never elapsed time"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "transcript-carrying-expected-echo",
+      "artifact": "transcript",
+      "valid": false,
+      "rationale": "V13 / QE-D13. expected_echo is removed, not optional. It was the transcript's only self-scoring surface.",
+      "document": {
+        "schema_id": "invaros.qualification.transcript/v1",
+        "subject": {
+          "component": "invaros-runtime",
+          "build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "source_commit": "9f9c8f9",
+          "worktree_clean": true,
+          "build_configuration": "Release",
+          "toolchain": "GCC 13.3.0",
+          "surface_under_test": [
+            "plugins/topology/profile4",
+            "src/profile4"
+          ]
+        },
+        "criteria": {
+          "kind": "conformance-vectors",
+          "uri": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0",
+          "manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "specification_uri": "https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0",
+          "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "coverage": {
+          "units_available": [
+            "validation",
+            "disclosure-profile",
+            "observation-order",
+            "representative-examples"
+          ],
+          "units_executed": [
+            "validation",
+            "disclosure-profile"
+          ],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable",
+              "detail": "expected_keys are stated over a synthetic projection the producer cannot emit without live capture"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ],
+          "specification_sections_covered": [
+            "8",
+            "9"
+          ]
+        },
+        "observations": [
+          {
+            "unit": "validation",
+            "case_id": "null-structural-fingerprint-incomplete-intent",
+            "input_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+            "observed": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+            "expected_echo": "sha256:9999999999999999999999999999999999999999999999999999999999999999"
+          }
+        ],
+        "environment": {
+          "kernel": "Linux 6.8.0-124-generic",
+          "emitted_at": "2026-08-04T12:00:00Z"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+          "provider_kind": "Software",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "transcript-criteria-as-array",
+      "artifact": "transcript",
+      "valid": false,
+      "rationale": "V16 / QE-D12. One transcript, one subject, one criteria set. Composition belongs to consumers.",
+      "document": {
+        "schema_id": "invaros.qualification.transcript/v1",
+        "subject": {
+          "component": "invaros-runtime",
+          "build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "source_commit": "9f9c8f9",
+          "worktree_clean": true,
+          "build_configuration": "Release",
+          "toolchain": "GCC 13.3.0",
+          "surface_under_test": [
+            "plugins/topology/profile4",
+            "src/profile4"
+          ]
+        },
+        "criteria": [
+          {
+            "kind": "conformance-vectors",
+            "uri": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0",
+            "manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "specification_uri": "https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0",
+            "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+          }
+        ],
+        "coverage": {
+          "units_available": [
+            "validation",
+            "disclosure-profile",
+            "observation-order",
+            "representative-examples"
+          ],
+          "units_executed": [
+            "validation",
+            "disclosure-profile"
+          ],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable",
+              "detail": "expected_keys are stated over a synthetic projection the producer cannot emit without live capture"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ],
+          "specification_sections_covered": [
+            "8",
+            "9"
+          ]
+        },
+        "observations": [
+          {
+            "unit": "validation",
+            "case_id": "null-structural-fingerprint-incomplete-intent",
+            "input_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+            "observed": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+          }
+        ],
+        "environment": {
+          "kernel": "Linux 6.8.0-124-generic",
+          "emitted_at": "2026-08-04T12:00:00Z"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+          "provider_kind": "Software",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "transcript-coverage-omitting-units-not-executed",
+      "artifact": "transcript",
+      "valid": false,
+      "rationale": "P5. Absence is stated, never inferred; omitting the gap list is not expressible.",
+      "document": {
+        "schema_id": "invaros.qualification.transcript/v1",
+        "subject": {
+          "component": "invaros-runtime",
+          "build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "source_commit": "9f9c8f9",
+          "worktree_clean": true,
+          "build_configuration": "Release",
+          "toolchain": "GCC 13.3.0",
+          "surface_under_test": [
+            "plugins/topology/profile4",
+            "src/profile4"
+          ]
+        },
+        "criteria": {
+          "kind": "conformance-vectors",
+          "uri": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0",
+          "manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "specification_uri": "https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0",
+          "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "coverage": {
+          "units_available": [
+            "validation",
+            "disclosure-profile",
+            "observation-order",
+            "representative-examples"
+          ],
+          "units_executed": [
+            "validation",
+            "disclosure-profile"
+          ],
+          "specification_sections_covered": [
+            "8",
+            "9"
+          ]
+        },
+        "observations": [
+          {
+            "unit": "validation",
+            "case_id": "null-structural-fingerprint-incomplete-intent",
+            "input_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+            "observed": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+          }
+        ],
+        "environment": {
+          "kernel": "Linux 6.8.0-124-generic",
+          "emitted_at": "2026-08-04T12:00:00Z"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+          "provider_kind": "Software",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "transcript-reason-code-outside-closed-set",
+      "artifact": "transcript",
+      "valid": false,
+      "rationale": "V15 / QE-D7. A free-text reason cannot distinguish a subject capability gap from an apparatus coverage gap.",
+      "document": {
+        "schema_id": "invaros.qualification.transcript/v1",
+        "subject": {
+          "component": "invaros-runtime",
+          "build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "source_commit": "9f9c8f9",
+          "worktree_clean": true,
+          "build_configuration": "Release",
+          "toolchain": "GCC 13.3.0",
+          "surface_under_test": [
+            "plugins/topology/profile4",
+            "src/profile4"
+          ]
+        },
+        "criteria": {
+          "kind": "conformance-vectors",
+          "uri": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0",
+          "manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "specification_uri": "https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0",
+          "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "coverage": {
+          "units_available": [
+            "validation",
+            "disclosure-profile",
+            "observation-order",
+            "representative-examples"
+          ],
+          "units_executed": [
+            "validation",
+            "disclosure-profile"
+          ],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "legacy_only",
+              "detail": "expected_keys are stated over a synthetic projection the producer cannot emit without live capture"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ],
+          "specification_sections_covered": [
+            "8",
+            "9"
+          ]
+        },
+        "observations": [
+          {
+            "unit": "validation",
+            "case_id": "null-structural-fingerprint-incomplete-intent",
+            "input_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+            "observed": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+          }
+        ],
+        "environment": {
+          "kernel": "Linux 6.8.0-124-generic",
+          "emitted_at": "2026-08-04T12:00:00Z"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+          "provider_kind": "Software",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "transcript-reason-code-absent",
+      "artifact": "transcript",
+      "valid": false,
+      "rationale": "V15 / QE-D7. The reason code is required, not advisory.",
+      "document": {
+        "schema_id": "invaros.qualification.transcript/v1",
+        "subject": {
+          "component": "invaros-runtime",
+          "build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "source_commit": "9f9c8f9",
+          "worktree_clean": true,
+          "build_configuration": "Release",
+          "toolchain": "GCC 13.3.0",
+          "surface_under_test": [
+            "plugins/topology/profile4",
+            "src/profile4"
+          ]
+        },
+        "criteria": {
+          "kind": "conformance-vectors",
+          "uri": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0",
+          "manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "specification_uri": "https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0",
+          "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "coverage": {
+          "units_available": [
+            "validation",
+            "disclosure-profile",
+            "observation-order",
+            "representative-examples"
+          ],
+          "units_executed": [
+            "validation",
+            "disclosure-profile"
+          ],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "detail": "expected_keys are stated over a synthetic projection the producer cannot emit without live capture"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ],
+          "specification_sections_covered": [
+            "8",
+            "9"
+          ]
+        },
+        "observations": [
+          {
+            "unit": "validation",
+            "case_id": "null-structural-fingerprint-incomplete-intent",
+            "input_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+            "observed": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+          }
+        ],
+        "environment": {
+          "kernel": "Linux 6.8.0-124-generic",
+          "emitted_at": "2026-08-04T12:00:00Z"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+          "provider_kind": "Software",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "attestation-reason-code-outside-closed-set",
+      "artifact": "attestation",
+      "valid": false,
+      "rationale": "The same closed vocabulary binds the verifier-derived side.",
+      "document": {
+        "schema_id": "invaros.qualification.attestation/v1",
+        "transcript_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+        "subject_build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "criteria_manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "verifier": {
+          "implementation": "atgs-validator",
+          "version": "0.1.0",
+          "independence": "shares_no_code_with_subject"
+        },
+        "result": {
+          "status": "incomplete",
+          "cases_checked": 1,
+          "cases_passed": 1,
+          "cases_failed": 0,
+          "per_unit": [
+            {
+              "unit": "validation",
+              "status": "qualified",
+              "cases": 1
+            }
+          ],
+          "failures": [],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "unknown"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ]
+        },
+        "claim": {
+          "statement": "The Profile 4 producer in the named build reproduced every digest required by the named criteria set for the units listed as executed.",
+          "supported_domain": [
+            "It is not a statement that the specification is correct.",
+            "It is not a security claim.",
+            "It says nothing about units not executed.",
+            "It says nothing about any other build."
+          ],
+          "assumptions": [
+            {
+              "assumption": "criteria integrity",
+              "statement": "The criteria digest resolved against the public custodian copy."
+            }
+          ],
+          "does_not_close": [
+            "The P8-B4 security review.",
+            "Producer behaviour on live netlink capture."
+          ]
+        },
+        "validity": {
+          "binds_to": [
+            "subject_build_digest",
+            "criteria_manifest_digest",
+            "specification_digest",
+            "declared_environment"
+          ],
+          "voided_by": "any change to a bound identity — never elapsed time"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "attestation-carrying-not-valid-after",
+      "artifact": "attestation",
+      "valid": false,
+      "rationale": "V16 / QE-D10. Attestations are digest-bound. A clock-dependent field would import a freshness dependency that offline verification cannot satisfy.",
+      "document": {
+        "schema_id": "invaros.qualification.attestation/v1",
+        "transcript_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+        "subject_build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "criteria_manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "verifier": {
+          "implementation": "atgs-validator",
+          "version": "0.1.0",
+          "independence": "shares_no_code_with_subject"
+        },
+        "result": {
+          "status": "incomplete",
+          "cases_checked": 1,
+          "cases_passed": 1,
+          "cases_failed": 0,
+          "per_unit": [
+            {
+              "unit": "validation",
+              "status": "qualified",
+              "cases": 1
+            }
+          ],
+          "failures": [],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ]
+        },
+        "claim": {
+          "statement": "The Profile 4 producer in the named build reproduced every digest required by the named criteria set for the units listed as executed.",
+          "supported_domain": [
+            "It is not a statement that the specification is correct.",
+            "It is not a security claim.",
+            "It says nothing about units not executed.",
+            "It says nothing about any other build."
+          ],
+          "assumptions": [
+            {
+              "assumption": "criteria integrity",
+              "statement": "The criteria digest resolved against the public custodian copy."
+            }
+          ],
+          "does_not_close": [
+            "The P8-B4 security review.",
+            "Producer behaviour on live netlink capture."
+          ]
+        },
+        "validity": {
+          "binds_to": [
+            "subject_build_digest",
+            "criteria_manifest_digest",
+            "specification_digest",
+            "declared_environment"
+          ],
+          "voided_by": "any change to a bound identity — never elapsed time",
+          "not_valid_after": "2027-08-04T00:00:00Z"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "attestation-carrying-advisory-expiry",
+      "artifact": "attestation",
+      "valid": false,
+      "rationale": "Any clock-dependent validity field is prohibited, not only the named one.",
+      "document": {
+        "schema_id": "invaros.qualification.attestation/v1",
+        "transcript_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+        "subject_build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "criteria_manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "verifier": {
+          "implementation": "atgs-validator",
+          "version": "0.1.0",
+          "independence": "shares_no_code_with_subject"
+        },
+        "result": {
+          "status": "incomplete",
+          "cases_checked": 1,
+          "cases_passed": 1,
+          "cases_failed": 0,
+          "per_unit": [
+            {
+              "unit": "validation",
+              "status": "qualified",
+              "cases": 1
+            }
+          ],
+          "failures": [],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ]
+        },
+        "claim": {
+          "statement": "The Profile 4 producer in the named build reproduced every digest required by the named criteria set for the units listed as executed.",
+          "supported_domain": [
+            "It is not a statement that the specification is correct.",
+            "It is not a security claim.",
+            "It says nothing about units not executed.",
+            "It says nothing about any other build."
+          ],
+          "assumptions": [
+            {
+              "assumption": "criteria integrity",
+              "statement": "The criteria digest resolved against the public custodian copy."
+            }
+          ],
+          "does_not_close": [
+            "The P8-B4 security review.",
+            "Producer behaviour on live netlink capture."
+          ]
+        },
+        "validity": {
+          "binds_to": [
+            "subject_build_digest",
+            "criteria_manifest_digest",
+            "specification_digest",
+            "declared_environment"
+          ],
+          "voided_by": "any change to a bound identity — never elapsed time",
+          "advisory_expiry": "2027-08-04T00:00:00Z"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "transcript-signed-ed25519",
+      "artifact": "transcript",
+      "valid": false,
+      "rationale": "QE-D15. Qualification Evidence v1 reuses the Runtime's existing ES256 substrate; ed25519 is not permitted in v1.",
+      "document": {
+        "schema_id": "invaros.qualification.transcript/v1",
+        "subject": {
+          "component": "invaros-runtime",
+          "build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "source_commit": "9f9c8f9",
+          "worktree_clean": true,
+          "build_configuration": "Release",
+          "toolchain": "GCC 13.3.0",
+          "surface_under_test": [
+            "plugins/topology/profile4",
+            "src/profile4"
+          ]
+        },
+        "criteria": {
+          "kind": "conformance-vectors",
+          "uri": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0",
+          "manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "specification_uri": "https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0",
+          "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "coverage": {
+          "units_available": [
+            "validation",
+            "disclosure-profile",
+            "observation-order",
+            "representative-examples"
+          ],
+          "units_executed": [
+            "validation",
+            "disclosure-profile"
+          ],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable",
+              "detail": "expected_keys are stated over a synthetic projection the producer cannot emit without live capture"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ],
+          "specification_sections_covered": [
+            "8",
+            "9"
+          ]
+        },
+        "observations": [
+          {
+            "unit": "validation",
+            "case_id": "null-structural-fingerprint-incomplete-intent",
+            "input_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+            "observed": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+          }
+        ],
+        "environment": {
+          "kernel": "Linux 6.8.0-124-generic",
+          "emitted_at": "2026-08-04T12:00:00Z"
+        },
+        "signature": {
+          "algorithm": "ed25519",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+          "provider_kind": "Software",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "attestation-signed-ed25519",
+      "artifact": "attestation",
+      "valid": false,
+      "rationale": "QE-D15, verifier side.",
+      "document": {
+        "schema_id": "invaros.qualification.attestation/v1",
+        "transcript_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+        "subject_build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "criteria_manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "verifier": {
+          "implementation": "atgs-validator",
+          "version": "0.1.0",
+          "independence": "shares_no_code_with_subject"
+        },
+        "result": {
+          "status": "incomplete",
+          "cases_checked": 1,
+          "cases_passed": 1,
+          "cases_failed": 0,
+          "per_unit": [
+            {
+              "unit": "validation",
+              "status": "qualified",
+              "cases": 1
+            }
+          ],
+          "failures": [],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ]
+        },
+        "claim": {
+          "statement": "The Profile 4 producer in the named build reproduced every digest required by the named criteria set for the units listed as executed.",
+          "supported_domain": [
+            "It is not a statement that the specification is correct.",
+            "It is not a security claim.",
+            "It says nothing about units not executed.",
+            "It says nothing about any other build."
+          ],
+          "assumptions": [
+            {
+              "assumption": "criteria integrity",
+              "statement": "The criteria digest resolved against the public custodian copy."
+            }
+          ],
+          "does_not_close": [
+            "The P8-B4 security review.",
+            "Producer behaviour on live netlink capture."
+          ]
+        },
+        "validity": {
+          "binds_to": [
+            "subject_build_digest",
+            "criteria_manifest_digest",
+            "specification_digest",
+            "declared_environment"
+          ],
+          "voided_by": "any change to a bound identity — never elapsed time"
+        },
+        "signature": {
+          "algorithm": "ed25519",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "transcript-wrong-signing-profile",
+      "artifact": "transcript",
+      "valid": false,
+      "rationale": "The purpose-specialized profile id is pinned, following the runtime-evidence precedent.",
+      "document": {
+        "schema_id": "invaros.qualification.transcript/v1",
+        "subject": {
+          "component": "invaros-runtime",
+          "build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "source_commit": "9f9c8f9",
+          "worktree_clean": true,
+          "build_configuration": "Release",
+          "toolchain": "GCC 13.3.0",
+          "surface_under_test": [
+            "plugins/topology/profile4",
+            "src/profile4"
+          ]
+        },
+        "criteria": {
+          "kind": "conformance-vectors",
+          "uri": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0",
+          "manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "specification_uri": "https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0",
+          "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "coverage": {
+          "units_available": [
+            "validation",
+            "disclosure-profile",
+            "observation-order",
+            "representative-examples"
+          ],
+          "units_executed": [
+            "validation",
+            "disclosure-profile"
+          ],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable",
+              "detail": "expected_keys are stated over a synthetic projection the producer cannot emit without live capture"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ],
+          "specification_sections_covered": [
+            "8",
+            "9"
+          ]
+        },
+        "observations": [
+          {
+            "unit": "validation",
+            "case_id": "null-structural-fingerprint-incomplete-intent",
+            "input_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+            "observed": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+          }
+        ],
+        "environment": {
+          "kernel": "Linux 6.8.0-124-generic",
+          "emitted_at": "2026-08-04T12:00:00Z"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256/v1",
+          "key_id": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+          "provider_kind": "Software",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "transcript-forbidden-metadata-key-top-level",
+      "artifact": "transcript",
+      "valid": false,
+      "rationale": "V12 / S6. The metadata firewall is enforced by closure: additionalProperties false rejects every forbidden key.",
+      "document": {
+        "schema_id": "invaros.qualification.transcript/v1",
+        "subject": {
+          "component": "invaros-runtime",
+          "build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "source_commit": "9f9c8f9",
+          "worktree_clean": true,
+          "build_configuration": "Release",
+          "toolchain": "GCC 13.3.0",
+          "surface_under_test": [
+            "plugins/topology/profile4",
+            "src/profile4"
+          ]
+        },
+        "criteria": {
+          "kind": "conformance-vectors",
+          "uri": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0",
+          "manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "specification_uri": "https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0",
+          "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "coverage": {
+          "units_available": [
+            "validation",
+            "disclosure-profile",
+            "observation-order",
+            "representative-examples"
+          ],
+          "units_executed": [
+            "validation",
+            "disclosure-profile"
+          ],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable",
+              "detail": "expected_keys are stated over a synthetic projection the producer cannot emit without live capture"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ],
+          "specification_sections_covered": [
+            "8",
+            "9"
+          ]
+        },
+        "observations": [
+          {
+            "unit": "validation",
+            "case_id": "null-structural-fingerprint-incomplete-intent",
+            "input_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+            "observed": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+          }
+        ],
+        "environment": {
+          "kernel": "Linux 6.8.0-124-generic",
+          "emitted_at": "2026-08-04T12:00:00Z"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+          "provider_kind": "Software",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "solver_output": [
+          1,
+          2,
+          3
+        ]
+      }
+    },
+    {
+      "case_id": "transcript-forbidden-metadata-key-nested",
+      "artifact": "transcript",
+      "valid": false,
+      "rationale": "V12 / S6, nested. Closure is applied at every level, not only the root.",
+      "document": {
+        "schema_id": "invaros.qualification.transcript/v1",
+        "subject": {
+          "component": "invaros-runtime",
+          "build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "source_commit": "9f9c8f9",
+          "worktree_clean": true,
+          "build_configuration": "Release",
+          "toolchain": "GCC 13.3.0",
+          "surface_under_test": [
+            "plugins/topology/profile4",
+            "src/profile4"
+          ],
+          "private_key": "-----BEGIN PRIVATE KEY-----"
+        },
+        "criteria": {
+          "kind": "conformance-vectors",
+          "uri": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0",
+          "manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "specification_uri": "https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0",
+          "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "coverage": {
+          "units_available": [
+            "validation",
+            "disclosure-profile",
+            "observation-order",
+            "representative-examples"
+          ],
+          "units_executed": [
+            "validation",
+            "disclosure-profile"
+          ],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable",
+              "detail": "expected_keys are stated over a synthetic projection the producer cannot emit without live capture"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ],
+          "specification_sections_covered": [
+            "8",
+            "9"
+          ]
+        },
+        "observations": [
+          {
+            "unit": "validation",
+            "case_id": "null-structural-fingerprint-incomplete-intent",
+            "input_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+            "observed": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+          }
+        ],
+        "environment": {
+          "kernel": "Linux 6.8.0-124-generic",
+          "emitted_at": "2026-08-04T12:00:00Z"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+          "provider_kind": "Software",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "attestation-forbidden-metadata-key",
+      "artifact": "attestation",
+      "valid": false,
+      "rationale": "V12 / S6, verifier side.",
+      "document": {
+        "schema_id": "invaros.qualification.attestation/v1",
+        "transcript_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+        "subject_build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "criteria_manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "verifier": {
+          "implementation": "atgs-validator",
+          "version": "0.1.0",
+          "independence": "shares_no_code_with_subject",
+          "secret": "x"
+        },
+        "result": {
+          "status": "incomplete",
+          "cases_checked": 1,
+          "cases_passed": 1,
+          "cases_failed": 0,
+          "per_unit": [
+            {
+              "unit": "validation",
+              "status": "qualified",
+              "cases": 1
+            }
+          ],
+          "failures": [],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ]
+        },
+        "claim": {
+          "statement": "The Profile 4 producer in the named build reproduced every digest required by the named criteria set for the units listed as executed.",
+          "supported_domain": [
+            "It is not a statement that the specification is correct.",
+            "It is not a security claim.",
+            "It says nothing about units not executed.",
+            "It says nothing about any other build."
+          ],
+          "assumptions": [
+            {
+              "assumption": "criteria integrity",
+              "statement": "The criteria digest resolved against the public custodian copy."
+            }
+          ],
+          "does_not_close": [
+            "The P8-B4 security review.",
+            "Producer behaviour on live netlink capture."
+          ]
+        },
+        "validity": {
+          "binds_to": [
+            "subject_build_digest",
+            "criteria_manifest_digest",
+            "specification_digest",
+            "declared_environment"
+          ],
+          "voided_by": "any change to a bound identity — never elapsed time"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "transcript-wrong-schema-id",
+      "artifact": "transcript",
+      "valid": false,
+      "rationale": "The two artifact classes are separate and closed; neither validates as the other.",
+      "document": {
+        "schema_id": "invaros.qualification.attestation/v1",
+        "subject": {
+          "component": "invaros-runtime",
+          "build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "source_commit": "9f9c8f9",
+          "worktree_clean": true,
+          "build_configuration": "Release",
+          "toolchain": "GCC 13.3.0",
+          "surface_under_test": [
+            "plugins/topology/profile4",
+            "src/profile4"
+          ]
+        },
+        "criteria": {
+          "kind": "conformance-vectors",
+          "uri": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0",
+          "manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "specification_uri": "https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0",
+          "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "coverage": {
+          "units_available": [
+            "validation",
+            "disclosure-profile",
+            "observation-order",
+            "representative-examples"
+          ],
+          "units_executed": [
+            "validation",
+            "disclosure-profile"
+          ],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable",
+              "detail": "expected_keys are stated over a synthetic projection the producer cannot emit without live capture"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ],
+          "specification_sections_covered": [
+            "8",
+            "9"
+          ]
+        },
+        "observations": [
+          {
+            "unit": "validation",
+            "case_id": "null-structural-fingerprint-incomplete-intent",
+            "input_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+            "observed": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+          }
+        ],
+        "environment": {
+          "kernel": "Linux 6.8.0-124-generic",
+          "emitted_at": "2026-08-04T12:00:00Z"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+          "provider_kind": "Software",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "attestation-wrong-schema-id",
+      "artifact": "attestation",
+      "valid": false,
+      "rationale": "Converse of the above.",
+      "document": {
+        "schema_id": "invaros.qualification.transcript/v1",
+        "transcript_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+        "subject_build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "criteria_manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "verifier": {
+          "implementation": "atgs-validator",
+          "version": "0.1.0",
+          "independence": "shares_no_code_with_subject"
+        },
+        "result": {
+          "status": "incomplete",
+          "cases_checked": 1,
+          "cases_passed": 1,
+          "cases_failed": 0,
+          "per_unit": [
+            {
+              "unit": "validation",
+              "status": "qualified",
+              "cases": 1
+            }
+          ],
+          "failures": [],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ]
+        },
+        "claim": {
+          "statement": "The Profile 4 producer in the named build reproduced every digest required by the named criteria set for the units listed as executed.",
+          "supported_domain": [
+            "It is not a statement that the specification is correct.",
+            "It is not a security claim.",
+            "It says nothing about units not executed.",
+            "It says nothing about any other build."
+          ],
+          "assumptions": [
+            {
+              "assumption": "criteria integrity",
+              "statement": "The criteria digest resolved against the public custodian copy."
+            }
+          ],
+          "does_not_close": [
+            "The P8-B4 security review.",
+            "Producer behaviour on live netlink capture."
+          ]
+        },
+        "validity": {
+          "binds_to": [
+            "subject_build_digest",
+            "criteria_manifest_digest",
+            "specification_digest",
+            "declared_environment"
+          ],
+          "voided_by": "any change to a bound identity — never elapsed time"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "transcript-malformed-digest",
+      "artifact": "transcript",
+      "valid": false,
+      "rationale": "Digest form is pinned to the platform's sha256:<64 hex> shape.",
+      "document": {
+        "schema_id": "invaros.qualification.transcript/v1",
+        "subject": {
+          "component": "invaros-runtime",
+          "build_digest": "sha256:NOTHEX",
+          "source_commit": "9f9c8f9",
+          "worktree_clean": true,
+          "build_configuration": "Release",
+          "toolchain": "GCC 13.3.0",
+          "surface_under_test": [
+            "plugins/topology/profile4",
+            "src/profile4"
+          ]
+        },
+        "criteria": {
+          "kind": "conformance-vectors",
+          "uri": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0",
+          "manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "specification_uri": "https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0",
+          "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "coverage": {
+          "units_available": [
+            "validation",
+            "disclosure-profile",
+            "observation-order",
+            "representative-examples"
+          ],
+          "units_executed": [
+            "validation",
+            "disclosure-profile"
+          ],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable",
+              "detail": "expected_keys are stated over a synthetic projection the producer cannot emit without live capture"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ],
+          "specification_sections_covered": [
+            "8",
+            "9"
+          ]
+        },
+        "observations": [
+          {
+            "unit": "validation",
+            "case_id": "null-structural-fingerprint-incomplete-intent",
+            "input_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+            "observed": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+          }
+        ],
+        "environment": {
+          "kernel": "Linux 6.8.0-124-generic",
+          "emitted_at": "2026-08-04T12:00:00Z"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+          "provider_kind": "Software",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "attestation-unknown-status",
+      "artifact": "attestation",
+      "valid": false,
+      "rationale": "QE-D7 prohibits a separate partial status.",
+      "document": {
+        "schema_id": "invaros.qualification.attestation/v1",
+        "transcript_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+        "subject_build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "criteria_manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "verifier": {
+          "implementation": "atgs-validator",
+          "version": "0.1.0",
+          "independence": "shares_no_code_with_subject"
+        },
+        "result": {
+          "status": "partial",
+          "cases_checked": 1,
+          "cases_passed": 1,
+          "cases_failed": 0,
+          "per_unit": [
+            {
+              "unit": "validation",
+              "status": "qualified",
+              "cases": 1
+            }
+          ],
+          "failures": [],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ]
+        },
+        "claim": {
+          "statement": "The Profile 4 producer in the named build reproduced every digest required by the named criteria set for the units listed as executed.",
+          "supported_domain": [
+            "It is not a statement that the specification is correct.",
+            "It is not a security claim.",
+            "It says nothing about units not executed.",
+            "It says nothing about any other build."
+          ],
+          "assumptions": [
+            {
+              "assumption": "criteria integrity",
+              "statement": "The criteria digest resolved against the public custodian copy."
+            }
+          ],
+          "does_not_close": [
+            "The P8-B4 security review.",
+            "Producer behaviour on live netlink capture."
+          ]
+        },
+        "validity": {
+          "binds_to": [
+            "subject_build_digest",
+            "criteria_manifest_digest",
+            "specification_digest",
+            "declared_environment"
+          ],
+          "voided_by": "any change to a bound identity — never elapsed time"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "attestation-independence-not-asserted",
+      "artifact": "attestation",
+      "valid": false,
+      "rationale": "Independence is a constant in the schema, so an attestation cannot claim a weaker form of it.",
+      "document": {
+        "schema_id": "invaros.qualification.attestation/v1",
+        "transcript_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+        "subject_build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "criteria_manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "verifier": {
+          "implementation": "atgs-validator",
+          "version": "0.1.0",
+          "independence": "reviewed"
+        },
+        "result": {
+          "status": "incomplete",
+          "cases_checked": 1,
+          "cases_passed": 1,
+          "cases_failed": 0,
+          "per_unit": [
+            {
+              "unit": "validation",
+              "status": "qualified",
+              "cases": 1
+            }
+          ],
+          "failures": [],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ]
+        },
+        "claim": {
+          "statement": "The Profile 4 producer in the named build reproduced every digest required by the named criteria set for the units listed as executed.",
+          "supported_domain": [
+            "It is not a statement that the specification is correct.",
+            "It is not a security claim.",
+            "It says nothing about units not executed.",
+            "It says nothing about any other build."
+          ],
+          "assumptions": [
+            {
+              "assumption": "criteria integrity",
+              "statement": "The criteria digest resolved against the public custodian copy."
+            }
+          ],
+          "does_not_close": [
+            "The P8-B4 security review.",
+            "Producer behaviour on live netlink capture."
+          ]
+        },
+        "validity": {
+          "binds_to": [
+            "subject_build_digest",
+            "criteria_manifest_digest",
+            "specification_digest",
+            "declared_environment"
+          ],
+          "voided_by": "any change to a bound identity — never elapsed time"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    }
+  ]
+}

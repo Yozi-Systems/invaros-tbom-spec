@@ -34,7 +34,11 @@ def _validate_definition(schema_id: str, definition: str, instance: object) -> N
 
 
 def test_all_schemas_parse_and_meta_validate() -> None:
-    assert len(SCHEMAS) == 7
+    # 7 Profile 3/4 schemas, plus the 2 qualification artifact schemas added by
+    # Qualification Evidence WP-01.1. The count is asserted so that growing the
+    # schema tree is a deliberate edit rather than a silent one; it did its job
+    # when the qualification schemas landed.
+    assert len(SCHEMAS) == 9
     for path in SCHEMAS:
         schema = load_json(path)
         jsonschema.validators.validator_for(schema).check_schema(schema)

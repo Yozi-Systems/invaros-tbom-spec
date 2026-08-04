@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tbom.yozi.systems/schemas/qualification/attestation.v1.schema.json",
+  "title": "InvarOS Qualification Attestation v1",
+  "description": "An independent verifier's derived conclusion about a Qualification Transcript. Only this artifact carries a status, and only a verifier sharing no code with the subject may sign it. See invaros/ADR-002 and founder decision QE-D2.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_id", "transcript_digest", "subject_build_digest", "criteria_manifest_digest", "specification_digest", "verifier", "result", "claim", "validity", "signature"],
+  "properties": {
+    "schema_id": {"const": "invaros.qualification.attestation/v1"},
+    "transcript_digest": {"$ref": "#/$defs/digest"},
+    "subject_build_digest": {
+      "description": "Re-checked by the verifier against a release manifest, never trusted from the transcript. Absent from every manifest yields status indeterminate.",
+      "$ref": "#/$defs/digest"
+    },
+    "criteria_manifest_digest": {
+      "description": "The verifier's own independently obtained copy. Taking this from the transcript would defeat the independence the split exists to create.",
+      "$ref": "#/$defs/digest"
+    },
+    "specification_digest": {"$ref": "#/$defs/digest"},
+    "verifier": {"$ref": "#/$defs/verifier"},
+    "result": {"$ref": "#/$defs/result"},
+    "claim": {"$ref": "#/$defs/claim"},
+    "validity": {"$ref": "#/$defs/validity"},
+    "signature": {"$ref": "#/$defs/signature"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "unit": {"type": "string", "minLength": 1, "maxLength": 128},
+    "verifier": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["implementation", "version", "independence"],
+      "properties": {
+        "implementation": {"type": "string", "minLength": 1, "maxLength": 128},
+        "version": {"type": "string", "minLength": 1, "maxLength": 64},
+        "independence": {"const": "shares_no_code_with_subject"}
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "cases_checked", "cases_passed", "cases_failed", "per_unit", "failures", "units_not_executed"],
+      "properties": {
+        "status": {
+          "description": "qualified requires an empty units_not_executed: a run that passed every case it executed but skipped a unit is incomplete, never qualified. indeterminate covers verifier-side resolution failure and is distinct from not-qualified, which is a substantive result. There is deliberately no partial status (QE-D7).",
+          "enum": ["qualified", "not-qualified", "incomplete", "indeterminate"]
+        },
+        "cases_checked": {"type": "integer", "minimum": 0},
+        "cases_passed": {"type": "integer", "minimum": 0},
+        "cases_failed": {"type": "integer", "minimum": 0},
+        "per_unit": {"type": "array", "items": {"$ref": "#/$defs/perUnit"}},
+        "failures": {"type": "array", "items": {"$ref": "#/$defs/failure"}},
+        "units_not_executed": {
+          "description": "Verifier-derived, not adopted from the subject's declaration. A disagreement with the transcript is reported in findings.",
+          "type": "array",
+          "items": {"$ref": "#/$defs/unexecutedUnit"}
+        },
+        "findings": {"type": "array", "items": {"$ref": "#/$defs/finding"}}
+      }
+    },
+    "perUnit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unit", "status", "cases"],
+      "properties": {
+        "unit": {"$ref": "#/$defs/unit"},
+        "status": {"enum": ["qualified", "not-qualified", "incomplete", "indeterminate"]},
+        "cases": {"type": "integer", "minimum": 0}
+      }
+    },
+    "failure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unit", "case_id", "expected", "observed"],
+      "properties": {
+        "unit": {"$ref": "#/$defs/unit"},
+        "case_id": {"type": "string", "minLength": 1, "maxLength": 256},
+        "expected": {"$ref": "#/$defs/digest"},
+        "observed": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "unexecutedUnit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unit", "reason_code"],
+      "properties": {
+        "unit": {"$ref": "#/$defs/unit"},
+        "reason_code": {"$ref": "#/$defs/reasonCode"},
+        "detail": {"type": "string", "maxLength": 512}
+      }
+    },
+    "reasonCode": {
+      "description": "Closed vocabulary, per QE-D7. Here the value is verifier-derived and is what a consumer binds to.",
+      "enum": ["not-implemented", "environment-unavailable", "criteria-unavailable", "out-of-scope"]
+    },
+    "finding": {
+      "description": "A reportable disagreement between what the subject declared and what the verifier derived, in the same class as a criteria-digest mismatch.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "detail"],
+      "properties": {
+        "kind": {"enum": ["reason-code-disagreement", "criteria-digest-mismatch", "build-digest-unresolved", "coverage-disagreement"]},
+        "detail": {"type": "string", "minLength": 1, "maxLength": 512}
+      }
+    },
+    "claim": {
+      "description": "The semantic domain of the claim travels with the claim (architecture P4, goal G3). An attestation without a supported domain cannot be emitted. This is the schematized form of the discipline SESSION_LEVEL2_QUALIFICATION.md already practises in prose.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["statement", "supported_domain", "assumptions", "does_not_close"],
+      "properties": {
+        "statement": {"type": "string", "minLength": 1, "maxLength": 2048},
+        "supported_domain": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1, "maxLength": 512}},
+        "assumptions": {"type": "array", "items": {"$ref": "#/$defs/assumption"}},
+        "does_not_close": {"type": "array", "items": {"type": "string", "minLength": 1, "maxLength": 512}}
+      }
+    },
+    "assumption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assumption", "statement"],
+      "properties": {
+        "assumption": {"type": "string", "minLength": 1, "maxLength": 128},
+        "statement": {"type": "string", "minLength": 1, "maxLength": 512}
+      }
+    },
+    "validity": {
+      "description": "Digest-bound, never time-bounded (QE-D10). An attestation is voided by a change to a bound identity, not by elapsed time. not_valid_after, advisory expiry, and any other clock-dependent validity field are prohibited in v1; additionalProperties false is what makes that prohibition structural. This preserves offline and air-gapped verification without a freshness or trusted-clock dependency.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["binds_to", "voided_by"],
+      "properties": {
+        "binds_to": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"enum": ["subject_build_digest", "criteria_manifest_digest", "specification_digest", "declared_environment"]}
+        },
+        "voided_by": {"const": "any change to a bound identity — never elapsed time"}
+      }
+    },
+    "signature": {
+      "description": "ES256, per founder decision QE-D15. The verifier's key is a distinct holder from the subject's: compromise of one does not forge the other's artifact.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "profile_id", "key_id", "value"],
+      "properties": {
+        "algorithm": {"const": "ES256"},
+        "profile_id": {"const": "invaros.crypto.es256-p1363-sha256-qualification/v1"},
+        "key_id": {"$ref": "#/$defs/digest"},
+        "value": {"type": "string", "pattern": "^[A-Za-z0-9_-]{86}$"}
+      }
+    }
+  }
+}

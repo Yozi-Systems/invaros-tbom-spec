@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tbom.yozi.systems/schemas/qualification/transcript.v1.schema.json",
+  "title": "InvarOS Qualification Transcript v1",
+  "description": "What a shipped subject build observed when exercised against named criteria. Carries no verdict: the schema defines no status field and closes every object, so a subject cannot emit a signed verdict inside this artifact. See invaros/ADR-002 and founder decision QE-D2.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_id", "subject", "criteria", "coverage", "observations", "environment", "signature"],
+  "properties": {
+    "schema_id": {"const": "invaros.qualification.transcript/v1"},
+    "subject": {"$ref": "#/$defs/subject"},
+    "criteria": {"$ref": "#/$defs/criteria"},
+    "coverage": {"$ref": "#/$defs/coverage"},
+    "observations": {"type": "array", "items": {"$ref": "#/$defs/observation"}},
+    "environment": {"$ref": "#/$defs/environment"},
+    "signature": {"$ref": "#/$defs/signature"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "unit": {"type": "string", "minLength": 1, "maxLength": 128},
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["component", "build_digest", "source_commit", "worktree_clean", "build_configuration", "toolchain", "surface_under_test"],
+      "properties": {
+        "component": {"type": "string", "minLength": 1, "maxLength": 128},
+        "build_digest": {"$ref": "#/$defs/digest"},
+        "source_commit": {"type": "string", "pattern": "^[0-9a-f]{7,40}$"},
+        "worktree_clean": {"type": "boolean"},
+        "build_configuration": {"type": "string", "minLength": 1, "maxLength": 64},
+        "toolchain": {"type": "string", "minLength": 1, "maxLength": 128},
+        "surface_under_test": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+      }
+    },
+    "criteria": {
+      "description": "Exactly one criteria set, per QE-D12. This member is an object and is never an array; composition across criteria kinds belongs to consumers, not to this schema. The digest pins the whole criteria set for a profile, per QE-D11.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "uri", "manifest_digest", "specification_uri", "specification_digest"],
+      "properties": {
+        "kind": {
+          "description": "Only conformance-vectors is in Phase 1 scope. The remaining values are defined so that adding a criteria kind later is not a schema change.",
+          "enum": ["conformance-vectors", "differential-equivalence", "fault-matrix", "shadow-divergence", "soak", "deployment"]
+        },
+        "uri": {"type": "string", "format": "uri", "pattern": "^https://"},
+        "manifest_digest": {
+          "description": "NORMATIVE: computed from the criteria bytes the harness actually consumed, never from a declared or configured value (QE-D13). Not expressible in schema; enforced by test V14 in the producing repository.",
+          "$ref": "#/$defs/digest"
+        },
+        "specification_uri": {"type": "string", "format": "uri", "pattern": "^https://"},
+        "specification_digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "coverage": {
+      "description": "Absence is stated, never inferred (architecture P5). units_not_executed is required, so omitting a gap is not expressible.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["units_available", "units_executed", "units_not_executed", "specification_sections_covered"],
+      "properties": {
+        "units_available": {"type": "array", "items": {"$ref": "#/$defs/unit"}, "uniqueItems": true},
+        "units_executed": {"type": "array", "items": {"$ref": "#/$defs/unit"}, "uniqueItems": true},
+        "units_not_executed": {"type": "array", "items": {"$ref": "#/$defs/unexecutedUnit"}},
+        "specification_sections_covered": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+      }
+    },
+    "unexecutedUnit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unit", "reason_code"],
+      "properties": {
+        "unit": {"$ref": "#/$defs/unit"},
+        "reason_code": {"$ref": "#/$defs/reasonCode"},
+        "detail": {"type": "string", "maxLength": 512}
+      }
+    },
+    "reasonCode": {
+      "description": "Closed vocabulary, per QE-D7. The distinction between a subject capability gap (not-implemented) and a qualification-apparatus coverage gap (environment-unavailable) must be available to automated consumers without parsing free text; detail is advisory only. In this artifact the reason code is the subject's factual report of what it did not execute. In an attestation it is verifier-derived, and a disagreement between the two is a reportable finding.",
+      "enum": ["not-implemented", "environment-unavailable", "criteria-unavailable", "out-of-scope"]
+    },
+    "observation": {
+      "description": "What the subject observed. There is deliberately no expected value here: expected_echo was removed by QE-D13, and criteria.manifest_digest serves its purpose. Recording an expectation would give the transcript a self-scoring surface.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unit", "case_id", "input_digest", "observed"],
+      "properties": {
+        "unit": {"$ref": "#/$defs/unit"},
+        "case_id": {"type": "string", "minLength": 1, "maxLength": 256},
+        "input_digest": {"$ref": "#/$defs/digest"},
+        "observed": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kernel", "emitted_at"],
+      "properties": {
+        "kernel": {"type": "string", "minLength": 1, "maxLength": 256},
+        "emitted_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "signature": {
+      "description": "ES256, reusing the Runtime's existing signing substrate per founder decision QE-D15. Byte profile: P-256, SHA-256, 64-octet fixed-width r||s, unpadded base64url, key id = SHA-256 over DER SubjectPublicKeyInfo. ed25519 is not permitted in v1.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "profile_id", "key_id", "provider_kind", "value"],
+      "properties": {
+        "algorithm": {"const": "ES256"},
+        "profile_id": {"const": "invaros.crypto.es256-p1363-sha256-qualification/v1"},
+        "key_id": {"$ref": "#/$defs/digest"},
+        "provider_kind": {"enum": ["Software", "SgxDcap", "AmdSev", "Unknown"]},
+        "value": {"type": "string", "pattern": "^[A-Za-z0-9_-]{86}$"}
+      }
+    }
+  }
+}
