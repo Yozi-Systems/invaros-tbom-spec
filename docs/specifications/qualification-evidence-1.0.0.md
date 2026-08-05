@@ -106,6 +106,45 @@ malicious one.** A malicious subject can report whatever it likes. No schema
 choice defends against that; against misconfiguration, the digest of what was
 actually read is the correct and sufficient control.
 
+### 3.3a The no-substitution rule — NORMATIVE
+
+> **`criteria.specification_digest` MUST be the digest of the specification bytes
+> the producer actually read, or a declared absence. It MUST NEVER be the digest
+> of anything else.**
+
+A producer that cannot resolve the specification says so, in one closed,
+self-describing value:
+
+| Value | Meaning |
+|---|---|
+| `sha256:<64 hex>` | The digest of the specification bytes actually read |
+| `unavailable:not-supplied` | The producer was given no specification to digest |
+
+**The absence value carries its own cause, in a single field.** A sentinel plus a
+separate reason member would be two fields that can disagree; one value cannot
+disagree with itself. Widening the vocabulary is a schema change, which is the
+intended friction.
+
+**Why this rule exists.** Phase 1 execution found a producer copying
+`criteria.manifest_digest` into `specification_digest` whenever the specification
+was not found. The substitution was invisible in the signed artifact: a reader
+saw two digests with no indication that one was a stand-in, and a consumer
+cross-checking the specification would have been comparing the criteria manifest
+with itself. Recorded as finding **QE1-F1**.
+
+**What the schema can and cannot do.** No schema distinguishes a genuine digest
+from a substituted one — both match the pattern. What the schema does is remove
+the *motive*: a producer that cannot resolve the specification now has a correct,
+schema-valid thing to say, so substitution is no longer the only way to emit a
+valid artifact. Detection of an actual substitution belongs to the verifier,
+which **MUST** report a `specification_digest` equal to the
+`criteria_manifest_digest` as a `specification-digest-substituted` finding.
+
+**Binding.** When `specification_digest` is a declared absence, an attestation
+**MUST NOT** list `specification_digest` in `validity.binds_to`. An artifact
+cannot bind to an identity it does not have. Like §3.3, this is not expressible
+in JSON Schema and is enforced by test in the verifier repository.
+
 ### 3.4 Coverage — absence is stated, never inferred
 
 `coverage.units_not_executed` is **required**. Omitting the gap list is not
@@ -287,18 +326,33 @@ case marked `"valid": true` and reject every case marked `"valid": false`.
 
 ## 9. Conformance status
 
-**The schemas are frozen at v1 and their self-conformance criteria pass. No
-qualification artifact has yet been produced by any shipped build, and no
-implementation claims conformance to this specification.**
+**The schemas are frozen at v1 and their self-conformance criteria pass. One
+implementation of each side now exists.** Updated 2026-08-05.
 
-Specifically, as of this document:
-
-- **No transcript exists.** The Qualification Harness is not yet implemented in
-  any subject repository.
-- **No attestation exists.** The Qualification Verifier is not yet implemented.
-- **No third-party re-derivation has been performed.**
+- **A transcript exists.** The Qualification Harness in `invaros-runtime` emits
+  one for the shipped Profile 4 producer.
+- **An attestation exists.** The Qualification Verifier in `atgs-validator`
+  derives one. Its status is `incomplete`, which §4.1 records as the expected
+  steady state, not an edge case.
+- **No third-party re-derivation on an independent host has been performed.**
+  Re-derivation from clean checkouts has; the host-independence property has not.
 - **This specification is not evidence that any component is qualified.** It
-  defines the artifact class in which such evidence could be expressed.
+  defines the artifact class in which such evidence is expressed.
+
+### 9.1 v1 amendments after freeze
+
+The v1 schemas were frozen on 2026-08-04 and amended once, on 2026-08-05, in
+response to defects found by using them. **Both amendments are strictly
+narrowing — every artifact rejected before is still rejected — and neither
+relaxes a control:**
+
+| Amendment | Effect |
+|---|---|
+| `criteria.specification_digest` and the attestation's `specification_digest` accept a **declared absence** as well as a digest (§3.3a) | Adds a correct thing to say where previously only substitution was expressible. **A substituted digest was schema-valid before and remains so** — the schema removes the motive, the verifier detects the act |
+| Two finding kinds added: `specification-unavailable`, `specification-digest-substituted` | Gives the verifier somewhere to record what it detects. A verifier that noticed a substitution and had nowhere to report it would be back to silence |
+
+**No previously valid artifact is invalidated by either amendment**, so no v2 is
+required and no re-issue of existing evidence is forced by the schema itself.
 
 Do not measure this programme's success by `status: qualified`. A programme
 optimizing for green attestations will produce shallow criteria. **Measure

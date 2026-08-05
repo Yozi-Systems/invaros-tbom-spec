@@ -17,6 +17,14 @@
   },
   "$defs": {
     "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "declaredAbsence": {
+      "description": "A stated absence, drawn from a closed vocabulary. ONE self-describing value carrying both the fact of absence and its cause, so a sentinel and its reason cannot drift apart -- there is only one field to get wrong. Extending this set is a schema change, which is the correct friction. Cannot collide with a digest: the prefixes differ.",
+      "enum": ["unavailable:not-supplied"]
+    },
+    "digestOrDeclaredAbsence": {
+      "description": "Either a real digest of real bytes, or an explicit stated absence. NEVER a digest of something else. Substituting a neighbouring digest for a missing one makes an absent input indistinguishable from a present one in a signed artifact -- the defect recorded as QE1-F1 during Phase 1 execution, which this form exists to make unrepresentable.",
+      "oneOf": [{"$ref": "#/$defs/digest"}, {"$ref": "#/$defs/declaredAbsence"}]
+    },
     "unit": {"type": "string", "minLength": 1, "maxLength": 128},
     "subject": {
       "type": "object",
@@ -48,7 +56,10 @@
           "$ref": "#/$defs/digest"
         },
         "specification_uri": {"type": "string", "format": "uri", "pattern": "^https://"},
-        "specification_digest": {"$ref": "#/$defs/digest"}
+        "specification_digest": {
+          "description": "NORMATIVE: the digest of the specification bytes the harness actually read, or a declared absence. It is NEVER any other digest. A producer that cannot resolve the specification states so; it does not substitute. Enforced by the producing repository's emission tests, and by the verifier, which reports a specification digest equal to the criteria manifest digest as a finding.",
+          "$ref": "#/$defs/digestOrDeclaredAbsence"
+        }
       }
     },
     "coverage": {

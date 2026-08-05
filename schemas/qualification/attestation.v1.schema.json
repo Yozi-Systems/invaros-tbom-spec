@@ -17,7 +17,10 @@
       "description": "The verifier's own independently obtained copy. Taking this from the transcript would defeat the independence the split exists to create.",
       "$ref": "#/$defs/digest"
     },
-    "specification_digest": {"$ref": "#/$defs/digest"},
+    "specification_digest": {
+      "description": "Carried through from the transcript, including a declared absence. NORMATIVE, and not expressible in schema: when this is a declared absence the attestation MUST NOT list specification_digest in validity.binds_to, because an artifact cannot bind to an identity it does not have. Enforced by test in the verifier repository, in the manner of the transcript's manifest_digest requirement.",
+      "$ref": "#/$defs/digestOrDeclaredAbsence"
+    },
     "verifier": {"$ref": "#/$defs/verifier"},
     "result": {"$ref": "#/$defs/result"},
     "claim": {"$ref": "#/$defs/claim"},
@@ -26,6 +29,14 @@
   },
   "$defs": {
     "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "declaredAbsence": {
+      "description": "A stated absence, drawn from a closed vocabulary. Identical to the transcript's definition and deliberately so: the two artifacts must agree on how an absence is spelled, or a consumer comparing them would read a difference where there is none.",
+      "enum": ["unavailable:not-supplied"]
+    },
+    "digestOrDeclaredAbsence": {
+      "description": "Either a real digest of real bytes, or an explicit stated absence. NEVER a digest of something else -- see QE1-F1.",
+      "oneOf": [{"$ref": "#/$defs/digest"}, {"$ref": "#/$defs/declaredAbsence"}]
+    },
     "unit": {"type": "string", "minLength": 1, "maxLength": 128},
     "verifier": {
       "type": "object",
@@ -100,7 +111,7 @@
       "additionalProperties": false,
       "required": ["kind", "detail"],
       "properties": {
-        "kind": {"enum": ["reason-code-disagreement", "criteria-digest-mismatch", "build-digest-unresolved", "coverage-disagreement"]},
+        "kind": {"enum": ["reason-code-disagreement", "criteria-digest-mismatch", "build-digest-unresolved", "coverage-disagreement", "specification-unavailable", "specification-digest-substituted"]},
         "detail": {"type": "string", "minLength": 1, "maxLength": 512}
       }
     },

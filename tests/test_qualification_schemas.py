@@ -27,6 +27,7 @@ are checked in a form that does not depend on anyone maintaining the vectors.
 from __future__ import annotations
 
 import json
+import re
 
 import jsonschema
 import pytest
@@ -317,3 +318,95 @@ def test_permanent_schema_uris_match_paths() -> None:
     for path in sorted(QUALIFICATION_SCHEMAS.glob("*.json")):
         schema = load_json(path)
         assert schema["$id"] == f"https://tbom.yozi.systems/schemas/qualification/{path.name}"
+
+
+#: The closed absence vocabulary. Exactly this set, for the same reason
+#: REASON_CODES is stated exactly: widening it must be a visible edit here too.
+ABSENCE_VALUES = {"unavailable:not-supplied"}
+
+
+def test_qe1_f1_a_missing_specification_is_stated_and_never_substituted() -> None:
+    """QE1-F1 — the substituted-digest defect, made unrepresentable.
+
+    Phase 1 execution found the harness copying `criteria.manifest_digest` into
+    `specification_digest` when it could not resolve the specification. The
+    substitution was invisible in the signed artifact: a reader saw two digests
+    and no indication that one was a stand-in, and a consumer cross-checking the
+    specification would have been comparing the criteria manifest with itself.
+
+    The repair is structural rather than procedural. `specification_digest` is
+    now either a real digest or a value from a closed absence vocabulary, and
+    the absence value carries its own cause — **one** self-describing string,
+    so a sentinel and its reason cannot drift apart, because there is only one
+    field to get wrong.
+
+    Note what this does *not* do. No schema can tell a genuine digest from a
+    substituted one; both match the pattern. What it does is remove the
+    *motive*: a producer that cannot resolve the specification now has a
+    correct, schema-valid thing to say, so substitution stops being the only way
+    to emit a valid artifact. Detection of an actual substitution lives in the
+    verifier, which reports a specification digest equal to the criteria
+    manifest digest as a finding.
+    """
+    for name, schema in _schemas().items():
+        absence = schema["$defs"]["declaredAbsence"]
+        assert set(absence["enum"]) == ABSENCE_VALUES, name
+        # Every stated absence must say why. A bare sentinel is not admissible.
+        for value in absence["enum"]:
+            assert ":" in value and value.split(":", 1)[1], (
+                f"{name}: absence value {value!r} carries no cause")
+        either = schema["$defs"]["digestOrDeclaredAbsence"]
+        assert either["oneOf"] == [
+            {"$ref": "#/$defs/digest"}, {"$ref": "#/$defs/declaredAbsence"}], name
+
+    transcript, attestation = load_json(TRANSCRIPT), load_json(ATTESTATION)
+    assert transcript["$defs"]["criteria"]["properties"]["specification_digest"][
+        "$ref"] == "#/$defs/digestOrDeclaredAbsence"
+    assert attestation["properties"]["specification_digest"][
+        "$ref"] == "#/$defs/digestOrDeclaredAbsence"
+
+    # The two artifacts must spell an absence identically, or a consumer
+    # comparing a transcript with its attestation reads a difference where
+    # there is none.
+    assert (transcript["$defs"]["declaredAbsence"]["enum"]
+            == attestation["$defs"]["declaredAbsence"]["enum"])
+
+    # A declared absence must remain impossible to confuse with a digest.
+    digest_pattern = transcript["$defs"]["digest"]["pattern"]
+    for value in ABSENCE_VALUES:
+        assert not re.match(digest_pattern, value)
+
+
+def test_qe1_f1_the_specification_digest_stays_required() -> None:
+    """Absence is stated, never signalled by omission (architecture P5).
+
+    Making the member optional would have been the smaller edit and the wrong
+    one: an omitted field is indistinguishable from a producer that forgot, and
+    `units_not_executed` is required for exactly the same reason.
+    """
+    criteria = load_json(TRANSCRIPT)["$defs"]["criteria"]
+    assert "specification_digest" in criteria["required"]
+    assert "specification_digest" in load_json(ATTESTATION)["required"]
+
+
+def test_qe1_f1_the_verifier_can_report_the_substitution_it_cannot_prevent() -> None:
+    """The finding vocabulary must be able to name both specification states.
+
+    A verifier that noticed a substituted digest and had nowhere to record it
+    would be back to silence, which is the condition this finding exists to end.
+    """
+    kinds = set(load_json(ATTESTATION)["$defs"]["finding"]["properties"]["kind"]["enum"])
+    assert {"specification-unavailable", "specification-digest-substituted"} <= kinds
+
+
+def test_qe1_f2_build_configuration_bound_is_pinned_from_both_sides() -> None:
+    """QE1-F2 — the bound the harness could previously overrun.
+
+    The producer, not the schema, was at fault: it accepted a longer value and
+    emitted an artifact that failed its own schema. The bound is asserted here
+    so that "fixing" the producer by relaxing the schema is itself a test
+    failure, and the vectors exercise both 64 and 65 characters.
+    """
+    subject = load_json(TRANSCRIPT)["$defs"]["subject"]["properties"]
+    assert subject["build_configuration"]["maxLength"] == 64
+    assert subject["build_configuration"]["minLength"] == 1

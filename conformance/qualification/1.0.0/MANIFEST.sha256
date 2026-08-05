@@ -13,4 +13,4 @@
 # commit, which makes the change visible in review.
 #
 # Regenerate with:  sha256sum *.json | LC_ALL=C sort -k2
-4e22511a5e042f1195cbcbf498b0d9e3df19e8db4784630ae801b3fe8e5a5f71  schema-vectors.json
+0332395592f597a9bc20d1413fe1c140bfae7a898db264ec32024257d2a34af8  schema-vectors.json
