@@ -2658,6 +2658,534 @@
           "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         }
       }
+    },
+    {
+      "case_id": "transcript-environment-identity-present",
+      "artifact": "transcript",
+      "valid": true,
+      "rationale": "V21, QE-D17. A transcript bound to its execution environment: one architecture member, which is simultaneously the subject's and the host's, plus the environment class it was produced in.",
+      "document": {
+        "schema_id": "invaros.qualification.transcript/v1",
+        "subject": {
+          "component": "invaros-runtime",
+          "build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "source_commit": "9f9c8f9",
+          "worktree_clean": true,
+          "build_configuration": "Release",
+          "toolchain": "GCC 13.3.0",
+          "surface_under_test": [
+            "plugins/topology/profile4",
+            "src/profile4"
+          ]
+        },
+        "criteria": {
+          "kind": "conformance-vectors",
+          "uri": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0",
+          "manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "specification_uri": "https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0",
+          "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "coverage": {
+          "units_available": [
+            "validation",
+            "disclosure-profile",
+            "observation-order",
+            "representative-examples"
+          ],
+          "units_executed": [
+            "validation",
+            "disclosure-profile"
+          ],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable",
+              "detail": "expected_keys are stated over a synthetic projection the producer cannot emit without live capture"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ],
+          "specification_sections_covered": [
+            "8",
+            "9"
+          ]
+        },
+        "observations": [
+          {
+            "unit": "validation",
+            "case_id": "null-structural-fingerprint-incomplete-intent",
+            "input_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+            "observed": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+          }
+        ],
+        "environment": {
+          "kernel": "Linux 6.8.0-124-generic",
+          "emitted_at": "2026-08-04T12:00:00Z",
+          "architecture": "aarch64",
+          "environment_id": "openwrt-aarch64"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+          "provider_kind": "Software",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "transcript-environment-identity-absent",
+      "artifact": "transcript",
+      "valid": true,
+      "rationale": "V21, QE-D17. Environment identity is OPTIONAL and its absence is valid, so that no transcript valid before the WP-02.0 amendment became invalid after it (specification §9.1). Absence is not silent: the verifier reports environment-identity-absent as a finding.",
+      "document": {
+        "schema_id": "invaros.qualification.transcript/v1",
+        "subject": {
+          "component": "invaros-runtime",
+          "build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "source_commit": "9f9c8f9",
+          "worktree_clean": true,
+          "build_configuration": "Release",
+          "toolchain": "GCC 13.3.0",
+          "surface_under_test": [
+            "plugins/topology/profile4",
+            "src/profile4"
+          ]
+        },
+        "criteria": {
+          "kind": "conformance-vectors",
+          "uri": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0",
+          "manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "specification_uri": "https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0",
+          "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "coverage": {
+          "units_available": [
+            "validation",
+            "disclosure-profile",
+            "observation-order",
+            "representative-examples"
+          ],
+          "units_executed": [
+            "validation",
+            "disclosure-profile"
+          ],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable",
+              "detail": "expected_keys are stated over a synthetic projection the producer cannot emit without live capture"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ],
+          "specification_sections_covered": [
+            "8",
+            "9"
+          ]
+        },
+        "observations": [
+          {
+            "unit": "validation",
+            "case_id": "null-structural-fingerprint-incomplete-intent",
+            "input_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+            "observed": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+          }
+        ],
+        "environment": {
+          "kernel": "Linux 6.8.0-124-generic",
+          "emitted_at": "2026-08-04T12:00:00Z"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+          "provider_kind": "Software",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "transcript-environment-cross-architecture",
+      "artifact": "transcript",
+      "valid": false,
+      "rationale": "V21 NEGATIVE CONTROL, QE-D17. The defect this invariant exists to prevent -- a subject built for one architecture characterized on another -- is INEXPRESSIBLE: there is no subject_architecture or host_architecture member to disagree, and the closed environment object rejects any attempt to introduce one. A producer cannot state a cross-architecture qualification even by trying.",
+      "document": {
+        "schema_id": "invaros.qualification.transcript/v1",
+        "subject": {
+          "component": "invaros-runtime",
+          "build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "source_commit": "9f9c8f9",
+          "worktree_clean": true,
+          "build_configuration": "Release",
+          "toolchain": "GCC 13.3.0",
+          "surface_under_test": [
+            "plugins/topology/profile4",
+            "src/profile4"
+          ]
+        },
+        "criteria": {
+          "kind": "conformance-vectors",
+          "uri": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0",
+          "manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "specification_uri": "https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0",
+          "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "coverage": {
+          "units_available": [
+            "validation",
+            "disclosure-profile",
+            "observation-order",
+            "representative-examples"
+          ],
+          "units_executed": [
+            "validation",
+            "disclosure-profile"
+          ],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable",
+              "detail": "expected_keys are stated over a synthetic projection the producer cannot emit without live capture"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ],
+          "specification_sections_covered": [
+            "8",
+            "9"
+          ]
+        },
+        "observations": [
+          {
+            "unit": "validation",
+            "case_id": "null-structural-fingerprint-incomplete-intent",
+            "input_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+            "observed": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+          }
+        ],
+        "environment": {
+          "kernel": "Linux 6.8.0-124-generic",
+          "emitted_at": "2026-08-04T12:00:00Z",
+          "subject_architecture": "aarch64",
+          "host_architecture": "x86_64"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+          "provider_kind": "Software",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "transcript-environment-architecture-outside-closed-set",
+      "artifact": "transcript",
+      "valid": false,
+      "rationale": "V21, QE-D17. The architecture vocabulary is closed. An unrecognized architecture is rejected rather than carried through as free text, because adding an execution environment is a schema change and that friction is intentional.",
+      "document": {
+        "schema_id": "invaros.qualification.transcript/v1",
+        "subject": {
+          "component": "invaros-runtime",
+          "build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "source_commit": "9f9c8f9",
+          "worktree_clean": true,
+          "build_configuration": "Release",
+          "toolchain": "GCC 13.3.0",
+          "surface_under_test": [
+            "plugins/topology/profile4",
+            "src/profile4"
+          ]
+        },
+        "criteria": {
+          "kind": "conformance-vectors",
+          "uri": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0",
+          "manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "specification_uri": "https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0",
+          "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "coverage": {
+          "units_available": [
+            "validation",
+            "disclosure-profile",
+            "observation-order",
+            "representative-examples"
+          ],
+          "units_executed": [
+            "validation",
+            "disclosure-profile"
+          ],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable",
+              "detail": "expected_keys are stated over a synthetic projection the producer cannot emit without live capture"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ],
+          "specification_sections_covered": [
+            "8",
+            "9"
+          ]
+        },
+        "observations": [
+          {
+            "unit": "validation",
+            "case_id": "null-structural-fingerprint-incomplete-intent",
+            "input_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+            "observed": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+          }
+        ],
+        "environment": {
+          "kernel": "Linux 6.8.0-124-generic",
+          "emitted_at": "2026-08-04T12:00:00Z",
+          "architecture": "sparc64",
+          "environment_id": "solaris-sparc64"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+          "provider_kind": "Software",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "transcript-environment-architecture-without-environment-id",
+      "artifact": "transcript",
+      "valid": false,
+      "rationale": "V21, QE-D17. The two identity members stand or fall together. An architecture with no environment class, or a class with no architecture, states half of a binding and is refused: a partial binding invites a reader to supply the missing half.",
+      "document": {
+        "schema_id": "invaros.qualification.transcript/v1",
+        "subject": {
+          "component": "invaros-runtime",
+          "build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "source_commit": "9f9c8f9",
+          "worktree_clean": true,
+          "build_configuration": "Release",
+          "toolchain": "GCC 13.3.0",
+          "surface_under_test": [
+            "plugins/topology/profile4",
+            "src/profile4"
+          ]
+        },
+        "criteria": {
+          "kind": "conformance-vectors",
+          "uri": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0",
+          "manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "specification_uri": "https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0",
+          "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "coverage": {
+          "units_available": [
+            "validation",
+            "disclosure-profile",
+            "observation-order",
+            "representative-examples"
+          ],
+          "units_executed": [
+            "validation",
+            "disclosure-profile"
+          ],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable",
+              "detail": "expected_keys are stated over a synthetic projection the producer cannot emit without live capture"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ],
+          "specification_sections_covered": [
+            "8",
+            "9"
+          ]
+        },
+        "observations": [
+          {
+            "unit": "validation",
+            "case_id": "null-structural-fingerprint-incomplete-intent",
+            "input_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+            "observed": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+          }
+        ],
+        "environment": {
+          "kernel": "Linux 6.8.0-124-generic",
+          "emitted_at": "2026-08-04T12:00:00Z",
+          "architecture": "aarch64"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+          "provider_kind": "Software",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "transcript-environment-id-without-architecture",
+      "artifact": "transcript",
+      "valid": false,
+      "rationale": "V21, QE-D17. The converse of the previous case.",
+      "document": {
+        "schema_id": "invaros.qualification.transcript/v1",
+        "subject": {
+          "component": "invaros-runtime",
+          "build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "source_commit": "9f9c8f9",
+          "worktree_clean": true,
+          "build_configuration": "Release",
+          "toolchain": "GCC 13.3.0",
+          "surface_under_test": [
+            "plugins/topology/profile4",
+            "src/profile4"
+          ]
+        },
+        "criteria": {
+          "kind": "conformance-vectors",
+          "uri": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0",
+          "manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "specification_uri": "https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0",
+          "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "coverage": {
+          "units_available": [
+            "validation",
+            "disclosure-profile",
+            "observation-order",
+            "representative-examples"
+          ],
+          "units_executed": [
+            "validation",
+            "disclosure-profile"
+          ],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable",
+              "detail": "expected_keys are stated over a synthetic projection the producer cannot emit without live capture"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ],
+          "specification_sections_covered": [
+            "8",
+            "9"
+          ]
+        },
+        "observations": [
+          {
+            "unit": "validation",
+            "case_id": "null-structural-fingerprint-incomplete-intent",
+            "input_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+            "observed": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+          }
+        ],
+        "environment": {
+          "kernel": "Linux 6.8.0-124-generic",
+          "emitted_at": "2026-08-04T12:00:00Z",
+          "environment_id": "openwrt-aarch64"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+          "provider_kind": "Software",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
+    },
+    {
+      "case_id": "transcript-environment-id-malformed",
+      "artifact": "transcript",
+      "valid": false,
+      "rationale": "V21, QE-D17. The environment class is a lowercase hyphen-separated token. It names an environment CLASS, never a device (QE-D21): free text here would let deployment identity into the vendor evidence population.",
+      "document": {
+        "schema_id": "invaros.qualification.transcript/v1",
+        "subject": {
+          "component": "invaros-runtime",
+          "build_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "source_commit": "9f9c8f9",
+          "worktree_clean": true,
+          "build_configuration": "Release",
+          "toolchain": "GCC 13.3.0",
+          "surface_under_test": [
+            "plugins/topology/profile4",
+            "src/profile4"
+          ]
+        },
+        "criteria": {
+          "kind": "conformance-vectors",
+          "uri": "https://tbom.yozi.systems/conformance/edge-network-topology/4.0.0",
+          "manifest_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "specification_uri": "https://tbom.yozi.systems/specifications/edge-network-topology/4.0.0",
+          "specification_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "coverage": {
+          "units_available": [
+            "validation",
+            "disclosure-profile",
+            "observation-order",
+            "representative-examples"
+          ],
+          "units_executed": [
+            "validation",
+            "disclosure-profile"
+          ],
+          "units_not_executed": [
+            {
+              "unit": "observation-order",
+              "reason_code": "environment-unavailable",
+              "detail": "expected_keys are stated over a synthetic projection the producer cannot emit without live capture"
+            },
+            {
+              "unit": "representative-examples",
+              "reason_code": "out-of-scope"
+            }
+          ],
+          "specification_sections_covered": [
+            "8",
+            "9"
+          ]
+        },
+        "observations": [
+          {
+            "unit": "validation",
+            "case_id": "null-structural-fingerprint-incomplete-intent",
+            "input_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+            "observed": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+          }
+        ],
+        "environment": {
+          "kernel": "Linux 6.8.0-124-generic",
+          "emitted_at": "2026-08-04T12:00:00Z",
+          "architecture": "aarch64",
+          "environment_id": "OpenWrt_AArch64!"
+        },
+        "signature": {
+          "algorithm": "ES256",
+          "profile_id": "invaros.crypto.es256-p1363-sha256-qualification/v1",
+          "key_id": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+          "provider_kind": "Software",
+          "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      }
     }
   ]
 }

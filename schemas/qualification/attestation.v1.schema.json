@@ -111,7 +111,10 @@
       "additionalProperties": false,
       "required": ["kind", "detail"],
       "properties": {
-        "kind": {"enum": ["reason-code-disagreement", "criteria-digest-mismatch", "build-digest-unresolved", "coverage-disagreement", "specification-unavailable", "specification-digest-substituted"]},
+        "kind": {
+          "description": "environment-identity-absent was added by WP-02.0 (QE-D17). The transcript schema permits a transcript that names no architecture, so that no artifact valid before the amendment became invalid after it; this finding kind is where the verifier says so. Without it a transcript that stated nothing about its environment and one that stated environment-equivalence would be indistinguishable in the attestation, and absence would stop carrying information.",
+          "enum": ["reason-code-disagreement", "criteria-digest-mismatch", "build-digest-unresolved", "coverage-disagreement", "specification-unavailable", "specification-digest-substituted", "environment-identity-absent"]
+        },
         "detail": {"type": "string", "minLength": 1, "maxLength": 512}
       }
     },

@@ -341,18 +341,58 @@ implementation of each side now exists.** Updated 2026-08-05.
 
 ### 9.1 v1 amendments after freeze
 
-The v1 schemas were frozen on 2026-08-04 and amended once, on 2026-08-05, in
-response to defects found by using them. **Both amendments are strictly
-narrowing — every artifact rejected before is still rejected — and neither
-relaxes a control:**
+The v1 schemas were frozen on 2026-08-04 and amended on 2026-08-05 and
+2026-08-06, in response to defects found by using them and to founder decision
+QE-D17. **Every amendment is strictly narrowing — every artifact rejected
+before is still rejected — and none relaxes a control:**
 
-| Amendment | Effect |
-|---|---|
-| `criteria.specification_digest` and the attestation's `specification_digest` accept a **declared absence** as well as a digest (§3.3a) | Adds a correct thing to say where previously only substitution was expressible. **A substituted digest was schema-valid before and remains so** — the schema removes the motive, the verifier detects the act |
-| Two finding kinds added: `specification-unavailable`, `specification-digest-substituted` | Gives the verifier somewhere to record what it detects. A verifier that noticed a substitution and had nowhere to report it would be back to silence |
+| Amendment | Date | Effect |
+|---|---|---|
+| `criteria.specification_digest` and the attestation's `specification_digest` accept a **declared absence** as well as a digest (§3.3a) | 2026-08-05 | Adds a correct thing to say where previously only substitution was expressible. **A substituted digest was schema-valid before and remains so** — the schema removes the motive, the verifier detects the act |
+| Two finding kinds added: `specification-unavailable`, `specification-digest-substituted` | 2026-08-05 | Gives the verifier somewhere to record what it detects. A verifier that noticed a substitution and had nowhere to report it would be back to silence |
+| **`environment.architecture` and `environment.environment_id`** added, both optional, with `dependentRequired` binding them to each other and a `pattern` requiring the class to end in an architecture from a **closed vocabulary** | **2026-08-06** | **Environment-equivalent qualification (QE-D17), invariant V21.** See below |
+| **One finding kind added: `environment-identity-absent`** | **2026-08-06** | Where the verifier reports a transcript that names no execution environment |
 
-**No previously valid artifact is invalidated by either amendment**, so no v2 is
+**No previously valid artifact is invalidated by any amendment**, so no v2 is
 required and no re-issue of existing evidence is forced by the schema itself.
+`[VERIFIED]` The Phase 1 evidence set — `transcript.json`, `attestation.json`
+and `attestation-rederived.json` — was re-validated against the amended schemas
+on 2026-08-06 under the declared `jsonschema` 4.23.0 and all three still
+validate.
+
+#### V21 — why environment identity is one member, not two
+
+**A transcript whose subject architecture differs from its host architecture is
+not merely invalid. It is inexpressible.** `environment` carries **one**
+`architecture` member, which is simultaneously the subject's and the host's.
+There is no `subject_architecture`/`host_architecture` pair, and because the
+`environment` object is closed, a producer cannot introduce one.
+
+Two members constrained to be equal would have permitted an invalid state and
+then forbidden it, and would have given a producer two fields to get wrong. One
+member cannot drift from itself. This is the reasoning `declaredAbsence` already
+states for carrying a fact and its cause in a single value.
+
+**The comparison still happens — in the producer, which is the only place it
+can.** The Qualification Harness derives the subject's architecture from the
+subject's ELF header and the host's from `uname`, and **refuses to emit** when
+they disagree; it additionally refuses an `environment_id` whose architecture
+suffix is not the one it verified. That refusal is a normative requirement no
+schema can express, enforced by a negative control in the producing repository —
+exactly as `criteria.manifest_digest` is by test V14.
+
+**The members are optional, deliberately.** Requiring them would have
+invalidated transcripts that were valid when emitted, which this section
+forbids without a v2, and would have retroactively redefined Phase 1 against
+`DECISION_20260806_ENVIRONMENT_EQUIVALENT_QUALIFICATION.md` §5.1. **Absence is
+therefore permitted but never silent:** the verifier reports
+`environment-identity-absent`, so a transcript that stated where it ran and one
+that stated nothing produce distinguishable attestations. Without that finding,
+absence would stop carrying information — the QE1-F8 defect in a new place.
+
+**An unbound transcript is not a failing one.** The finding does not affect
+derived status. Environment identity describes what the evidence covers, not
+whether the subject passed.
 
 Do not measure this programme's success by `status: qualified`. A programme
 optimizing for green attestations will produce shallow criteria. **Measure

@@ -100,13 +100,33 @@
         "observed": {"$ref": "#/$defs/digest"}
       }
     },
+    "architecture": {
+      "description": "Closed vocabulary of execution architectures. Closed deliberately: the matched-pair constraint on the environment object is expressible only over a finite set, and an open string would make cross-architecture qualification representable again. Adding an architecture is a schema change, which is the correct friction (QE-D17).",
+      "enum": ["x86_64", "aarch64", "armv7l", "mips", "mipsel", "riscv64"]
+    },
     "environment": {
+      "description": "Where the observations were produced. Under founder decision QE-D17 the subject is qualified in its own native architecture and execution environment; a development-host substitute is not equivalent.\n\nV21 -- INVARIANT. A transcript that names a subject architecture differing from its host architecture is not merely invalid, it is INEXPRESSIBLE: there is ONE architecture member, which is simultaneously the subject's and the host's. Two members constrained to be equal would permit an invalid state and then forbid it, and would give a producer two fields to get wrong; one member cannot drift from itself. This is the same reasoning declaredAbsence above states for carrying a fact and its cause in a single value.\n\nThe producer still derives the two independently -- the subject's ELF machine type from the subject bytes, the host's from uname -- and REFUSES TO EMIT when they disagree, so the check is real rather than assumed. That refusal is a normative requirement no schema can express, enforced by a negative-control test in the producing repository, exactly as criteria.manifest_digest is.\n\nThe identity members are OPTIONAL rather than required, deliberately. Requiring them would invalidate transcripts that were valid when emitted, which §9.1 forbids without a v2 and which would retroactively redefine Phase 1 against DECISION_20260806_ENVIRONMENT_EQUIVALENT_QUALIFICATION.md §5.1. This amendment is therefore strictly narrowing: nothing valid before is invalid now. Omission is caught where it is detectable -- the producer always emits them, and the verifier reports environment-identity-absent as a finding. That is the QE1-F1 pattern: remove the motive in the schema, detect the act in the verifier.",
       "type": "object",
       "additionalProperties": false,
       "required": ["kernel", "emitted_at"],
       "properties": {
         "kernel": {"type": "string", "minLength": 1, "maxLength": 256},
-        "emitted_at": {"type": "string", "format": "date-time"}
+        "emitted_at": {"type": "string", "format": "date-time"},
+        "architecture": {
+          "description": "The one execution architecture of both the subject and the host. See the V21 note above for why this is a single member.",
+          "$ref": "#/$defs/architecture"
+        },
+        "environment_id": {
+          "description": "Names the execution environment class the transcript is bound to -- for example openwrt-aarch64 or linux-x86_64. It identifies an environment CLASS, never a device: no device or platform is uniquely canonical (QE-D17), and a per-device identifier here would introduce deployment identity into the vendor evidence population, which QE-D21 keeps out of it.\n\nThe pattern requires the class to END in one of the architectures of the closed vocabulary above, so that the self-asserted half of this member cannot name an architecture the schema does not know. The schema cannot check that the suffix equals the sibling architecture member -- JSON Schema compares no two members -- so the producer checks that, against the architecture it derived from the subject's ELF header, and refuses to emit on disagreement.",
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*-(x86_64|aarch64|armv7l|mips|mipsel|riscv64)$",
+          "minLength": 3,
+          "maxLength": 64
+        }
+      },
+      "dependentRequired": {
+        "architecture": ["environment_id"],
+        "environment_id": ["architecture"]
       }
     },
     "signature": {
